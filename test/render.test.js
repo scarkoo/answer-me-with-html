@@ -1,9 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createHash } from 'node:crypto';
 import { renderDoc, RenderError, detectLang } from '../src/render.js';
 import { ParseError } from '../src/parse.js';
-import { RUNTIME_JS } from '../src/assets.js';
 
 const SRC = `---
 title: 测试页
@@ -64,26 +62,28 @@ test('render: 表格状态词渲染为徽章', () => {
   assert.match(html, /am-table-wrap/);
 });
 
-test('render: html/svg fence와 알 수 없는 언어는 모두 안전한 코드 블록으로 escape', () => {
+test('render: html/svg fence는 원본 마크업으로 삽입하고 알 수 없는 언어만 코드로 escape', () => {
   const { html } = renderDoc(SRC);
-  assert.doesNotMatch(html, /<div class="raw-x">raw<\/div>/);
-  assert.match(html, /<pre class="am-code"><code data-lang="html">&lt;div class=&quot;raw-x&quot;&gt;raw&lt;\/div&gt;<\/code><\/pre>/);
+  assert.match(html, /<div class="raw-x">raw<\/div>/);
   assert.match(html, /<pre class="am-code"><code data-lang="python">print\(&quot;&lt;x&gt;&quot;\)<\/code><\/pre>/);
 });
 
-test('render: Markdown raw HTML은 escape하고 위험한 링크 프로토콜은 무력화', () => {
-  const { html } = renderDoc('## A\n<script>alert(1)</script>\n[x](javascript:evil)');
-  assert.doesNotMatch(html, /<script>alert\(1\)<\/script>/);
-  assert.match(html, /&lt;script&gt;alert\(1\)&lt;\/script&gt;/);
-  assert.match(html, /<a href="#" rel="noreferrer noopener">x<\/a>/);
+test('render: Markdown raw HTML과 javascript 링크를 유지해 인터랙션을 허용', () => {
+  const { html } = renderDoc('## A\n<button onclick="this.textContent=\'ok\'">go</button>\n[x](javascript:void(0))');
+  assert.match(html, /<button onclick="this\.textContent='ok'">go<\/button>/);
+  assert.match(html, /href="javascript:void\(0\)"/);
 });
 
-test('render: restrictive CSP가 런타임 스크립트 hash와 일치', () => {
+test('render: CSP는 inline interaction을 허용하고 외부 통신은 제한하며 HTTPS font를 허용', () => {
   const { html } = renderDoc('## A\nx');
-  const hash = createHash('sha256').update(RUNTIME_JS).digest('base64');
-  assert.ok(html.includes(`script-src 'sha256-${hash}'`));
   assert.match(html, /default-src 'none'/);
+  assert.match(html, /script-src 'unsafe-inline'/);
+  assert.match(html, /style-src 'unsafe-inline'/);
   assert.match(html, /connect-src 'none'/);
+  assert.match(html, /font-src https: data:/);
+  assert.match(html, /object-src 'none'/);
+  assert.match(html, /frame-src 'none'/);
+  assert.match(html, /form-action 'none'/);
   assert.match(html, /base-uri 'none'/);
   assert.match(html, /name="referrer" content="no-referrer"/);
 });
