@@ -19,7 +19,7 @@
 </p>
 
 > [!NOTE]
-> This fork is hardened for Codex: browser auto-open is off by default, raw HTML/SVG is escaped, unsafe Markdown links are neutralized, and generated pages use a restrictive CSP.
+> This fork is hardened for Codex: browser auto-open is off by default, agent-authored HTML/SVG/inline JavaScript stay available for interaction, and generated pages use CSP to block direct network connections and external executable resources while allowing HTTPS font files.
 
 Once installed, ask questions the way you always do:
 
@@ -253,7 +253,7 @@ A -> B: label
 
 - Every `## ` heading is a panel. The letters A, B, C are optional and added for you.
 - `span=2` makes a panel two columns wide, `rows=2` makes it two rows tall, and `bare` removes its title bar.
-- Raw ```` ```html ```` and ```` ```svg ```` blocks are intentionally escaped as code in this hardened fork.
+- Raw ```` ```html ```` and ```` ```svg ```` blocks are supported for custom layout, graphics and interaction. Inline JavaScript is allowed; CSP still blocks direct connections and external executable resources.
 
 Full syntax for a component: `am help <component>`.
 
