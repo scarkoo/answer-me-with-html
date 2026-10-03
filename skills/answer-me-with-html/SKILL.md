@@ -130,10 +130,40 @@ source: RFC 9293    # 예약 키가 아닌 다른 frontmatter 값은 페이지 �
 | 디렉터리, 모듈, 분류 같은 계층 구조 | `tree [list]` | 들여쓰기로 계층 표현, `라벨 \| 설명`, `` `번호` 라벨 `` |
 | 역사, 릴리스, 프로젝트 단계 | `timeline [v]` | `시간 \| 제목 \| 설명`, 앞에 `*`를 붙여 강조 |
 | 값과 상한/한계 비교 | `limits` | `라벨 \| 13 / 20 \| 단위`, 상한만 있으면 `라벨 \| max 20` |
+| 벤치마크, 시간/처리량 비교, 버전별 추세, 두 수치의 상관관계 | `chart <bar\|line\|scatter>` | `x: 컬럼`, `y: 컬럼`, 선택적으로 `series: 그룹`; `---` 아래 CSV 또는 workspace-relative `src` |
 | 문장이나 코드 조각의 부분별 주석 | `annot` | `# 작은 제목 \| 오른쪽 메타`, `[구간]{주석}`, `[문제]{!빨간 주석}`, `> 하단 설명` |
 | 메타데이터 / 도면 title block | `kv [cols=2]` | `키: 값`, `* 넓은 셀: 값` |
 | 결론, 팁, 경고, 오류 | `callout <info\|ok\|warn\|err> 제목` | 본문은 일반 Markdown |
 | 여러 항목의 다차원 비교, 가능/불가능 체크 | Markdown 표 | 상태 셀에 `ok / no / warn` 사용 |
+
+### CSV chart 사용법
+
+수치 데이터가 여러 관측치로 존재하면 raw SVG를 직접 만들지 말고 `chart`를 사용한다.
+
+````markdown
+```chart bar
+x: topic
+y: time_s
+series: method
+unit: s
+title: 처리 시간
+---
+topic,method,time_s
+TCP,Direct HTML,46
+TCP,Skill,13
+Redis,Direct HTML,41
+Redis,Skill,12
+```
+````
+
+- `bar`: 방법/모델/환경처럼 독립된 범주의 크기를 비교한다.
+- `line`: 버전, 날짜, 입력 크기처럼 순서가 중요한 값의 변화를 보여준다.
+- `scatter`: latency와 throughput처럼 두 숫자의 관계를 보여준다.
+- long-form CSV(`x, series, y`)를 기본으로 사용한다.
+- wide CSV도 `series: direct,skill`처럼 값 컬럼을 나열하면 사용할 수 있다.
+- 이미 workspace에 CSV가 있으면 `chart bar src="bench/results.csv"`처럼 읽는다. 절대경로와 workspace 밖 경로는 사용하지 않는다.
+- 서로 단위가 다른 값(예: tokens, seconds, dollars)을 같은 y축에 섞지 않는다. 패널이나 chart를 나눈다.
+- CSV는 최대 2MB / 2,000행이다. 결과 HTML에는 SVG만 포함되므로 브라우저가 CSV를 다시 읽지 않는다.
 
 선택 원칙:
 
