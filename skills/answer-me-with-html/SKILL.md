@@ -92,12 +92,13 @@ B -> C: 결과
 - 보통 3~8개 패널 안에서 끝낸다.
 - 가장 중요한 결론을 먼저 배치한다.
 
-### 보안 제약
+### HTML / SVG / 인터랙션
 
-- raw `html` / `svg` fence는 실행 가능한 마크업으로 삽입되지 않고 코드로 escape된다.
-- 일반 Markdown에 포함된 raw HTML도 escape된다.
-- 외부 스크립트/스타일/폰트/네트워크 요청은 생성 페이지의 CSP로 제한한다.
-- 이 제한을 우회하려고 HTML 이벤트 핸들러나 `javascript:` URL을 만들지 않는다.
+- raw `html` / `svg` fence와 Markdown 내부 HTML을 그대로 사용할 수 있다.
+- 필요하면 inline `<script>`, 이벤트 핸들러, `javascript:` 링크로 로컬 인터랙션을 구현할 수 있다.
+- 생성 페이지의 CSP는 `fetch`, XHR, WebSocket 같은 연결을 차단하고 외부 script/object/frame/media 로딩을 막는다.
+- 외부 HTTPS 폰트 파일과 data URI 폰트는 허용한다. 외부 stylesheet 자체는 허용하지 않는다.
+- CSP가 모든 top-level navigation을 완전히 막는 것은 아니므로, 사용자 데이터나 프로젝트 내용을 외부 URL에 포함해 이동시키지 않는다.
 
 ## 5. 컴포넌트 선택
 
