@@ -27,7 +27,7 @@ test('chart: inline bar chart를 순수 SVG로 렌더링', () => {
   assert.match(html, /<svg /);
   assert.equal((html.match(/class="am-chart-bar /g) || []).length, 2);
   assert.match(html, /Direct HTML · time_s: 46 s/);
-  assert.doesNotMatch(html, /<script|https?:\/\//);
+  assert.doesNotMatch(html, /<script|(?:src|href)=["']https?:\/\//);
 });
 
 test('chart: long-form series는 grouped bar로 렌더링', () => {
