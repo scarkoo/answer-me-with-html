@@ -224,6 +224,7 @@ The agent picks a component by the shape of the information:
 | `tree` | Folders, modules, taxonomies |
 | `timeline` | History, releases, phases |
 | `limits` | A value against its limit |
+| `chart` | CSV-backed bar, line and scatter charts for benchmarks, trends and numeric relationships |
 | `annot` | Word-by-word notes on a sentence |
 | `kv` | Metadata, a drawing's title block |
 | `callout` | A conclusion, a tip, a warning |
