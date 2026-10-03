@@ -32,7 +32,7 @@ AM="${CODEX_HOME:-$HOME/.codex}/skills/answer-me-with-html/scripts/am.mjs"
 
 Node.js 20+가 필요하다. 기본 설정은 브라우저를 자동으로 열지 않는다.
 
-```bash
+````bash
 node "$AM" render - --no-open <<'AM_EOF'
 ---
 title: 제목
@@ -42,7 +42,7 @@ title: 제목
 핵심 내용을 짧게 쓴다.
 ```
 AM_EOF
-```
+````
 
 렌더 결과:
 
@@ -67,7 +67,7 @@ node "$AM" config reset theme
 
 ## 4. 문서 형식
 
-```markdown
+````markdown
 ---
 template: sheet
 theme: blueprint
@@ -84,7 +84,7 @@ cols: 3
 A -> B: 호출
 B -> C: 결과
 ```
-```
+````
 
 - `sheet`: 여러 패널을 한눈에 보는 기본 레이아웃.
 - `doc`: 긴 설명을 순서대로 읽는 레이아웃.
