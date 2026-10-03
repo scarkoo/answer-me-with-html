@@ -4535,6 +4535,7 @@ function checkUnit(text, line, kind, out) {
 }
 
 // src/render.js
+// SHA-256 of src/runtime/page.js. The CSP test fails if runtime code changes without updating this hash.
 var RUNTIME_JS_SHA256 = "k/KSPEwzhOJ2Pn11pjQzw4TcKs48Nw1N7Cy6XZQjCXc=";
 var RenderError = class extends Error {
   constructor(message, { line, component, example } = {}) {
