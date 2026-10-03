@@ -10,13 +10,16 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT"></a>
-  <a href="https://github.com/QingYunA/answer-me-with-html/actions/workflows/ci.yml"><img src="https://github.com/QingYunA/answer-me-with-html/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/scarkoo/answer-me-with-html/actions/workflows/ci.yml"><img src="https://github.com/scarkoo/answer-me-with-html/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <img src="https://img.shields.io/badge/works%20with-Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20Cursor%20%C2%B7%20OpenCode-black" alt="Works with Claude Code, Codex, Cursor, OpenCode">
 </p>
 
 <p align="center">
   <a href="README.md">English</a> · <b>简体中文</b>
 </p>
+
+> [!NOTE]
+> 这个 fork 面向 Codex 做了安全加固：默认不自动打开浏览器、raw HTML/SVG 会被转义、危险 Markdown 链接会被禁用，生成页还带有限制性 CSP。
 
 装好之后，像平时一样提问就行：
 
@@ -62,21 +65,21 @@ Agent 会写一份很短的 Markdown 稿件，交给 skill 自带的 CLI。大�
 
 把下面这段话粘贴给你的 Agent。Claude Code、Codex、Cursor、OpenCode 都可以：
 
-> 帮我安装 Answer me with HTML 这个 skill：运行 `npx -y skills add QingYunA/answer-me-with-html -g -y`，用 `-a` 参数指定你自己这个 Agent（比如 Claude Code 是 `-a claude-code`）。装好后读一遍它的 SKILL.md，然后用它生成一页"TCP 三次握手"的解释页，确认能正常生成。
+> 帮我安装 Codex 安全加固版 Answer me with HTML：运行 `npx -y skills add scarkoo/answer-me-with-html -g -y -a codex`。装好后读一遍 SKILL.md，并生成一个小页面确认可用。
 
 ### Claude Code 插件
 
 在 Claude Code 里执行：
 
 ```
-/plugin marketplace add QingYunA/answer-me-with-html
+/plugin marketplace add scarkoo/answer-me-with-html
 /plugin install answer-me-with-html@answer-me-with-html
 ```
 
 ### 一条命令
 
 ```bash
-npx skills add QingYunA/answer-me-with-html
+npx skills add scarkoo/answer-me-with-html
 ```
 
 它会问你装到哪个 Agent。安装器来自 [vercel-labs/skills](https://github.com/vercel-labs/skills)，支持 70 多种 Agent。
@@ -87,7 +90,7 @@ npx skills add QingYunA/answer-me-with-html
 把 `skills/answer-me-with-html` 这个目录放进你的 Agent 的 skill 目录就行。以 Claude Code 为例：
 
 ```bash
-git clone --depth 1 https://github.com/QingYunA/answer-me-with-html.git /tmp/answer-me-with-html
+git clone --depth 1 https://github.com/scarkoo/answer-me-with-html.git /tmp/answer-me-with-html
 cp -R /tmp/answer-me-with-html/skills/answer-me-with-html ~/.claude/skills/answer-me-with-html
 ```
 
@@ -124,7 +127,7 @@ cp -R /tmp/answer-me-with-html/skills/answer-me-with-html ~/.claude/skills/answe
 
 | 配置项 | 默认值 | 作用 |
 | :--- | :--- | :--- |
-| `open` | `on` | 生成后自动用浏览器打开。嫌弹窗打扰就关掉 |
+| `open` | `off` | 默认不自动打开；只有明确需要时才用 `--open` |
 | `always` | `on` | 高频模式开关（见下一节），只在装了高频插件时有用 |
 | `theme` | `blueprint` | 默认主题：`blueprint` 或 `shadcn` |
 | `mode` | `auto` | 默认明暗：`auto`、`light` 或 `dark` |
@@ -141,7 +144,7 @@ cp -R /tmp/answer-me-with-html/skills/answer-me-with-html ~/.claude/skills/answe
 **Claude Code：** 再装一个插件就行。
 
 ```
-/plugin marketplace add QingYunA/answer-me-with-html
+/plugin marketplace add scarkoo/answer-me-with-html
 /plugin install answer-me-with-html-always@answer-me-with-html
 ```
 
@@ -252,7 +255,7 @@ A -> B: 标签
 
 - 每个 `## ` 开头的标题是一个面板。面板编号 A、B、C 可以不写，会自动补上。
 - `span=2` 让面板占两列，`rows=2` 让面板占两行，`bare` 会去掉面板的标题栏。
-- 组件覆盖不到的情况，可以用 ```` ```html ```` 或 ```` ```svg ```` 直接嵌入原始代码。
+- 安全加固版会把 ```` ```html ```` 和 ```` ```svg ```` 作为代码转义显示，不再直接嵌入原始标记。
 
 每个组件的完整写法：`am help <组件名>`。
 
@@ -266,9 +269,10 @@ CLI 就是 skill 目录里的 `scripts/am.mjs`：
 ````bash
 AM=skills/answer-me-with-html/scripts/am.mjs
 
-node $AM render examples/tcp.md                  # 渲染并用浏览器打开
+node $AM render examples/tcp.md                  # 渲染，默认不打开浏览器
 node $AM render notes.md -o out.html --no-open   # 指定输出位置，不自动打开
 node $AM render notes.md --theme shadcn          # 这一次换主题
+node $AM render notes.md --open                  # 明确要求时才打开浏览器
 node $AM lint notes.md                           # 只做写作检查
 node $AM list                                    # 列出所有组件
 node $AM config                                  # 查看配置
@@ -301,7 +305,7 @@ Answer me with HTML 把其中容易用机器检查的部分做成了中英双语
 ## 开发
 
 ```bash
-git clone https://github.com/QingYunA/answer-me-with-html.git && cd answer-me-with-html
+git clone https://github.com/scarkoo/answer-me-with-html.git && cd answer-me-with-html
 npm install
 npm test          # 跑测试
 npm run build     # 改了 src/ 之后，重新打包 skills/answer-me-with-html/scripts/am.mjs
