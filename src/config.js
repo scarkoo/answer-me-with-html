@@ -14,7 +14,7 @@ export class ConfigError extends Error {
 }
 
 export const CONFIG_KEYS = Object.freeze({
-  open: { type: 'bool', default: true, label: '生成后自动用浏览器打开页面' },
+  open: { type: 'bool', default: false, label: '生成后自动用浏览器打开页面' },
   always: { type: 'bool', default: true, label: '高频模式：给结论时都附一页（需安装 answer-me-with-html-always 插件）' },
   theme: { type: 'enum', choices: CHOICES.theme, default: 'blueprint', label: '默认主题' },
   mode: { type: 'enum', choices: CHOICES.mode, default: 'auto', label: '默认明暗模式' },
