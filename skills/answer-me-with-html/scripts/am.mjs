@@ -4385,50 +4385,56 @@ var EN_WORDS = Object.freeze({
   "in addition": "also"
 });
 
-// src/lint/wordlist.zh.js
-var ZH_LIGHT_VERBS = Object.freeze([
-  { re: /进行(?![中时])了?([一-龥]{2})/g, label: "\u8FDB\u884C" },
-  { re: /(?:加以|予以)([一-龥]{2})/g, label: "\u52A0\u4EE5/\u4E88\u4EE5" },
-  { re: /[做作]出了?([一-龥]{2})/g, label: "\u505A\u51FA" }
+// src/lint/wordlist.ko.js
+var KO_VERBOSE_VERBS = Object.freeze([
+  {
+    re: /([가-힣A-Za-z0-9_-]+)(을|를)\s+(진행|수행|실시)(한다|합니다)/g,
+    label: "\uBD88\uD544\uC694\uD55C \uB3D9\uC0AC \uC911\uCCA9",
+    suggest: (m) => `${m[1]}${m[4] === "\uD569\uB2C8\uB2E4" ? "\uD569\uB2C8\uB2E4" : "\uD55C\uB2E4"}`
+  }
 ]);
-var ZH_CLICHES = Object.freeze([
-  "\u8D4B\u80FD",
-  "\u6293\u624B",
-  "\u95ED\u73AF",
-  "\u6253\u901A",
-  "\u5168\u65B9\u4F4D",
-  "\u591A\u7EF4\u5EA6",
-  "\u6DF1\u5EA6\u878D\u5408",
-  "\u663E\u8457\u63D0\u5347",
-  "\u81F3\u5173\u91CD\u8981",
-  "\u4E0D\u53EF\u6216\u7F3A",
-  "\u4E0E\u6B64\u540C\u65F6",
-  "\u7EFC\u4E0A\u6240\u8FF0",
-  "\u503C\u5F97\u6CE8\u610F\u7684\u662F",
-  "\u603B\u800C\u8A00\u4E4B",
-  "\u4F17\u6240\u5468\u77E5",
-  "\u6BCB\u5EB8\u7F6E\u7591",
-  "\u4E00\u7AD9\u5F0F",
-  "\u5E95\u5C42\u903B\u8F91",
-  "\u9897\u7C92\u5EA6",
-  "\u65B9\u6CD5\u8BBA"
+var KO_INDIRECT = Object.freeze([
+  { re: /되어지(?:ㄴ다|는|고|면|게)|되어집니다/g, label: "\uC774\uC911 \uD53C\uB3D9", suggestion: "\uC9C1\uC811\uC801\uC778 \uB2A5\uB3D9/\uD53C\uB3D9 \uD45C\uD604\uC73C\uB85C \uBC14\uAFBC\uB2E4" },
+  { re: /되게\s+(?:된다|됩니다)/g, label: "\uC6B0\uD68C \uD45C\uD604", suggestion: "\uACB0\uACFC\uB97C \uC9C1\uC811 \uC11C\uC220\uD55C\uB2E4" },
+  { re: /[가-힣]+게\s+(?:된다|됩니다)/g, label: "\uC6B0\uD68C \uD45C\uD604", suggestion: "\uC8FC\uCCB4\uC640 \uACB0\uACFC\uB97C \uC9C1\uC811 \uC11C\uC220\uD55C\uB2E4" },
+  { re: /하도록\s+(?:한다|합니다)/g, label: "\uC6B0\uD68C \uC9C0\uC2DC", suggestion: "\uC9C1\uC811 \uBA85\uB839\uD615 \uB610\uB294 \uB2A5\uB3D9\uD615\uC73C\uB85C \uC4F4\uB2E4" }
+]);
+var KO_DOUBLE_NEGATIVES = Object.freeze([
+  { re: /않을\s+수\s+없(?:다|습니다)/g, suggestion: "\uD574\uC57C \uD55C\uB2E4 / \uBC18\uB4DC\uC2DC \uD55C\uB2E4\uCC98\uB7FC \uAE0D\uC815\uD615\uC73C\uB85C \uBC14\uAFBC\uB2E4" },
+  { re: /불가능하지\s+않(?:다|습니다)/g, suggestion: "\uAC00\uB2A5\uD558\uB2E4 / \uAC00\uB2A5\uD569\uB2C8\uB2E4\uB85C \uBC14\uAFBC\uB2E4" },
+  { re: /실패하지\s+않은\s+경우/g, suggestion: "\uC131\uACF5\uD55C \uACBD\uC6B0\uB85C \uBC14\uAFBC\uB2E4" }
 ]);
 
 // src/lint/ste.js
-var LIMITS = { zh: { procedural: 35, descriptive: 45 }, en: { procedural: 20, descriptive: 25 } };
+var LIMITS = {
+  en: { procedural: 20, descriptive: 25 },
+  ko: {
+    procedural: { words: 18, chars: 60 },
+    descriptive: { words: 25, chars: 90 }
+  }
+};
 var MAX_SENTENCES = 6;
 var ABBR = /\b(e\.g|i\.e|etc|vs|cf|approx|Fig|No)\./gi;
 var PASSIVE = /\b(?:am|is|are|was|were|be|been|being)\s+(?:\w+ly\s+)?(\w+ed|known|done|made|given|taken|seen|written|built|shown|sent|kept|held|found|set|put|run|begun|chosen|driven|broken)\b/i;
 var EN_RE = Object.entries(EN_WORDS).sort((a, b) => b[0].length - a[0].length).map(([word, suggestion]) => ({ re: new RegExp(`\\b${word.replace(/ /g, "\\s+")}\\b`, "gi"), word, suggestion }));
 function splitSentences(text) {
   const masked = text.replace(ABBR, (m) => m.replace(/\./g, "\0"));
-  const parts = masked.match(/[^。！？；!?;]+?(?:[。！？；!?;]+|\.(?=\s|$)|$)|[^.]+?\.(?=\s|$)/g) ?? [];
+  const parts = masked.match(/[^。！？!?;]+?(?:[。！？!?;]+|\.(?=\s|$)|$)|[^.]+?\.(?=\s|$)/g) ?? [];
   return parts.map((s) => s.replace(/\u0000/g, ".").trim()).filter(Boolean);
 }
+function koreanCharCount(sentence) {
+  return [...sentence].filter((ch) => /[가-힣A-Za-z0-9]/.test(ch)).length;
+}
+function koreanWordCount(sentence) {
+  return sentence.trim().split(/\s+/).map((part) => part.replace(/^[^가-힣A-Za-z0-9]+|[^가-힣A-Za-z0-9]+$/g, "")).filter(Boolean).length;
+}
 function sentenceLength(sentence) {
-  const cjk = [...sentence].filter(isCJK).filter((c) => !/[，。！？；：、（）「」『』“”‘’《》]/.test(c)).length;
+  const hangul = sentence.match(/[가-힣]/g)?.length ?? 0;
+  if (hangul >= 2) {
+    return { lang: "ko", count: koreanWordCount(sentence), chars: koreanCharCount(sentence) };
+  }
   const words = sentence.match(/[A-Za-z0-9][\w'’-]*/g)?.length ?? 0;
-  return cjk >= 4 || cjk > words ? { lang: "zh", count: cjk + words } : { lang: "en", count: words };
+  return { lang: "en", count: words };
 }
 function formatWarning(w) {
   return `L${w.line} [${w.rule}] ${w.message}${w.suggestion ? ` \u2192 ${w.suggestion}` : ""}`;
@@ -4449,7 +4455,7 @@ function lintMarkdown(text, startLine, out) {
   let para = null;
   const flush = () => {
     if (para && para.count > MAX_SENTENCES) {
-      out.push({ line: para.line, rule: "paragraph-length", message: `\u6BB5\u843D ${para.count} \u53E5\uFF08\u4E0A\u9650 ${MAX_SENTENCES}\uFF09` });
+      out.push({ line: para.line, rule: "paragraph-length", message: `\uBB38\uB2E8 ${para.count}\uBB38\uC7A5 (\uC0C1\uD55C ${MAX_SENTENCES})` });
     }
     para = null;
   };
@@ -4484,31 +4490,84 @@ function lintMarkdown(text, startLine, out) {
   });
   flush();
 }
+function checkKoreanStyle(text, line, out) {
+  const warnings = [];
+  for (const item of KO_VERBOSE_VERBS) {
+    for (const m of text.matchAll(item.re)) {
+      warnings.push({
+        index: m.index,
+        rule: "word",
+        message: `\uC7A5\uD669\uD55C \uD45C\uD604 "${m[0]}" (${item.label})`,
+        suggestion: item.suggest(m)
+      });
+    }
+  }
+  for (const item of KO_INDIRECT) {
+    for (const m of text.matchAll(item.re)) {
+      warnings.push({
+        index: m.index,
+        rule: "indirect",
+        message: `\uC6B0\uD68C \uD45C\uD604 "${m[0]}" (${item.label})`,
+        suggestion: item.suggestion
+      });
+    }
+  }
+  for (const item of KO_DOUBLE_NEGATIVES) {
+    for (const m of text.matchAll(item.re)) {
+      warnings.push({
+        index: m.index,
+        rule: "double-negative",
+        message: `\uC774\uC911 \uBD80\uC815 "${m[0]}"`,
+        suggestion: item.suggestion
+      });
+    }
+  }
+  out.push(...warnings.sort((a, b) => a.index - b.index).map(({ index, ...w }) => ({ line, ...w })));
+}
 function checkUnit(text, line, kind, out) {
   const sentences = splitSentences(text);
   for (const s of sentences) {
-    const { lang, count } = sentenceLength(s);
-    const limit = LIMITS[lang][kind];
-    if (count > limit) {
-      const unit = lang === "zh" ? "\u5B57" : "words";
-      const preview = s.length > 24 ? `${s.slice(0, 24)}\u2026` : s;
-      out.push({ line, rule: "sentence-length", message: `${kind === "procedural" ? "\u6B65\u9AA4" : "\u53E5\u5B50"} ${count} ${unit}\uFF08\u4E0A\u9650 ${limit}\uFF09\uFF1A"${preview}"` });
-    }
-    if (lang === "en" && PASSIVE.test(s)) {
-      out.push({ line, rule: "passive", message: `\u7591\u4F3C\u88AB\u52A8\u8BED\u6001\uFF1A"${s.match(PASSIVE)[0]}"`, suggestion: "\u6539\u4E3A\u4E3B\u52A8\u8BED\u6001" });
+    const metrics = sentenceLength(s);
+    if (metrics.lang === "ko") {
+      const limit = LIMITS.ko[kind];
+      if (metrics.count > limit.words || metrics.chars > limit.chars) {
+        const preview = s.length > 32 ? `${s.slice(0, 32)}\u2026` : s;
+        out.push({
+          line,
+          rule: "sentence-length",
+          message: `${kind === "procedural" ? "\uC808\uCC28" : "\uBB38\uC7A5"} ${metrics.count}\uC5B4\uC808 / ${metrics.chars}\uC790 (\uC0C1\uD55C ${limit.words}\uC5B4\uC808 \xB7 \uACF5\uBC31 \uC81C\uC678 ${limit.chars}\uC790): "${preview}"`
+        });
+      }
+    } else {
+      const limit = LIMITS.en[kind];
+      if (metrics.count > limit) {
+        const preview = s.length > 32 ? `${s.slice(0, 32)}\u2026` : s;
+        out.push({
+          line,
+          rule: "sentence-length",
+          message: `${kind === "procedural" ? "\uC808\uCC28" : "\uBB38\uC7A5"} ${metrics.count} words (\uC0C1\uD55C ${limit}): "${preview}"`
+        });
+      }
+      if (PASSIVE.test(s)) {
+        out.push({
+          line,
+          rule: "passive",
+          message: `\uC601\uC5B4 \uD53C\uB3D9 \uD45C\uD604 "${s.match(PASSIVE)[0]}"`,
+          suggestion: "\uB2A5\uB3D9\uD0DC\uB85C \uBC14\uAFBC\uB2E4"
+        });
+      }
     }
   }
-  const lexical = [
-    ...EN_RE.flatMap(({ re: re3, suggestion }) => [...text.matchAll(re3)].map((m) => ({ index: m.index, rule: "word", message: `\u4E0D\u63A8\u8350 "${m[0]}"`, suggestion }))),
-    ...ZH_LIGHT_VERBS.flatMap(({ re: re3, label }) => [...text.matchAll(re3)].map((m) => ({ index: m.index, rule: "word", message: `\u865A\u52A8\u8BCD "${m[0]}"\uFF08${label}\uFF09`, suggestion: `\u76F4\u63A5\u7528\u300C${m[1]}\u300D` })))
-  ];
+  const lexical = EN_RE.flatMap(
+    ({ re: re3, suggestion }) => [...text.matchAll(re3)].map((m) => ({
+      index: m.index,
+      rule: "word",
+      message: `\uAD8C\uC7A5\uD558\uC9C0 \uC54A\uB294 \uC601\uC5B4 \uD45C\uD604 "${m[0]}"`,
+      suggestion
+    }))
+  );
   out.push(...lexical.sort((a, b) => a.index - b.index).map(({ index, ...w }) => ({ line, ...w })));
-  for (const s of sentences) {
-    if ((s.match(/的/g) ?? []).length >= 3) out.push({ line, rule: "de-chain", message: `"\u7684"\u5B57\u8FDE\u7528\uFF1A${s}`, suggestion: '\u62C6\u53E5\u6216\u5220\u53BB\u591A\u4F59\u7684"\u7684"' });
-  }
-  for (const c of ZH_CLICHES) {
-    if (text.includes(c)) out.push({ line, rule: "cliche", message: `\u5957\u8BDD "${c}"`, suggestion: "\u5220\u9664\uFF0C\u6216\u6362\u6210\u5177\u4F53\u4E8B\u5B9E" });
-  }
+  if (/[가-힣]/.test(text)) checkKoreanStyle(text, line, out);
   return sentences.length;
 }
 
