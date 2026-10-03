@@ -237,6 +237,26 @@ html[data-theme="shadcn"] .am-kv { border-color: var(--line); border-radius: var
 .am-note { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1; }
 .am-diagram .am-step { fill: var(--ink-3); font: 10px var(--font-mono); }
 
+/* ── chart CSV 数值图 ─────────────────────── */
+.am-chart svg { min-width: 620px; }
+.am-chart-title { fill: var(--ink); font-size: 14px !important; font-weight: 600; }
+.am-chart-axis { stroke: var(--ink-2); stroke-width: 1.1; }
+.am-chart-grid { stroke: var(--line-2); stroke-width: 1; }
+.am-chart-grid--v { stroke-dasharray: 3 4; opacity: 0.55; }
+.am-diagram .am-chart-axis-label { fill: var(--ink-3); font: 10.5px var(--font-mono); }
+.am-chart-bar { fill: currentColor; opacity: 0.78; }
+.am-chart-line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.am-chart-point { fill: var(--paper); stroke: currentColor; stroke-width: 2; }
+.am-chart-bar:hover, .am-chart-point:hover { opacity: 1; }
+.am-chart-legend rect { fill: currentColor; }
+.am-diagram .am-chart-legend text { fill: var(--ink-2); font-size: 11px; }
+.am-diagram .am-chart-empty { fill: var(--ink-3); font-size: 12px; }
+.am-chart-series-0 { color: var(--accent); }
+.am-chart-series-1 { color: var(--ok); }
+.am-chart-series-2 { color: var(--warn); }
+.am-chart-series-3 { color: var(--err); }
+.am-chart-series-4 { color: var(--ink-2); }
+
 /* ── doc 线性讲解 ────────────────────────── */
 .am-doc { max-width: 1120px; margin: 0 auto; padding: 40px 28px 64px; }
 .am-doc-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: start; }
