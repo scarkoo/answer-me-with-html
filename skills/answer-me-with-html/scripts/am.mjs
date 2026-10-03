@@ -4588,6 +4588,12 @@ var LintError = class extends Error {
   }
 };
 var UI = {
+  ko: {
+    theme: { blueprint: "\uD14C\uB9C8: \uB3C4\uBA74", shadcn: "\uD14C\uB9C8: \uCE74\uB4DC" },
+    mode: { auto: "\uBA85\uC554: \uC2DC\uC2A4\uD15C \uC124\uC815", light: "\uBA85\uC554: \uB77C\uC774\uD2B8", dark: "\uBA85\uC554: \uB2E4\uD06C" },
+    copy: "\uC6D0\uACE0 \uBCF5\uC0AC",
+    done: "\uBCF5\uC0AC\uB428 \u2713"
+  },
   zh: {
     theme: { blueprint: "\u4E3B\u9898\uFF1A\u56FE\u7EB8", shadcn: "\u4E3B\u9898\uFF1A\u5361\u7247" },
     mode: { auto: "\u660E\u6697\uFF1A\u8DDF\u968F\u7CFB\u7EDF", light: "\u660E\u6697\uFF1A\u4EAE", dark: "\u660E\u6697\uFF1A\u6697" },
@@ -4602,12 +4608,15 @@ var UI = {
   }
 };
 function detectLang(text) {
+  let hangul = 0;
   let cjk = 0;
   let latin = 0;
   for (const ch of String(text)) {
-    if (isCJK(ch)) cjk++;
+    if (/[가-힣ㄱ-ㅎㅏ-ㅣ]/.test(ch)) hangul++;
+    else if (isCJK(ch)) cjk++;
     else if (/[a-z]/i.test(ch)) latin++;
   }
+  if (hangul > 0 && hangul * 3 >= latin) return "ko";
   return cjk * 3 >= latin ? "zh" : "en";
 }
 function renderDoc(source, overrides = {}, defaults2 = {}) {
@@ -4657,9 +4666,11 @@ function timestamp(d = /* @__PURE__ */ new Date()) {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
 }
 function shell({ meta, lang, body, source }) {
-  const ui = UI[lang] ?? UI.zh;
+  const normalizedLang = String(lang || "en").toLowerCase();
+  const ui = normalizedLang.startsWith("ko") ? UI.ko : normalizedLang.startsWith("zh") ? UI.zh : UI.en;
+  const htmlLang = normalizedLang.startsWith("ko") ? "ko" : normalizedLang.startsWith("zh") ? "zh-CN" : normalizedLang || "en";
   return `<!doctype html>
-<html lang="${lang === "zh" ? "zh-CN" : "en"}" data-theme="${esc(meta.theme)}" data-mode="${esc(meta.mode)}">
+<html lang="${esc(htmlLang)}" data-theme="${esc(meta.theme)}" data-mode="${esc(meta.mode)}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
