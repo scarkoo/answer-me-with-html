@@ -141,7 +141,12 @@ function cmdRender(src, opts, { print, fail, env, cwd }) {
   const { theme, mode, style } = config.values;
   let result;
   try {
-    result = renderDoc(src, { theme: opts.theme, template: opts.template, style: opts.style, mode: opts.mode }, { theme, mode, style });
+    result = renderDoc(
+      src,
+      { theme: opts.theme, template: opts.template, style: opts.style, mode: opts.mode },
+      { theme, mode, style },
+      { cwd: cwd ?? process.cwd() },
+    );
   } catch (e) {
     return reportError(e, fail);
   }
