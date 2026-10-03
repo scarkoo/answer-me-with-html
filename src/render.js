@@ -30,6 +30,11 @@ export class LintError extends Error {
 }
 
 const UI = {
+  ko: {
+    theme: { blueprint: '테마: 도면', shadcn: '테마: 카드' },
+    mode: { auto: '명암: 시스템 설정', light: '명암: 라이트', dark: '명암: 다크' },
+    copy: '원고 복사', done: '복사됨 ✓',
+  },
   zh: {
     theme: { blueprint: '主题：图纸', shadcn: '主题：卡片' },
     mode: { auto: '明暗：跟随系统', light: '明暗：亮', dark: '明暗：暗' },
@@ -43,12 +48,15 @@ const UI = {
 };
 
 export function detectLang(text) {
+  let hangul = 0;
   let cjk = 0;
   let latin = 0;
   for (const ch of String(text)) {
-    if (isCJK(ch)) cjk++;
+    if (/[가-힣ㄱ-ㅎㅏ-ㅣ]/.test(ch)) hangul++;
+    else if (isCJK(ch)) cjk++;
     else if (/[a-z]/i.test(ch)) latin++;
   }
+  if (hangul > 0 && hangul * 3 >= latin) return 'ko';
   return cjk * 3 >= latin ? 'zh' : 'en';
 }
 
@@ -105,9 +113,15 @@ function timestamp(d = new Date()) {
 }
 
 function shell({ meta, lang, body, source }) {
-  const ui = UI[lang] ?? UI.zh;
+  const normalizedLang = String(lang || 'en').toLowerCase();
+  const ui = normalizedLang.startsWith('ko') ? UI.ko
+    : normalizedLang.startsWith('zh') ? UI.zh
+      : UI.en;
+  const htmlLang = normalizedLang.startsWith('ko') ? 'ko'
+    : normalizedLang.startsWith('zh') ? 'zh-CN'
+      : (normalizedLang || 'en');
   return `<!doctype html>
-<html lang="${lang === 'zh' ? 'zh-CN' : 'en'}" data-theme="${esc(meta.theme)}" data-mode="${esc(meta.mode)}">
+<html lang="${esc(htmlLang)}" data-theme="${esc(meta.theme)}" data-mode="${esc(meta.mode)}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
