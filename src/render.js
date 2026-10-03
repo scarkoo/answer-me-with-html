@@ -60,7 +60,7 @@ export function detectLang(text) {
   return cjk * 3 >= latin ? 'zh' : 'en';
 }
 
-export function renderDoc(source, overrides = {}, defaults = {}) {
+export function renderDoc(source, overrides = {}, defaults = {}, runtime = {}) {
   const doc = parseDoc(source, { defaults });
   for (const [key, value] of Object.entries(overrides)) {
     if (value === undefined) continue;
@@ -74,7 +74,7 @@ export function renderDoc(source, overrides = {}, defaults = {}) {
   if (doc.meta.style === 'strict' && warnings.length) throw new LintError(warnings);
 
   const stats = { panels: doc.panels.length, components: {} };
-  const ctx = { seq: 0, stats };
+  const ctx = { seq: 0, stats, ...runtime };
   const introHtml = renderBlocks(doc.intro, ctx);
   const panels = doc.panels.map((p) => ({ ...p, html: renderBlocks(p.blocks, ctx) }));
   const lang = doc.meta.lang || detectLang(source);
