@@ -1,7 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { renderDoc, RenderError, detectLang } from '../src/render.js';
 import { ParseError } from '../src/parse.js';
+import { RUNTIME_JS } from '../src/assets.js';
 
 const SRC = `---
 title: 测试页
@@ -62,10 +64,28 @@ test('render: 表格状态词渲染为徽章', () => {
   assert.match(html, /am-table-wrap/);
 });
 
-test('render: html 围栏原样嵌入；未知语言作为转义后的代码块', () => {
+test('render: html/svg fence와 알 수 없는 언어는 모두 안전한 코드 블록으로 escape', () => {
   const { html } = renderDoc(SRC);
-  assert.match(html, /<div class="raw-x">raw<\/div>/);
+  assert.doesNotMatch(html, /<div class="raw-x">raw<\/div>/);
+  assert.match(html, /<pre class="am-code"><code data-lang="html">&lt;div class=&quot;raw-x&quot;&gt;raw&lt;\/div&gt;<\/code><\/pre>/);
   assert.match(html, /<pre class="am-code"><code data-lang="python">print\(&quot;&lt;x&gt;&quot;\)<\/code><\/pre>/);
+});
+
+test('render: Markdown raw HTML은 escape하고 위험한 링크 프로토콜은 무력화', () => {
+  const { html } = renderDoc('## A\n<script>alert(1)</script>\n[x](javascript:evil)');
+  assert.doesNotMatch(html, /<script>alert\(1\)<\/script>/);
+  assert.match(html, /&lt;script&gt;alert\(1\)&lt;\/script&gt;/);
+  assert.match(html, /<a href="#" rel="noreferrer noopener">x<\/a>/);
+});
+
+test('render: restrictive CSP가 런타임 스크립트 hash와 일치', () => {
+  const { html } = renderDoc('## A\nx');
+  const hash = createHash('sha256').update(RUNTIME_JS).digest('base64');
+  assert.ok(html.includes(`script-src 'sha256-${hash}'`));
+  assert.match(html, /default-src 'none'/);
+  assert.match(html, /connect-src 'none'/);
+  assert.match(html, /base-uri 'none'/);
+  assert.match(html, /name="referrer" content="no-referrer"/);
 });
 
 test('render: 源稿转义后内嵌在隐藏 textarea 中，可原样取回', () => {
