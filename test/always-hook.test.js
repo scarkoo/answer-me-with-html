@@ -27,8 +27,11 @@ test('always 插件：hooks.json 指向存在的脚本，marketplace 已登记',
   assert.deepEqual(names, ['answer-me-with-html', 'answer-me-with-html-always']);
 });
 
-test('SKILL.md 说明了高频模式的提醒标记', () => {
-  assert.match(readFileSync(`${ROOT}/skills/answer-me-with-html/SKILL.md`, 'utf8'), /\[answer-me-with-html always-on\]/);
+test('Codex SKILL.md 不依赖 Claude always-on reminder', () => {
+  const skill = readFileSync(`${ROOT}/skills/answer-me-with-html/SKILL.md`, 'utf8');
+  assert.doesNotMatch(skill, /\[answer-me-with-html always-on\]/);
+  assert.doesNotMatch(skill, /CLAUDE_SKILL_DIR/);
+  assert.match(skill, /CODEX_HOME/);
 });
 
 test('always 插件：提醒要求 --no-open，不弹浏览器', () => {
