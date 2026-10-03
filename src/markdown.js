@@ -2,31 +2,7 @@
 
 import { Marked } from 'marked';
 
-const HTML_ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
-const UNSAFE_URL = /^\s*(?:javascript|vbscript|data):/i;
-
-function escapeHtml(value) {
-  return String(value ?? '').replace(/[&<>"']/g, (ch) => HTML_ESCAPES[ch]);
-}
-
-function safeHref(value) {
-  const href = String(value ?? '');
-  return UNSAFE_URL.test(href) ? '#' : href;
-}
-
 const marked = new Marked({ gfm: true });
-marked.use({
-  renderer: {
-    html({ text }) {
-      return escapeHtml(text);
-    },
-    link({ href, title, tokens }) {
-      const body = this.parser.parseInline(tokens);
-      const titleAttr = title ? ` title="${escapeHtml(title)}"` : '';
-      return `<a href="${escapeHtml(safeHref(href))}"${titleAttr} rel="noreferrer noopener">${body}</a>`;
-    },
-  },
-});
 
 const STATUS = {
   ok: { cls: 'ok', icon: '✓' },
