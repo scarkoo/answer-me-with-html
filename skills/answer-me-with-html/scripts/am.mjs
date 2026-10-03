@@ -4916,7 +4916,7 @@ function cmdRender(src, opts, { print, fail, env, cwd }) {
   } catch (e) {
     return reportError(e, fail);
   }
-  const file = opts.out ? resolve(cwd ?? process.cwd(), opts.out) : join2(amHome(env), "pages", `${slug(result.meta.title)}-${stamp()}.html`);
+  const file = opts.out ? resolve(cwd ?? process.cwd(), opts.out) : join2(cwd ?? process.cwd(), ".answer-me-with-html", "pages", `${slug(result.meta.title)}-${stamp()}.html`);
   mkdirSync2(dirname2(file), { recursive: true });
   writeFileSync2(file, result.html);
   const comps = Object.entries(result.stats.components).map(([k2, v]) => `${k2}\xD7${v}`).join(" ");
