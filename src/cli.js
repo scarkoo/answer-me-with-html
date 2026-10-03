@@ -10,7 +10,7 @@ import { parseDoc, ParseError, CHOICES } from './parse.js';
 import { lintDoc, formatWarning } from './lint/ste.js';
 import { COMPONENTS } from './components/index.js';
 import { THEMES } from './themes/index.js';
-import { amHome, readConfig, setConfig, resetConfig, CONFIG_KEYS, ConfigError } from './config.js';
+import { readConfig, setConfig, resetConfig, CONFIG_KEYS, ConfigError } from './config.js';
 
 const MAX_LISTED_WARNINGS = 20;
 
