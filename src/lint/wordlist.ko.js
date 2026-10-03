@@ -3,17 +3,17 @@
 
 export const KO_VERBOSE_VERBS = Object.freeze([
   {
-    re: /([가-힣A-Za-z0-9_-]+)(을|를)\s+(진행|수행|실시)한다/g,
+    re: /([가-힣A-Za-z0-9_-]+)(을|를)\s+(진행|수행|실시)(한다|합니다)/g,
     label: '불필요한 동사 중첩',
-    suggest: (m) => `${m[1]}한다`,
+    suggest: (m) => `${m[1]}${m[4] === '합니다' ? '합니다' : '한다'}`,
   },
 ]);
 
 export const KO_INDIRECT = Object.freeze([
-  { re: /되어진다/g, label: '이중 피동', suggestion: '직접적인 능동/피동 표현으로 바꾼다' },
-  { re: /되게 된다/g, label: '우회 표현', suggestion: '결과를 직접 서술한다' },
-  { re: /하게 된다/g, label: '우회 표현', suggestion: '주체와 동작을 직접 서술한다' },
-  { re: /하도록 한다/g, label: '우회 지시', suggestion: '직접 명령형 또는 능동형으로 쓴다' },
+  { re: /되어지(?:ㄴ다|ㅂ니다|는|고|면|게)/g, label: '이중 피동', suggestion: '직접적인 능동/피동 표현으로 바꾼다' },
+  { re: /되게\s+(?:된다|됩니다)/g, label: '우회 표현', suggestion: '결과를 직접 서술한다' },
+  { re: /하게\s+(?:된다|됩니다)/g, label: '우회 표현', suggestion: '주체와 동작을 직접 서술한다' },
+  { re: /하도록\s+(?:한다|합니다)/g, label: '우회 지시', suggestion: '직접 명령형 또는 능동형으로 쓴다' },
 ]);
 
 export const KO_DOUBLE_NEGATIVES = Object.freeze([
