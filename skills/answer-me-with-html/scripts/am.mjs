@@ -4395,7 +4395,6 @@ var KO_VERBOSE_VERBS = Object.freeze([
 ]);
 var KO_INDIRECT = Object.freeze([
   { re: /되어지(?:ㄴ다|는|고|면|게)|되어집니다/g, label: "\uC774\uC911 \uD53C\uB3D9", suggestion: "\uC9C1\uC811\uC801\uC778 \uB2A5\uB3D9/\uD53C\uB3D9 \uD45C\uD604\uC73C\uB85C \uBC14\uAFBC\uB2E4" },
-  { re: /되게\s+(?:된다|됩니다)/g, label: "\uC6B0\uD68C \uD45C\uD604", suggestion: "\uACB0\uACFC\uB97C \uC9C1\uC811 \uC11C\uC220\uD55C\uB2E4" },
   { re: /[가-힣]+게\s+(?:된다|됩니다)/g, label: "\uC6B0\uD68C \uD45C\uD604", suggestion: "\uC8FC\uCCB4\uC640 \uACB0\uACFC\uB97C \uC9C1\uC811 \uC11C\uC220\uD55C\uB2E4" },
   { re: /하도록\s+(?:한다|합니다)/g, label: "\uC6B0\uD68C \uC9C0\uC2DC", suggestion: "\uC9C1\uC811 \uBA85\uB839\uD615 \uB610\uB294 \uB2A5\uB3D9\uD615\uC73C\uB85C \uC4F4\uB2E4" }
 ]);
