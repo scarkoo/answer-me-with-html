@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT"></a>
-  <a href="https://github.com/QingYunA/answer-me-with-html/actions/workflows/ci.yml"><img src="https://github.com/QingYunA/answer-me-with-html/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/scarkoo/answer-me-with-html/actions/workflows/ci.yml"><img src="https://github.com/scarkoo/answer-me-with-html/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <img src="https://img.shields.io/badge/works%20with-Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20Cursor%20%C2%B7%20OpenCode-black" alt="Works with Claude Code, Codex, Cursor, OpenCode">
 </p>
 
@@ -70,14 +70,14 @@ Paste this into Claude Code, Codex, Cursor, OpenCode or any other agent:
 Run this inside Claude Code:
 
 ```
-/plugin marketplace add QingYunA/answer-me-with-html
+/plugin marketplace add scarkoo/answer-me-with-html
 /plugin install answer-me-with-html@answer-me-with-html
 ```
 
 ### One command
 
 ```bash
-npx skills add QingYunA/answer-me-with-html
+npx skills add scarkoo/answer-me-with-html
 ```
 
 It asks which agents to install into. The installer, [vercel-labs/skills](https://github.com/vercel-labs/skills), supports more than 70 agents.
@@ -88,7 +88,7 @@ It asks which agents to install into. The installer, [vercel-labs/skills](https:
 Copy the `skills/answer-me-with-html` folder into your agent's skill folder. For Claude Code:
 
 ```bash
-git clone --depth 1 https://github.com/QingYunA/answer-me-with-html.git /tmp/answer-me-with-html
+git clone --depth 1 https://github.com/scarkoo/answer-me-with-html.git /tmp/answer-me-with-html
 cp -R /tmp/answer-me-with-html/skills/answer-me-with-html ~/.claude/skills/answer-me-with-html
 ```
 
@@ -142,7 +142,7 @@ The agent then gets a short reminder each turn (about 90 tokens). Whenever it gi
 **Claude Code:** install one more plugin.
 
 ```
-/plugin marketplace add QingYunA/answer-me-with-html
+/plugin marketplace add scarkoo/answer-me-with-html
 /plugin install answer-me-with-html-always@answer-me-with-html
 ```
 
@@ -303,7 +303,7 @@ Set the strictness with `/answer-me-with-html:config style strict`, or per page 
 ## Development
 
 ```bash
-git clone https://github.com/QingYunA/answer-me-with-html.git && cd answer-me-with-html
+git clone https://github.com/scarkoo/answer-me-with-html.git && cd answer-me-with-html
 npm install
 npm test          # run the tests
 npm run build     # after changing src/, rebuild skills/answer-me-with-html/scripts/am.mjs
