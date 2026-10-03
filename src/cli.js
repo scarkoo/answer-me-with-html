@@ -26,7 +26,7 @@ const USAGE = `Answer me with HTML ${VERSION} — 把 Markdown 内容稿渲染�
 
 - 文件参数写 - 表示从 stdin 读取（适合 heredoc：am render - <<'EOF' ... EOF）。
 - 默认输出到 ~/.answer-me-with-html/pages/（可用环境变量 AM_HOME 修改）。
-- 是否自动打开浏览器、默认主题等用 am config 设置；--open / --no-open 只影响这一次。`;
+- 默认不自动打开浏览器。需要时显式传 --open；配置与其他 기본값은 am config에서 확인한다.`;
 
 const FORMAT = `稿件格式（扩展 Markdown）
 
@@ -50,9 +50,7 @@ source: asd-ste100.org # 其他任意键会显示在页头元信息行
 A -> B
 \`\`\`
 
-\`\`\`html             ← html / svg 围栏块原样嵌入（逃生口）
-<div>任意内容</div>
-\`\`\`
+安全限制：html / svg 围栏不会作为原始标记插入，而是转义后的代码块显示。
 
 - "## " 开启一个面板；字母 ID 可省略（自动分配 A、B、C…）。span 让面板跨列。
 - 组件列表见 am list；单个组件语法见 am help <组件名>。`;
@@ -251,7 +249,7 @@ function cmdList(print) {
   for (const [name, t] of Object.entries(THEMES)) print(`  ${name.padEnd(10)}${t.label}`);
   print('\n组件（围栏块语言名）:');
   for (const c of COMPONENTS.values()) print(`  ${c.name.padEnd(10)}${c.summary}`);
-  print('  html/svg  原样嵌入（逃生口）');
+  print('  html/svg  安全模式下转义为代码块');
   print('\n语法：am help <组件名>；稿件格式：am help format');
 }
 
