@@ -25,7 +25,8 @@ const USAGE = `Answer me with HTML ${VERSION} — 把 Markdown 内容稿渲染�
   am help [组件名|format]                          查看组件语法 / 稿件格式
 
 - 文件参数写 - 表示从 stdin 读取（适合 heredoc：am render - <<'EOF' ... EOF）。
-- 默认输出到 ~/.answer-me-with-html/pages/（可用环境变量 AM_HOME 修改）。
+- 默认输出到当前工作目录的 .answer-me-with-html/pages/，便于编辑器在受信任的工作区内打开。
+- -o 可显式指定其他输出路径。AM_HOME 只控制配置文件位置。
 - 默认不自动打开浏览器。需要时显式传 --open；配置与其他默认值用 am config 查看。`;
 
 const FORMAT = `稿件格式（扩展 Markdown）
@@ -146,7 +147,7 @@ function cmdRender(src, opts, { print, fail, env, cwd }) {
   }
   const file = opts.out
     ? resolve(cwd ?? process.cwd(), opts.out)
-    : join(amHome(env), 'pages', `${slug(result.meta.title)}-${stamp()}.html`);
+    : join(cwd ?? process.cwd(), '.answer-me-with-html', 'pages', `${slug(result.meta.title)}-${stamp()}.html`);
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, result.html);
 
