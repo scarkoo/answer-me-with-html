@@ -111,7 +111,7 @@ No setup is needed after install.
 
 The agent decides when a page is worth it: related concepts, multi-step flows, multi-way comparisons. You can also just say "explain it in HTML".
 
-Pages are saved in `~/.answer-me-with-html/pages/`. The buttons in the top-right corner switch the theme and light/dark mode, and copy the Markdown that produced the page.
+Pages are saved in the current working directory under `./.answer-me-with-html/pages/`. The buttons in the top-right corner switch the theme and light/dark mode, and copy the Markdown that produced the page.
 
 ## Settings
 
@@ -284,7 +284,7 @@ A -> B: hello
 AM_EOF
 ````
 
-Pages go to `~/.answer-me-with-html/pages/` by default. Set `AM_HOME` to move them.
+Pages go to `./.answer-me-with-html/pages/` under the current working directory by default. `-o` chooses another output path. `AM_HOME` only changes where the config file is stored.
 
 </details>
 
