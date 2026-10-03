@@ -21,7 +21,7 @@ async function run(args, { stdin = '', env = {} } = {}) {
   const err = sink();
   const code = await main(args, {
     stdout: out.stream, stderr: err.stream, stdin: Readable.from([stdin]),
-    env: { AM_NO_OPEN: '1', AM_HOME: dir, ...env }, cwd: dir,
+    env: { AM_NO_OPEN: '1', AM_HOME: join(dir, 'config-home'), ...env }, cwd: dir,
   });
   return { code, out: out.text, err: err.text };
 }
@@ -33,11 +33,12 @@ test('cli: --version 与 --help', async () => {
   assert.match((await run([])).out, /用法/);
 });
 
-test('cli render: 从 stdin 读取，写入 cwd/.answer-me-with-html/pages，打印路径与统计', async () => {
-  const r = await run(['render', '-'], { stdin: GOOD });
+test('cli render: 默认输出到 cwd/.answer-me-with-html/pages，且不受 AM_HOME 影响', async () => {
+  const r = await run(['render', '-'], { stdin: GOOD, env: { AM_HOME: join(dir, 'other-config-home') } });
   assert.equal(r.code, 0, r.err);
   const file = r.out.match(/✓ (.+\.html)/)[1];
   assert.ok(file.startsWith(join(dir, '.answer-me-with-html', 'pages', 'CLI-测试-')));
+  assert.ok(!file.startsWith(join(dir, 'other-config-home')), 'AM_HOME은 설정 위치만 바꾼다');
   assert.match(readFileSync(file, 'utf8'), /<h1>CLI 测试<\/h1>/);
   assert.match(r.out, /sheet · blueprint · 1 面板 · flow×1/);
   assert.match(r.out, /STE ✓ 0 条警告/);
