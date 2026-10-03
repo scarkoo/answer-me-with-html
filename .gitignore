@@ -6,3 +6,4 @@ coverage/
 bench/results/*.html
 bench/results/*.png
 bench/en/
+.answer-me-with-html/
