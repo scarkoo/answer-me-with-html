@@ -18,6 +18,9 @@
   <b>English</b> · <a href="README.zh-CN.md">简体中文</a>
 </p>
 
+> [!NOTE]
+> This fork is hardened for Codex: browser auto-open is off by default, raw HTML/SVG is escaped, unsafe Markdown links are neutralized, and generated pages use a restrictive CSP.
+
 Once installed, ask questions the way you always do:
 
 ```
@@ -60,7 +63,7 @@ You need [Node.js](https://nodejs.org/) 20 or newer. There is no `npm install` s
 
 Paste this into Claude Code, Codex, Cursor, OpenCode or any other agent:
 
-> Install the Answer me with HTML skill: run `npx -y skills add QingYunA/answer-me-with-html -g -y`, and pass `-a` with your own agent name (for Claude Code, `-a claude-code`). Then read its SKILL.md and use it to make a page that explains the TCP three-way handshake, so we know it works.
+> Install the Codex-hardened Answer me with HTML skill: run `npx -y skills add scarkoo/answer-me-with-html -g -y -a codex`. Then read its SKILL.md and render a small test page.
 
 ### Claude Code plugin
 
@@ -122,7 +125,7 @@ Change settings with a slash command. There are no config files to edit by hand.
 
 | Key | Default | What it does |
 | :--- | :--- | :--- |
-| `open` | `on` | Open each page in the browser after it is made. Turn it off if pop-ups interrupt you |
+| `open` | `off` | Do not open pages automatically. Use `--open` only when you explicitly want a browser window |
 | `always` | `on` | Always-on mode (see below). Only matters when the always-on plugin is installed |
 | `theme` | `blueprint` | Default theme: `blueprint` or `shadcn` |
 | `mode` | `auto` | Default color mode: `auto`, `light` or `dark` |
@@ -250,7 +253,7 @@ A -> B: label
 
 - Every `## ` heading is a panel. The letters A, B, C are optional and added for you.
 - `span=2` makes a panel two columns wide, `rows=2` makes it two rows tall, and `bare` removes its title bar.
-- When no component fits, use a ```` ```html ```` or ```` ```svg ```` block to embed raw markup.
+- Raw ```` ```html ```` and ```` ```svg ```` blocks are intentionally escaped as code in this hardened fork.
 
 Full syntax for a component: `am help <component>`.
 
@@ -264,9 +267,10 @@ The CLI is `scripts/am.mjs` inside the skill folder.
 ````bash
 AM=skills/answer-me-with-html/scripts/am.mjs
 
-node $AM render examples/tcp.en.md                # render and open in the browser
+node $AM render examples/tcp.en.md                # render; browser stays closed by default
 node $AM render notes.md -o out.html --no-open    # choose the output file, don't open
 node $AM render notes.md --theme shadcn           # pick a theme for this run
+node $AM render notes.md --open                   # explicitly open this result
 node $AM lint notes.md                            # writing check only
 node $AM list                                     # list components
 node $AM config                                   # view settings
