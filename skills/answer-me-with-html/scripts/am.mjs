@@ -4178,7 +4178,6 @@ function diamondPoint(node, toward) {
 // src/components/index.js
 var ALL = [callout_default, kv_default, timeline_default, annot_default, tree_default, limits_default, sequence_default, flow_default];
 var COMPONENTS = new Map(ALL.map((c) => [c.name, c]));
-// Security hardening: raw markup fences are rendered as escaped code blocks.
 var RAW_LANGS = /* @__PURE__ */ new Set();
 
 // src/templates/panel.js
@@ -4535,7 +4534,6 @@ function checkUnit(text, line, kind, out) {
 }
 
 // src/render.js
-// SHA-256 of src/runtime/page.js. The CSP test fails if runtime code changes without updating this hash.
 var RUNTIME_JS_SHA256 = "k/KSPEwzhOJ2Pn11pjQzw4TcKs48Nw1N7Cy6XZQjCXc=";
 var RenderError = class extends Error {
   constructor(message, { line, component, example } = {}) {
