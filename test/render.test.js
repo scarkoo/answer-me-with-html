@@ -120,7 +120,17 @@ test('render: 英文稿件使用英文界面文案', () => {
   assert.match(html, /Copy source/);
 });
 
-test('detectLang: 中文占比判断', () => {
+test('render: 한국어 원고는 한국어 UI와 lang=ko를 사용', () => {
+  const { html } = renderDoc('# 인증 흐름\n## A 개요\n사용자 요청을 검증하고 토큰을 발급합니다.');
+  assert.match(html, /<html lang="ko"/);
+  assert.match(html, />테마: 도면<\/button>/);
+  assert.match(html, />명암: 시스템 설정<\/button>/);
+  assert.match(html, />원고 복사<\/button>/);
+  assert.doesNotMatch(html, /主题：|明暗：|复制源稿/);
+});
+
+test('detectLang: 한국어/중국어/영어를 구분', () => {
+  assert.equal(detectLang('한국어 기술 문서를 설명합니다.'), 'ko');
   assert.equal(detectLang('全中文内容'), 'zh');
   assert.equal(detectLang('all english words here'), 'en');
 });
