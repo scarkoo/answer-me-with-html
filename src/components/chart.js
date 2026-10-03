@@ -30,7 +30,7 @@ A,방법2,20
 - inline CSV는 --- 아래에 쓴다.
 - src는 현재 workspace 기준 상대경로만 허용한다.
 - series가 CSV의 한 컬럼명이면 long-form, 여러 값 컬럼명이면 wide-form으로 처리한다.`,
-  example: '```chart bar\\nx: method\\ny: time_s\\nunit: s\\ntitle: 처리 시간\\n---\\nmethod,time_s\\nDirect HTML,46\\nSkill,13\\n```',
+  example: ['```chart bar', 'x: method', 'y: time_s', 'unit: s', 'title: 처리 시간', '---', 'method,time_s', 'Direct HTML,46', 'Skill,13', '```'].join('\\n'),
   render(text, ctx = {}) {
     const spec = parseChart(text, ctx.args ?? '');
     const csvText = spec.src ? readWorkspaceCsv(spec.src, ctx.cwd) : spec.csv;
