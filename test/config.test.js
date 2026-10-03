@@ -19,15 +19,15 @@ test('configPath: 位于 AM_HOME/config.json', () => {
 });
 
 test('readConfig: 文件不存在时返回默认值', () => {
-  assert.deepEqual(readConfig(env).values, { open: true, always: true, theme: 'blueprint', mode: 'auto', style: '80' });
+  assert.deepEqual(readConfig(env).values, { open: false, always: true, theme: 'blueprint', mode: 'auto', style: '80' });
 });
 
 test('setConfig: 布尔值接受 on/off/true/false/开/关，写入文件', () => {
-  setConfig('open', 'off', env);
-  assert.equal(readConfig(env).values.open, false);
-  setConfig('open', '开', env);
+  setConfig('open', 'on', env);
   assert.equal(readConfig(env).values.open, true);
-  assert.deepEqual(JSON.parse(readFileSync(configPath(env), 'utf8')), { open: true });
+  setConfig('open', '关', env);
+  assert.equal(readConfig(env).values.open, false);
+  assert.deepEqual(JSON.parse(readFileSync(configPath(env), 'utf8')), { open: false });
 });
 
 test('setConfig: 枚举值校验，非法值给出可选项', () => {
@@ -39,10 +39,10 @@ test('setConfig: 枚举值校验，非法值给出可选项', () => {
 });
 
 test('resetConfig: 单个键或全部恢复默认', () => {
-  setConfig('open', 'off', env);
+  setConfig('open', 'on', env);
   setConfig('theme', 'shadcn', env);
   resetConfig('open', env);
-  assert.deepEqual(readConfig(env).values, { open: true, always: true, theme: 'shadcn', mode: 'auto', style: '80' });
+  assert.deepEqual(readConfig(env).values, { open: false, always: true, theme: 'shadcn', mode: 'auto', style: '80' });
   resetConfig(undefined, env);
   assert.equal(existsSync(configPath(env)), false);
 });
@@ -50,13 +50,13 @@ test('resetConfig: 单个键或全部恢复默认', () => {
 test('readConfig: 文件损坏时回退默认值并给出警告', () => {
   writeFileSync(configPath(env), '{ not json');
   const { values, warning } = readConfig(env);
-  assert.equal(values.open, true);
+  assert.equal(values.open, false);
   assert.match(warning, /config\.json/);
 });
 
 test('readConfig: 忽略未知键和非法值', () => {
   writeFileSync(configPath(env), JSON.stringify({ open: 'yes-ish', theme: 'shadcn', extra: 1 }));
-  assert.deepEqual(readConfig(env).values, { open: true, always: true, theme: 'shadcn', mode: 'auto', style: '80' });
+  assert.deepEqual(readConfig(env).values, { open: false, always: true, theme: 'shadcn', mode: 'auto', style: '80' });
 });
 
 test('CONFIG_KEYS 每项都有中文说明', () => {
