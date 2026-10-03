@@ -33,11 +33,11 @@ test('cli: --version 与 --help', async () => {
   assert.match((await run([])).out, /用法/);
 });
 
-test('cli render: 从 stdin 读取，写入 AM_HOME/pages，打印路径与统计', async () => {
+test('cli render: 从 stdin 读取，写入 cwd/.answer-me-with-html/pages，打印路径与统计', async () => {
   const r = await run(['render', '-'], { stdin: GOOD });
   assert.equal(r.code, 0, r.err);
   const file = r.out.match(/✓ (.+\.html)/)[1];
-  assert.ok(file.startsWith(join(dir, 'pages', 'CLI-测试-')));
+  assert.ok(file.startsWith(join(dir, '.answer-me-with-html', 'pages', 'CLI-测试-')));
   assert.match(readFileSync(file, 'utf8'), /<h1>CLI 测试<\/h1>/);
   assert.match(r.out, /sheet · blueprint · 1 面板 · flow×1/);
   assert.match(r.out, /STE ✓ 0 条警告/);
@@ -70,11 +70,11 @@ test('cli render: style 80 打印警告但仍生成；strict 拒绝生成', asyn
   assert.equal(soft.code, 0);
   assert.match(soft.out, /STE 1 条警告[\s\S]*L2 \[word\] 권장하지 않는 영어 표현 "Utilize" → use/);
 
-  const before = readdirSync(join(dir, 'pages')).length;
+  const before = readdirSync(join(dir, '.answer-me-with-html', 'pages')).length;
   const strict = await run(['render', '-', '--style', 'strict'], { stdin: bad });
   assert.equal(strict.code, 1);
   assert.match(strict.err, /STE 检查未通过/);
-  assert.equal(readdirSync(join(dir, 'pages')).length, before, 'strict 失败时不写文件');
+  assert.equal(readdirSync(join(dir, '.answer-me-with-html', 'pages')).length, before, 'strict 失败时不写文件');
 });
 
 test('cli lint: 仅检查；strict 下有警告返回 1；off 跳过', async () => {
