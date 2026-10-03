@@ -96,7 +96,7 @@ function renderFence(block, ctx) {
   }
   ctx.stats.components[lang] = (ctx.stats.components[lang] ?? 0) + 1;
   try {
-    return comp.render(text, { args, uid: () => `am${++ctx.seq}` });
+    return comp.render(text, { args, uid: () => `am${++ctx.seq}`, cwd: ctx.cwd });
   } catch (err) {
     if (!(err instanceof ComponentError)) throw err;
     throw new RenderError(err.message, {
