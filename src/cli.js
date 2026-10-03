@@ -50,7 +50,7 @@ source: asd-ste100.org # 其他任意键会显示在页头元信息行
 A -> B
 \`\`\`
 
-安全限制：html / svg 围栏不会作为原始标记插入，而是转义后的代码块显示。
+html / svg 围栏块会原样嵌入，可用于自定义布局、图形和交互。页面 CSP 会继续阻止外部网络与外部资源加载。
 
 - "## " 开启一个面板；字母 ID 可省略（自动分配 A、B、C…）。span 让面板跨列。
 - 组件列表见 am list；单个组件语法见 am help <组件名>。`;
@@ -249,7 +249,7 @@ function cmdList(print) {
   for (const [name, t] of Object.entries(THEMES)) print(`  ${name.padEnd(10)}${t.label}`);
   print('\n组件（围栏块语言名）:');
   for (const c of COMPONENTS.values()) print(`  ${c.name.padEnd(10)}${c.summary}`);
-  print('  html/svg  安全模式下转义为代码块');
+  print('  html/svg  原样嵌入（交互可用；外部通信由 CSP 限制）');
   print('\n语法：am help <组件名>；稿件格式：am help format');
 }
 
