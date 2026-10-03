@@ -10,9 +10,9 @@ export const KO_VERBOSE_VERBS = Object.freeze([
 ]);
 
 export const KO_INDIRECT = Object.freeze([
-  { re: /되어지(?:ㄴ다|ㅂ니다|는|고|면|게)/g, label: '이중 피동', suggestion: '직접적인 능동/피동 표현으로 바꾼다' },
+  { re: /되어지(?:ㄴ다|는|고|면|게)|되어집니다/g, label: '이중 피동', suggestion: '직접적인 능동/피동 표현으로 바꾼다' },
   { re: /되게\s+(?:된다|됩니다)/g, label: '우회 표현', suggestion: '결과를 직접 서술한다' },
-  { re: /하게\s+(?:된다|됩니다)/g, label: '우회 표현', suggestion: '주체와 동작을 직접 서술한다' },
+  { re: /[가-힣]+게\s+(?:된다|됩니다)/g, label: '우회 표현', suggestion: '주체와 결과를 직접 서술한다' },
   { re: /하도록\s+(?:한다|합니다)/g, label: '우회 지시', suggestion: '직접 명령형 또는 능동형으로 쓴다' },
 ]);
 
