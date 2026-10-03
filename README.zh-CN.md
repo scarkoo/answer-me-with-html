@@ -113,7 +113,7 @@ cp -R /tmp/answer-me-with-html/skills/answer-me-with-html ~/.claude/skills/answe
 
 要不要出页面由 Agent 判断：概念之间关系复杂、有多步流程、要做多维对比，才会出页面。你也可以直接说"用 HTML 讲一下……"。
 
-页面保存在 `~/.answer-me-with-html/pages/`。页面右上角可以切换主题、切换亮暗，也可以复制生成这一页的 Markdown 原稿。
+页面默认保存在当前工作目录下的 `./.answer-me-with-html/pages/`。页面右上角可以切换主题、切换亮暗，也可以复制生成这一页的 Markdown 原稿。
 
 ## 配置
 
@@ -286,7 +286,7 @@ A -> B: 你好
 AM_EOF
 ````
 
-页面默认保存在 `~/.answer-me-with-html/pages/`。环境变量 `AM_HOME` 可以改位置。
+页面默认保存在当前工作目录下的 `./.answer-me-with-html/pages/`。`-o` 可以指定其他输出路径；`AM_HOME` 只控制配置文件的位置。
 
 </details>
 
