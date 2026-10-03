@@ -13,4 +13,5 @@ export { ComponentError } from './error.js';
 const ALL = [callout, kv, timeline, annot, tree, limits, sequence, flow];
 
 export const COMPONENTS = new Map(ALL.map((c) => [c.name, c]));
-export const RAW_LANGS = new Set(['html', 'svg']);
+// Security hardening: raw markup fences are rendered as escaped code blocks.
+export const RAW_LANGS = new Set();
