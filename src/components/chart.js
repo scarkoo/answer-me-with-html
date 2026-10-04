@@ -6,7 +6,8 @@ import { f, svgOpen, textLines } from '../svg/shapes.js';
 import { ComponentError } from './error.js';
 
 const TYPES = new Set(['bar', 'line', 'scatter']);
-const OPTIONS = new Set(['x', 'y', 'series', 'unit', 'title', 'min', 'max', 'src']);
+const OPTIONS = new Set(['x', 'y', 'series', 'unit', 'title', 'min', 'max', 'src', 'legend', 'x-label', 'y-label']);
+const LEGENDS = new Set(['auto', 'top', 'bottom', 'off']);
 const MAX_ROWS = 2000;
 const MAX_FILE_BYTES = 2 * 1024 * 1024;
 const COLORS = 5;
@@ -20,6 +21,9 @@ y: y축 컬럼
 series: 그룹 컬럼 또는 wide CSV의 값 컬럼들(쉼표 구분, 선택)
 unit: 단위(선택)
 title: 차트 제목(선택)
+legend: auto | top | bottom | off (선택, 기본 auto)
+x-label: x축 제목(선택)
+y-label: y축 제목(선택)
 min: y축 최소값(선택)
 max: y축 최대값(선택)
 ---
@@ -79,6 +83,8 @@ export function parseChart(text, args = '') {
   const min = parseBound(options.min, 'min');
   const max = parseBound(options.max, 'max');
   if (min !== undefined && max !== undefined && min >= max) throw new ComponentError('chart min은 max보다 작아야 한다', 1);
+  const legend = options.legend || 'auto';
+  if (!LEGENDS.has(legend)) throw new ComponentError('chart legend는 auto | top | bottom | off 중 하나여야 한다', 1);
 
   return {
     type,
@@ -87,6 +93,9 @@ export function parseChart(text, args = '') {
     series: options.series || '',
     unit: options.unit || '',
     title: options.title || '',
+    legend,
+    xLabel: options['x-label'] || '',
+    yLabel: options['y-label'] || '',
     src: options.src || '',
     min,
     max,
