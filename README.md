@@ -201,6 +201,7 @@ The CLI does the rest. It picks the template, places the panels, applies the the
 - **One file, no dependencies:** Each page is a single `.html` with no CDN links or web fonts. It opens offline and is easy to share.
 - **Writing check:** Drafts are checked against rules adapted from ASD-STE100: long sentences, wordy phrases, passive voice. It only warns unless you ask for strict mode.
 - **Keeps its source:** Every page embeds the Markdown that made it. Click "Copy source" to get it back.
+- **Jump back to code:** Markdown links such as `[assets.ts:81](source:apps/server/src/routes/assets.ts:81)` are resolved against the current workspace and rendered as `vscode://file` links with line/column navigation.
 
 <table>
   <tr>
