@@ -117,6 +117,10 @@ source: RFC 9293    # 예약 키가 아닌 다른 frontmatter 값은 페이지 �
 - 패널의 알파벳 ID는 생략할 수 있다. 생략하면 A, B, C... 순서로 자동 할당한다.
 - `span=2`는 패널을 두 열 너비로 만든다. `rows=2`는 두 행 높이로 만든다.
 - `html` / `svg` fenced block은 원본 마크업으로 삽입된다. **내장 컴포넌트로 표현하기 어렵거나 사용자 인터랙션이 필요할 때만 사용한다.**
+- 코드 위치를 가리킬 때는 절대경로를 원고에 직접 쓰지 말고 Markdown source 링크를 사용한다: `[assets.ts:81](source:apps/server/src/routes/assets.ts:81)`.
+- `source:` 뒤에는 **현재 workspace 기준 상대경로**를 쓴다. `:line` 또는 `:line:column`을 붙일 수 있고 생략하면 1행 1열이다.
+- 렌더 단계에서만 현재 workspace 절대경로와 결합해 `vscode://file/...:line:column` 링크로 변환한다. 원고의 canonical 값은 상대경로로 유지한다.
+- 절대경로, URL scheme, `../`로 workspace 밖을 가리키는 source 링크는 활성 링크로 만들지 않는다.
 - 전체 원고 문법: `node "$AM" help format`
 - 컴포넌트 문법: `node "$AM" help <component>`
 - 컴포넌트 목록: `node "$AM" list`
