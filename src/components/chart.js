@@ -277,25 +277,46 @@ function renderCategorical(spec, rows, seriesDef) {
   const ticks = niceTicks(yMin, yMax, 5);
 
   const width = Math.max(680, categories.length * Math.max(78, series.length * 34));
+  const right = 24;
+  const yTickTexts = ticks.values.map((v) => formatValue(v, spec.unit));
+  const yTickWidth = Math.max(...yTickTexts.map((v) => measure(v, 10.5)), 24);
+  const left = Math.max(58, Math.min(width * 0.36, yTickWidth + 20 + (spec.yLabel ? 22 : 0)));
+  const plotW = width - left - right;
+  const xStep = plotW / Math.max(categories.length, 1);
+  const xLabelWidth = Math.max(52, Math.min(180, xStep - 8));
+  const xLabelData = categories.map((label) => fitWrappedLabel(label, xLabelWidth, 3, 11));
+  const maxXLines = Math.max(...xLabelData.map((item) => item.lines.length), 1);
+
+  const showLegend = shouldShowLegend(spec, series.length);
+  const legendPos = spec.legend === 'bottom' ? 'bottom' : 'top';
+  const legendMeasure = showLegend ? renderLegend(series, 0, 0, plotW) : { html: '', height: 0 };
   const titleH = spec.title ? 28 : 4;
-  const legendH = series.length > 1 ? 28 : 4;
-  const margin = { left: 62, right: 20, top: 18 + titleH + legendH, bottom: 62 };
-  const plotW = width - margin.left - margin.right;
+  const topLegendH = showLegend && legendPos === 'top' ? legendMeasure.height + 6 : 0;
+  const bottomLegendH = showLegend && legendPos === 'bottom' ? legendMeasure.height + 8 : 0;
+  const margin = {
+    left,
+    right,
+    top: 18 + titleH + topLegendH,
+    bottom: 18 + maxXLines * 13 + (spec.xLabel ? 24 : 0) + bottomLegendH,
+  };
   const plotH = 280;
   const height = margin.top + plotH + margin.bottom;
-  const xStep = plotW / Math.max(categories.length, 1);
+  const plotBottom = margin.top + plotH;
   const y = (v) => margin.top + plotH - ((v - ticks.min) / (ticks.max - ticks.min)) * plotH;
   const zeroY = y(Math.max(ticks.min, Math.min(ticks.max, 0)));
 
-  const grid = ticks.values.map((v) => {
+  const grid = ticks.values.map((v, i) => {
     const py = y(v);
-    return `<line class="am-chart-grid" x1="${f(margin.left)}" y1="${f(py)}" x2="${f(width - margin.right)}" y2="${f(py)}"/><text class="am-chart-axis-label" x="${f(margin.left - 9)}" y="${f(py)}" text-anchor="end" dominant-baseline="central">${esc(formatValue(v, spec.unit))}</text>`;
+    const full = yTickTexts[i];
+    const shown = truncateToWidth(full, Math.max(36, left - 18 - (spec.yLabel ? 22 : 0)), 10.5);
+    return `<line class="am-chart-grid" x1="${f(margin.left)}" y1="${f(py)}" x2="${f(width - margin.right)}" y2="${f(py)}"/><g class="am-chart-axis-label"><title>${esc(full)}</title><text x="${f(margin.left - 9)}" y="${f(py)}" text-anchor="end" dominant-baseline="central">${esc(shown)}</text></g>`;
   }).join('');
 
   const xLabels = categories.map((label, i) => {
     const cx = margin.left + xStep * (i + 0.5);
-    const lines = wrap(label, Math.max(52, xStep - 8), 11).slice(0, 2);
-    return textLines(lines, cx, margin.top + plotH + 24, 13, ' class="am-chart-axis-label"');
+    const item = xLabelData[i];
+    const cy = plotBottom + 18 + ((item.lines.length - 1) * 13) / 2;
+    return `<g class="am-chart-x-tick"><title>${esc(label)}</title>${textLines(item.lines, cx, cy, 13, ' class="am-chart-axis-label"')}</g>`;
   }).join('');
 
   const marks = spec.type === 'bar'
@@ -303,10 +324,19 @@ function renderCategorical(spec, rows, seriesDef) {
     : renderLines(spec, categories, series, margin, xStep, y);
 
   const title = spec.title ? `<text class="am-chart-title" x="${f(margin.left)}" y="18">${esc(spec.title)}</text>` : '';
-  const legend = series.length > 1 ? renderLegend(series, margin.left, 18 + titleH) : '';
+  const legendY = legendPos === 'top'
+    ? 18 + titleH + 10
+    : plotBottom + 18 + maxXLines * 13 + (spec.xLabel ? 24 : 0) + 8;
+  const legend = showLegend ? renderLegend(series, margin.left, legendY, plotW).html : '';
   const axis = `<line class="am-chart-axis" x1="${f(margin.left)}" y1="${f(zeroY)}" x2="${f(width - margin.right)}" y2="${f(zeroY)}"/>`;
+  const xAxisTitle = spec.xLabel
+    ? renderAxisTitle(spec.xLabel, margin.left + plotW / 2, plotBottom + 18 + maxXLines * 13 + 14, plotW - 20)
+    : '';
+  const yAxisTitle = spec.yLabel
+    ? renderAxisTitle(spec.yLabel, 14, margin.top + plotH / 2, plotH - 20, true)
+    : '';
 
-  return `${svgOpen(width, height, spec.title || `${spec.type} chart`)}${title}${legend}${grid}${axis}${marks}${xLabels}</svg>`;
+  return `${svgOpen(width, height, spec.title || `${spec.type} chart`)}${title}${legend}${grid}${axis}${marks}${xLabels}${xAxisTitle}${yAxisTitle}</svg>`;
 }
 
 function renderBars(spec, categories, series, margin, plotH, xStep, y, zeroY) {
@@ -322,7 +352,7 @@ function renderBars(spec, categories, series, margin, plotH, xStep, y, zeroY) {
       const h = Math.max(1, Math.abs(zeroY - py));
       const x = center - groupW / 2 + si * (barW + 3);
       const tip = `${category} · ${s.label}: ${formatValue(value, spec.unit)}`;
-      return `<rect class="am-chart-bar am-chart-series-${si % COLORS}" x="${f(x)}" y="${f(top)}" width="${f(barW)}" height="${f(h)}" rx="2" data-label="${esc(tip)}"><title>${esc(tip)}</title></rect>`;
+      return `<rect class="am-chart-bar am-chart-series-${si % COLORS}" x="${f(x)}" y="${f(top)}" width="${f(barW)}" height="${f(h)}" rx="2" data-chart-mark data-chart-series="${si}" data-label="${esc(tip)}"><title>${esc(tip)}</title></rect>`;
     }).join('');
   }).join('');
 }
@@ -333,11 +363,11 @@ function renderLines(spec, categories, series, margin, xStep, y) {
       ? { category, value: s.values.get(category), x: margin.left + xStep * (i + 0.5) }
       : null).filter(Boolean);
     const path = pts.length > 1
-      ? `<polyline class="am-chart-line am-chart-series-${si % COLORS}" points="${pts.map((p) => `${f(p.x)},${f(y(p.value))}`).join(' ')}"/>`
+      ? `<polyline class="am-chart-line am-chart-series-${si % COLORS}" data-chart-mark data-chart-series="${si}" points="${pts.map((p) => `${f(p.x)},${f(y(p.value))}`).join(' ')}"/>`
       : '';
     const dots = pts.map((p) => {
       const tip = `${p.category} · ${s.label}: ${formatValue(p.value, spec.unit)}`;
-      return `<circle class="am-chart-point am-chart-series-${si % COLORS}" cx="${f(p.x)}" cy="${f(y(p.value))}" r="4" data-label="${esc(tip)}"><title>${esc(tip)}</title></circle>`;
+      return `<circle class="am-chart-point am-chart-series-${si % COLORS}" cx="${f(p.x)}" cy="${f(y(p.value))}" r="4" data-chart-mark data-chart-series="${si}" data-label="${esc(tip)}"><title>${esc(tip)}</title></circle>`;
     }).join('');
     return path + dots;
   }).join('');
@@ -372,35 +402,108 @@ function renderScatter(spec, rows, seriesDef) {
   const xTicks = niceTicks(Math.min(...xs), Math.max(...xs), 5);
   const yTicks = niceTicks(spec.min ?? Math.min(...ys), spec.max ?? Math.max(...ys), 5);
   const width = 720;
+  const yTickTexts = yTicks.values.map((v) => formatValue(v, spec.unit));
+  const yTickWidth = Math.max(...yTickTexts.map((v) => measure(v, 10.5)), 24);
+  const xTickTexts = xTicks.values.map((v) => formatNumber(v));
+  const left = Math.max(60, Math.min(width * 0.36, yTickWidth + 20 + (spec.yLabel ? 22 : 0)));
+  const right = Math.max(24, measure(xTickTexts.at(-1) || '', 10.5) / 2 + 10);
+  const plotW = width - left - right;
+
+  const showLegend = shouldShowLegend(spec, groups.length);
+  const legendPos = spec.legend === 'bottom' ? 'bottom' : 'top';
+  const legendMeasure = showLegend ? renderLegend(groups, 0, 0, plotW) : { html: '', height: 0 };
   const titleH = spec.title ? 28 : 4;
-  const legendH = groups.length > 1 ? 28 : 4;
-  const margin = { left: 64, right: 24, top: 18 + titleH + legendH, bottom: 54 };
-  const plotW = width - margin.left - margin.right;
+  const topLegendH = showLegend && legendPos === 'top' ? legendMeasure.height + 6 : 0;
+  const bottomLegendH = showLegend && legendPos === 'bottom' ? legendMeasure.height + 8 : 0;
+  const margin = {
+    left,
+    right,
+    top: 18 + titleH + topLegendH,
+    bottom: 48 + (spec.xLabel ? 24 : 0) + bottomLegendH,
+  };
   const plotH = 290;
   const height = margin.top + plotH + margin.bottom;
+  const plotBottom = margin.top + plotH;
   const sx = (v) => margin.left + ((v - xTicks.min) / (xTicks.max - xTicks.min || 1)) * plotW;
   const sy = (v) => margin.top + plotH - ((v - yTicks.min) / (yTicks.max - yTicks.min || 1)) * plotH;
 
-  const gridY = yTicks.values.map((v) => `<line class="am-chart-grid" x1="${margin.left}" y1="${f(sy(v))}" x2="${width - margin.right}" y2="${f(sy(v))}"/><text class="am-chart-axis-label" x="${margin.left - 9}" y="${f(sy(v))}" text-anchor="end" dominant-baseline="central">${esc(formatValue(v, spec.unit))}</text>`).join('');
-  const ticksX = xTicks.values.map((v) => `<line class="am-chart-grid am-chart-grid--v" x1="${f(sx(v))}" y1="${margin.top}" x2="${f(sx(v))}" y2="${margin.top + plotH}"/><text class="am-chart-axis-label" x="${f(sx(v))}" y="${margin.top + plotH + 22}" text-anchor="middle">${esc(formatNumber(v))}</text>`).join('');
+  const gridY = yTicks.values.map((v, i) => {
+    const full = yTickTexts[i];
+    const shown = truncateToWidth(full, Math.max(36, left - 18 - (spec.yLabel ? 22 : 0)), 10.5);
+    return `<line class="am-chart-grid" x1="${margin.left}" y1="${f(sy(v))}" x2="${width - margin.right}" y2="${f(sy(v))}"/><g class="am-chart-axis-label"><title>${esc(full)}</title><text x="${margin.left - 9}" y="${f(sy(v))}" text-anchor="end" dominant-baseline="central">${esc(shown)}</text></g>`;
+  }).join('');
+  const ticksX = xTicks.values.map((v) => `<line class="am-chart-grid am-chart-grid--v" x1="${f(sx(v))}" y1="${margin.top}" x2="${f(sx(v))}" y2="${plotBottom}"/><text class="am-chart-axis-label" x="${f(sx(v))}" y="${plotBottom + 22}" text-anchor="middle">${esc(formatNumber(v))}</text>`).join('');
   const dots = points.map((p) => {
     const tip = `${p.group}: ${spec.x}=${formatNumber(p.x)}, ${spec.y}=${formatValue(p.y, spec.unit)}`;
-    return `<circle class="am-chart-point am-chart-series-${p.gi % COLORS}" cx="${f(sx(p.x))}" cy="${f(sy(p.y))}" r="4.5" data-label="${esc(tip)}"><title>${esc(tip)}</title></circle>`;
+    return `<circle class="am-chart-point am-chart-series-${p.gi % COLORS}" cx="${f(sx(p.x))}" cy="${f(sy(p.y))}" r="4.5" data-chart-mark data-chart-series="${p.gi}" data-label="${esc(tip)}"><title>${esc(tip)}</title></circle>`;
   }).join('');
   const title = spec.title ? `<text class="am-chart-title" x="${margin.left}" y="18">${esc(spec.title)}</text>` : '';
-  const legend = groups.length > 1 ? renderLegend(groups, margin.left, 18 + titleH) : '';
-  return `${svgOpen(width, height, spec.title || 'scatter chart')}${title}${legend}${gridY}${ticksX}<line class="am-chart-axis" x1="${margin.left}" y1="${margin.top + plotH}" x2="${width - margin.right}" y2="${margin.top + plotH}"/>${dots}</svg>`;
+  const legendY = legendPos === 'top'
+    ? 18 + titleH + 10
+    : plotBottom + 48 + (spec.xLabel ? 24 : 0);
+  const legend = showLegend ? renderLegend(groups, margin.left, legendY, plotW).html : '';
+  const xAxisTitle = spec.xLabel
+    ? renderAxisTitle(spec.xLabel, margin.left + plotW / 2, plotBottom + 42, plotW - 20)
+    : '';
+  const yAxisTitle = spec.yLabel
+    ? renderAxisTitle(spec.yLabel, 14, margin.top + plotH / 2, plotH - 20, true)
+    : '';
+
+  return `${svgOpen(width, height, spec.title || 'scatter chart')}${title}${legend}${gridY}${ticksX}<line class="am-chart-axis" x1="${margin.left}" y1="${plotBottom}" x2="${width - margin.right}" y2="${plotBottom}"/>${dots}${xAxisTitle}${yAxisTitle}</svg>`;
 }
 
-function renderLegend(series, x, y) {
-  let cursor = x;
-  return series.map((s, i) => {
-    const label = s.label ?? s.key ?? '';
-    const w = measure(label, 11) + 32;
-    const out = `<g class="am-chart-legend am-chart-series-${i % COLORS}" transform="translate(${f(cursor)} ${f(y)})"><rect x="0" y="-8" width="12" height="12" rx="2"/><text x="18" y="-2" dominant-baseline="central">${esc(label)}</text></g>`;
-    cursor += w;
-    return out;
+function shouldShowLegend(spec, count) {
+  if (spec.legend === 'off') return false;
+  if (spec.legend === 'top' || spec.legend === 'bottom') return count > 0;
+  return count > 1;
+}
+
+function renderLegend(series, x, y, maxWidth) {
+  const rowH = 22;
+  const maxLabelWidth = Math.max(72, Math.min(180, maxWidth - 34));
+  let cursor = 0;
+  let row = 0;
+  const html = series.map((s, i) => {
+    const label = String(s.label ?? s.key ?? '');
+    const shown = truncateToWidth(label, maxLabelWidth, 11);
+    const itemW = Math.min(maxWidth, measure(shown, 11) + 36);
+    if (cursor > 0 && cursor + itemW > maxWidth) {
+      row++;
+      cursor = 0;
+    }
+    const tx = x + cursor;
+    const ty = y + row * rowH;
+    cursor += itemW;
+    return `<g class="am-chart-legend am-chart-series-${i % COLORS}" transform="translate(${f(tx)} ${f(ty)})" data-chart-legend data-chart-series="${i}" role="button" tabindex="0" aria-pressed="true"><title>${esc(label)}</title><rect x="0" y="-8" width="12" height="12" rx="2"/><text x="18" y="-2" dominant-baseline="central">${esc(shown)}</text></g>`;
   }).join('');
+  return { html, height: (row + 1) * rowH };
+}
+
+function fitWrappedLabel(value, maxWidth, maxLines = 3, size = 11) {
+  const source = String(value ?? '');
+  const raw = wrap(source, maxWidth, size);
+  const lines = raw.slice(0, maxLines).map((line) => truncateToWidth(line, maxWidth, size));
+  if (!lines.length) lines.push('');
+  if (raw.length > maxLines) lines[lines.length - 1] = truncateToWidth(`${lines.at(-1)}…`, maxWidth, size);
+  return { lines, truncated: raw.length > maxLines || lines.some((line, i) => line !== raw[i]) };
+}
+
+function truncateToWidth(value, maxWidth, size = 11) {
+  const source = String(value ?? '');
+  if (measure(source, size) <= maxWidth) return source;
+  const ellipsis = '…';
+  let out = '';
+  for (const ch of source) {
+    if (measure(out + ch + ellipsis, size) > maxWidth) break;
+    out += ch;
+  }
+  return out ? `${out}${ellipsis}` : ellipsis;
+}
+
+function renderAxisTitle(label, x, y, maxWidth, rotate = false) {
+  const shown = truncateToWidth(label, maxWidth, 11);
+  const transform = rotate ? ` transform="rotate(-90 ${f(x)} ${f(y)})"` : '';
+  return `<g class="am-chart-axis-title"><title>${esc(label)}</title><text x="${f(x)}" y="${f(y)}" text-anchor="middle"${transform}>${esc(shown)}</text></g>`;
 }
 
 function niceTicks(min, max, count) {
