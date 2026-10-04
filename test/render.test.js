@@ -62,10 +62,40 @@ test('render: 表格状态词渲染为徽章', () => {
   assert.match(html, /am-table-wrap/);
 });
 
-test('render: html 围栏原样嵌入；未知语言作为转义后的代码块', () => {
+test('render: html/svg fence는 원본 마크업으로 삽입하고 알 수 없는 언어만 코드로 escape', () => {
   const { html } = renderDoc(SRC);
   assert.match(html, /<div class="raw-x">raw<\/div>/);
   assert.match(html, /<pre class="am-code"><code data-lang="python">print\(&quot;&lt;x&gt;&quot;\)<\/code><\/pre>/);
+});
+
+test('render: Markdown raw HTML과 javascript 링크를 유지해 인터랙션을 허용', () => {
+  const { html } = renderDoc('## A\n<button onclick="this.textContent=\'ok\'">go</button>\n[x](javascript:void(0))');
+  assert.match(html, /<button onclick="this\.textContent='ok'">go<\/button>/);
+  assert.match(html, /href="javascript:void\(0\)"/);
+});
+
+test('render: chart 범례 runtime은 click/keyboard toggle과 series highlight를 제공', () => {
+  const src = '## A\n\`\`\`chart bar\nx: topic\ny: value\nseries: method\n---\ntopic,method,value\nA,Direct,10\nA,Skill,8\n\`\`\`';
+  const { html } = renderDoc(src);
+  assert.match(html, /data-chart-legend/);
+  assert.match(html, /aria-pressed="true"/);
+  assert.match(html, /toggleSeries/);
+  assert.match(html, /pointerenter/);
+  assert.match(html, /event\.key !== 'Enter'/);
+});
+
+test('render: CSP는 inline interaction을 허용하고 외부 통신은 제한하며 HTTPS font를 허용', () => {
+  const { html } = renderDoc('## A\nx');
+  assert.match(html, /default-src 'none'/);
+  assert.match(html, /script-src 'unsafe-inline'/);
+  assert.match(html, /style-src 'unsafe-inline'/);
+  assert.match(html, /connect-src 'none'/);
+  assert.match(html, /font-src https: data:/);
+  assert.match(html, /object-src 'none'/);
+  assert.match(html, /frame-src 'none'/);
+  assert.match(html, /form-action 'none'/);
+  assert.match(html, /base-uri 'none'/);
+  assert.match(html, /name="referrer" content="no-referrer"/);
 });
 
 test('render: 源稿转义后内嵌在隐藏 textarea 中，可原样取回', () => {
@@ -100,7 +130,17 @@ test('render: 英文稿件使用英文界面文案', () => {
   assert.match(html, /Copy source/);
 });
 
-test('detectLang: 中文占比判断', () => {
+test('render: 한국어 원고는 한국어 UI와 lang=ko를 사용', () => {
+  const { html } = renderDoc('# 인증 흐름\n## A 개요\n사용자 요청을 검증하고 토큰을 발급합니다.');
+  assert.match(html, /<html lang="ko"/);
+  assert.match(html, />테마: 도면<\/button>/);
+  assert.match(html, />명암: 시스템 설정<\/button>/);
+  assert.match(html, />원고 복사<\/button>/);
+  assert.doesNotMatch(html, /主题：|明暗：|复制源稿/);
+});
+
+test('detectLang: 한국어/중국어/영어를 구분', () => {
+  assert.equal(detectLang('한국어 기술 문서를 설명합니다.'), 'ko');
   assert.equal(detectLang('全中文内容'), 'zh');
   assert.equal(detectLang('all english words here'), 'en');
 });

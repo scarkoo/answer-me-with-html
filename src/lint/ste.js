@@ -1,12 +1,17 @@
-// STE 受控写作检查（只约束稿件里的说明文字）。
-// 规则：句长、段长、非推荐词、英文被动语态、中文虚动词 / "的"字连用 / 套话。全部为警告，严格度由 style 决定。
-// 跳过：代码与行内代码、~~删除线~~（反例展示）、含 no 状态的表格行、标题、除 callout 外的组件。
+// STE controlled writing 검사.
+// 영어와 한국어 원고의 문장 길이, 문단 길이, 장황한 표현, 우회 표현, 대표적인 이중 부정을 검사한다.
+// 코드/inline code/취소선 반례/no 상태 표 행/제목/대부분의 컴포넌트는 검사하지 않는다.
 
 import { EN_WORDS } from './wordlist.en.js';
-import { ZH_LIGHT_VERBS, ZH_CLICHES } from './wordlist.zh.js';
-import { isCJK } from '../svg/text.js';
+import { KO_VERBOSE_VERBS, KO_INDIRECT, KO_DOUBLE_NEGATIVES } from './wordlist.ko.js';
 
-const LIMITS = { zh: { procedural: 35, descriptive: 45 }, en: { procedural: 20, descriptive: 25 } };
+const LIMITS = {
+  en: { procedural: 20, descriptive: 25 },
+  ko: {
+    procedural: { words: 18, chars: 60 },
+    descriptive: { words: 25, chars: 90 },
+  },
+};
 const MAX_SENTENCES = 6;
 const ABBR = /\b(e\.g|i\.e|etc|vs|cf|approx|Fig|No)\./gi;
 const PASSIVE = /\b(?:am|is|are|was|were|be|been|being)\s+(?:\w+ly\s+)?(\w+ed|known|done|made|given|taken|seen|written|built|shown|sent|kept|held|found|set|put|run|begun|chosen|driven|broken)\b/i;
@@ -16,14 +21,29 @@ const EN_RE = Object.entries(EN_WORDS)
 
 export function splitSentences(text) {
   const masked = text.replace(ABBR, (m) => m.replace(/\./g, '\u0000'));
-  const parts = masked.match(/[^。！？；!?;]+?(?:[。！？；!?;]+|\.(?=\s|$)|$)|[^.]+?\.(?=\s|$)/g) ?? [];
+  const parts = masked.match(/[^。！？!?;]+?(?:[。！？!?;]+|\.(?=\s|$)|$)|[^.]+?\.(?=\s|$)/g) ?? [];
   return parts.map((s) => s.replace(/\u0000/g, '.').trim()).filter(Boolean);
 }
 
+function koreanCharCount(sentence) {
+  return [...sentence].filter((ch) => /[가-힣A-Za-z0-9]/.test(ch)).length;
+}
+
+function koreanWordCount(sentence) {
+  return sentence
+    .trim()
+    .split(/\s+/)
+    .map((part) => part.replace(/^[^가-힣A-Za-z0-9]+|[^가-힣A-Za-z0-9]+$/g, ''))
+    .filter(Boolean).length;
+}
+
 export function sentenceLength(sentence) {
-  const cjk = [...sentence].filter(isCJK).filter((c) => !/[，。！？；：、（）「」『』“”‘’《》]/.test(c)).length;
+  const hangul = sentence.match(/[가-힣]/g)?.length ?? 0;
+  if (hangul >= 2) {
+    return { lang: 'ko', count: koreanWordCount(sentence), chars: koreanCharCount(sentence) };
+  }
   const words = sentence.match(/[A-Za-z0-9][\w'’-]*/g)?.length ?? 0;
-  return cjk >= 4 || cjk > words ? { lang: 'zh', count: cjk + words } : { lang: 'en', count: words };
+  return { lang: 'en', count: words };
 }
 
 export function formatWarning(w) {
@@ -54,10 +74,11 @@ function lintMarkdown(text, startLine, out) {
   let para = null;
   const flush = () => {
     if (para && para.count > MAX_SENTENCES) {
-      out.push({ line: para.line, rule: 'paragraph-length', message: `段落 ${para.count} 句（上限 ${MAX_SENTENCES}）` });
+      out.push({ line: para.line, rule: 'paragraph-length', message: `문단 ${para.count}문장 (상한 ${MAX_SENTENCES})` });
     }
     para = null;
   };
+
   let inHtml = false;
   text.split('\n').forEach((raw, i) => {
     const line = startLine + i;
@@ -68,6 +89,7 @@ function lintMarkdown(text, startLine, out) {
       return flush();
     }
     if (!t || /^#{1,6}\s/.test(t) || /^[-*_]{3,}$/.test(t)) return flush();
+
     if (t.startsWith('|')) {
       flush();
       if (/^\|?[\s:|-]+\|?$/.test(t)) return;
@@ -76,12 +98,14 @@ function lintMarkdown(text, startLine, out) {
       cells.forEach((c) => checkUnit(clean(c.replace(/^(ok|warn|✓|✔|⚠)(\s|$)/, '')), line, 'descriptive', out));
       return;
     }
+
     const list = t.match(/^(?:([-*+])|(\d+)[.)])\s+(.*)$/);
     if (list) {
       flush();
       checkUnit(clean(list[3]), line, list[2] ? 'procedural' : 'descriptive', out);
       return;
     }
+
     const body = clean(t.replace(/^>\s*/, ''));
     const n = checkUnit(body, line, 'descriptive', out);
     if (!para) para = { line, count: 0 };
@@ -90,31 +114,92 @@ function lintMarkdown(text, startLine, out) {
   flush();
 }
 
-// 检查一段文字（列表项 / 单元格 / 段落中的一行），返回句子数。
+function checkKoreanStyle(text, line, out) {
+  const warnings = [];
+
+  for (const item of KO_VERBOSE_VERBS) {
+    for (const m of text.matchAll(item.re)) {
+      warnings.push({
+        index: m.index,
+        rule: 'word',
+        message: `장황한 표현 "${m[0]}" (${item.label})`,
+        suggestion: item.suggest(m),
+      });
+    }
+  }
+
+  for (const item of KO_INDIRECT) {
+    for (const m of text.matchAll(item.re)) {
+      warnings.push({
+        index: m.index,
+        rule: 'indirect',
+        message: `우회 표현 "${m[0]}" (${item.label})`,
+        suggestion: item.suggestion,
+      });
+    }
+  }
+
+  for (const item of KO_DOUBLE_NEGATIVES) {
+    for (const m of text.matchAll(item.re)) {
+      warnings.push({
+        index: m.index,
+        rule: 'double-negative',
+        message: `이중 부정 "${m[0]}"`,
+        suggestion: item.suggestion,
+      });
+    }
+  }
+
+  out.push(...warnings.sort((a, b) => a.index - b.index).map(({ index, ...w }) => ({ line, ...w })));
+}
+
+// 목록 항목, 표 셀, 문단의 한 줄을 검사하고 문장 수를 반환한다.
 function checkUnit(text, line, kind, out) {
   const sentences = splitSentences(text);
+
   for (const s of sentences) {
-    const { lang, count } = sentenceLength(s);
-    const limit = LIMITS[lang][kind];
-    if (count > limit) {
-      const unit = lang === 'zh' ? '字' : 'words';
-      const preview = s.length > 24 ? `${s.slice(0, 24)}…` : s;
-      out.push({ line, rule: 'sentence-length', message: `${kind === 'procedural' ? '步骤' : '句子'} ${count} ${unit}（上限 ${limit}）："${preview}"` });
-    }
-    if (lang === 'en' && PASSIVE.test(s)) {
-      out.push({ line, rule: 'passive', message: `疑似被动语态："${s.match(PASSIVE)[0]}"`, suggestion: '改为主动语态' });
+    const metrics = sentenceLength(s);
+    if (metrics.lang === 'ko') {
+      const limit = LIMITS.ko[kind];
+      if (metrics.count > limit.words || metrics.chars > limit.chars) {
+        const preview = s.length > 32 ? `${s.slice(0, 32)}…` : s;
+        out.push({
+          line,
+          rule: 'sentence-length',
+          message: `${kind === 'procedural' ? '절차' : '문장'} ${metrics.count}어절 / ${metrics.chars}자 (상한 ${limit.words}어절 · 공백 제외 ${limit.chars}자): "${preview}"`,
+        });
+      }
+    } else {
+      const limit = LIMITS.en[kind];
+      if (metrics.count > limit) {
+        const preview = s.length > 32 ? `${s.slice(0, 32)}…` : s;
+        out.push({
+          line,
+          rule: 'sentence-length',
+          message: `${kind === 'procedural' ? '절차' : '문장'} ${metrics.count} words (상한 ${limit}): "${preview}"`,
+        });
+      }
+      if (PASSIVE.test(s)) {
+        out.push({
+          line,
+          rule: 'passive',
+          message: `영어 피동 표현 "${s.match(PASSIVE)[0]}"`,
+          suggestion: '능동태로 바꾼다',
+        });
+      }
     }
   }
-  const lexical = [
-    ...EN_RE.flatMap(({ re, suggestion }) => [...text.matchAll(re)].map((m) => ({ index: m.index, rule: 'word', message: `不推荐 "${m[0]}"`, suggestion }))),
-    ...ZH_LIGHT_VERBS.flatMap(({ re, label }) => [...text.matchAll(re)].map((m) => ({ index: m.index, rule: 'word', message: `虚动词 "${m[0]}"（${label}）`, suggestion: `直接用「${m[1]}」` }))),
-  ];
+
+  const lexical = EN_RE.flatMap(({ re, suggestion }) =>
+    [...text.matchAll(re)].map((m) => ({
+      index: m.index,
+      rule: 'word',
+      message: `권장하지 않는 영어 표현 "${m[0]}"`,
+      suggestion,
+    })),
+  );
   out.push(...lexical.sort((a, b) => a.index - b.index).map(({ index, ...w }) => ({ line, ...w })));
-  for (const s of sentences) {
-    if ((s.match(/的/g) ?? []).length >= 3) out.push({ line, rule: 'de-chain', message: `"的"字连用：${s}`, suggestion: '拆句或删去多余的"的"' });
-  }
-  for (const c of ZH_CLICHES) {
-    if (text.includes(c)) out.push({ line, rule: 'cliche', message: `套话 "${c}"`, suggestion: '删除，或换成具体事实' });
-  }
+
+  if (/[가-힣]/.test(text)) checkKoreanStyle(text, line, out);
   return sentences.length;
 }

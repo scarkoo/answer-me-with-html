@@ -10,13 +10,16 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT"></a>
-  <a href="https://github.com/QingYunA/answer-me-with-html/actions/workflows/ci.yml"><img src="https://github.com/QingYunA/answer-me-with-html/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/scarkoo/answer-me-with-html/actions/workflows/ci.yml"><img src="https://github.com/scarkoo/answer-me-with-html/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <img src="https://img.shields.io/badge/works%20with-Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20Cursor%20%C2%B7%20OpenCode-black" alt="Works with Claude Code, Codex, Cursor, OpenCode">
 </p>
 
 <p align="center">
   <b>English</b> · <a href="README.zh-CN.md">简体中文</a>
 </p>
+
+> [!NOTE]
+> This fork is hardened for Codex: browser auto-open is off by default, agent-authored HTML/SVG/inline JavaScript stay available for interaction, and generated pages use CSP to block direct network connections and external executable resources while allowing HTTPS font files.
 
 Once installed, ask questions the way you always do:
 
@@ -60,21 +63,21 @@ You need [Node.js](https://nodejs.org/) 20 or newer. There is no `npm install` s
 
 Paste this into Claude Code, Codex, Cursor, OpenCode or any other agent:
 
-> Install the Answer me with HTML skill: run `npx -y skills add QingYunA/answer-me-with-html -g -y`, and pass `-a` with your own agent name (for Claude Code, `-a claude-code`). Then read its SKILL.md and use it to make a page that explains the TCP three-way handshake, so we know it works.
+> Install the Codex-hardened Answer me with HTML skill: run `npx -y skills add scarkoo/answer-me-with-html -g -y -a codex`. Then read its SKILL.md and render a small test page.
 
 ### Claude Code plugin
 
 Run this inside Claude Code:
 
 ```
-/plugin marketplace add QingYunA/answer-me-with-html
+/plugin marketplace add scarkoo/answer-me-with-html
 /plugin install answer-me-with-html@answer-me-with-html
 ```
 
 ### One command
 
 ```bash
-npx skills add QingYunA/answer-me-with-html
+npx skills add scarkoo/answer-me-with-html
 ```
 
 It asks which agents to install into. The installer, [vercel-labs/skills](https://github.com/vercel-labs/skills), supports more than 70 agents.
@@ -85,7 +88,7 @@ It asks which agents to install into. The installer, [vercel-labs/skills](https:
 Copy the `skills/answer-me-with-html` folder into your agent's skill folder. For Claude Code:
 
 ```bash
-git clone --depth 1 https://github.com/QingYunA/answer-me-with-html.git /tmp/answer-me-with-html
+git clone --depth 1 https://github.com/scarkoo/answer-me-with-html.git /tmp/answer-me-with-html
 cp -R /tmp/answer-me-with-html/skills/answer-me-with-html ~/.claude/skills/answer-me-with-html
 ```
 
@@ -108,7 +111,7 @@ No setup is needed after install.
 
 The agent decides when a page is worth it: related concepts, multi-step flows, multi-way comparisons. You can also just say "explain it in HTML".
 
-Pages are saved in `~/.answer-me-with-html/pages/`. The buttons in the top-right corner switch the theme and light/dark mode, and copy the Markdown that produced the page.
+Pages are saved in the current working directory under `./.answer-me-with-html/pages/`. The buttons in the top-right corner switch the theme and light/dark mode, and copy the Markdown that produced the page.
 
 ## Settings
 
@@ -122,7 +125,7 @@ Change settings with a slash command. There are no config files to edit by hand.
 
 | Key | Default | What it does |
 | :--- | :--- | :--- |
-| `open` | `on` | Open each page in the browser after it is made. Turn it off if pop-ups interrupt you |
+| `open` | `off` | Do not open pages automatically. Use `--open` only when you explicitly want a browser window |
 | `always` | `on` | Always-on mode (see below). Only matters when the always-on plugin is installed |
 | `theme` | `blueprint` | Default theme: `blueprint` or `shadcn` |
 | `mode` | `auto` | Default color mode: `auto`, `light` or `dark` |
@@ -139,7 +142,7 @@ The agent then gets a short reminder each turn (about 90 tokens). Whenever it gi
 **Claude Code:** install one more plugin.
 
 ```
-/plugin marketplace add QingYunA/answer-me-with-html
+/plugin marketplace add scarkoo/answer-me-with-html
 /plugin install answer-me-with-html-always@answer-me-with-html
 ```
 
@@ -198,6 +201,7 @@ The CLI does the rest. It picks the template, places the panels, applies the the
 - **One file, no dependencies:** Each page is a single `.html` with no CDN links or web fonts. It opens offline and is easy to share.
 - **Writing check:** Drafts are checked against rules adapted from ASD-STE100: long sentences, wordy phrases, passive voice. It only warns unless you ask for strict mode.
 - **Keeps its source:** Every page embeds the Markdown that made it. Click "Copy source" to get it back.
+- **Jump back to code:** Markdown links such as `[assets.ts:81](source:apps/server/src/routes/assets.ts:81)` are resolved against the current workspace and rendered as `vscode://file` links with line/column navigation.
 
 <table>
   <tr>
@@ -221,6 +225,9 @@ The agent picks a component by the shape of the information:
 | `tree` | Folders, modules, taxonomies |
 | `timeline` | History, releases, phases |
 | `limits` | A value against its limit |
+| `chart` | CSV-backed bar, line and scatter charts for benchmarks, trends and numeric relationships |
+
+`chart` legends are interactive by default for multi-series charts: click or use Enter/Space to hide or show a series, and hover or focus to highlight it. Long axis labels are wrapped or shortened automatically while the full text remains available as SVG metadata.
 | `annot` | Word-by-word notes on a sentence |
 | `kv` | Metadata, a drawing's title block |
 | `callout` | A conclusion, a tip, a warning |
@@ -250,7 +257,7 @@ A -> B: label
 
 - Every `## ` heading is a panel. The letters A, B, C are optional and added for you.
 - `span=2` makes a panel two columns wide, `rows=2` makes it two rows tall, and `bare` removes its title bar.
-- When no component fits, use a ```` ```html ```` or ```` ```svg ```` block to embed raw markup.
+- Raw ```` ```html ```` and ```` ```svg ```` blocks are supported for custom layout, graphics and interaction. Inline JavaScript is allowed; CSP still blocks direct connections and external executable resources.
 
 Full syntax for a component: `am help <component>`.
 
@@ -264,9 +271,10 @@ The CLI is `scripts/am.mjs` inside the skill folder.
 ````bash
 AM=skills/answer-me-with-html/scripts/am.mjs
 
-node $AM render examples/tcp.en.md                # render and open in the browser
+node $AM render examples/tcp.en.md                # render; browser stays closed by default
 node $AM render notes.md -o out.html --no-open    # choose the output file, don't open
 node $AM render notes.md --theme shadcn           # pick a theme for this run
+node $AM render notes.md --open                   # explicitly open this result
 node $AM lint notes.md                            # writing check only
 node $AM list                                     # list components
 node $AM config                                   # view settings
@@ -280,7 +288,7 @@ A -> B: hello
 AM_EOF
 ````
 
-Pages go to `~/.answer-me-with-html/pages/` by default. Set `AM_HOME` to move them.
+Pages go to `./.answer-me-with-html/pages/` under the current working directory by default. `-o` chooses another output path. `AM_HOME` only changes where the config file is stored.
 
 </details>
 
@@ -299,7 +307,7 @@ Set the strictness with `/answer-me-with-html:config style strict`, or per page 
 ## Development
 
 ```bash
-git clone https://github.com/QingYunA/answer-me-with-html.git && cd answer-me-with-html
+git clone https://github.com/scarkoo/answer-me-with-html.git && cd answer-me-with-html
 npm install
 npm test          # run the tests
 npm run build     # after changing src/, rebuild skills/answer-me-with-html/scripts/am.mjs

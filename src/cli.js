@@ -10,7 +10,7 @@ import { parseDoc, ParseError, CHOICES } from './parse.js';
 import { lintDoc, formatWarning } from './lint/ste.js';
 import { COMPONENTS } from './components/index.js';
 import { THEMES } from './themes/index.js';
-import { amHome, readConfig, setConfig, resetConfig, CONFIG_KEYS, ConfigError } from './config.js';
+import { readConfig, setConfig, resetConfig, CONFIG_KEYS, ConfigError } from './config.js';
 
 const MAX_LISTED_WARNINGS = 20;
 
@@ -25,8 +25,9 @@ const USAGE = `Answer me with HTML ${VERSION} — 把 Markdown 内容稿渲染�
   am help [组件名|format]                          查看组件语法 / 稿件格式
 
 - 文件参数写 - 表示从 stdin 读取（适合 heredoc：am render - <<'EOF' ... EOF）。
-- 默认输出到 ~/.answer-me-with-html/pages/（可用环境变量 AM_HOME 修改）。
-- 是否自动打开浏览器、默认主题等用 am config 设置；--open / --no-open 只影响这一次。`;
+- 默认输出到当前工作目录的 .answer-me-with-html/pages/，便于编辑器在受信任的工作区内打开。
+- -o 可显式指定其他输出路径。AM_HOME 只控制配置文件位置。
+- 默认不自动打开浏览器。需要时显式传 --open；配置与其他默认值用 am config 查看。`;
 
 const FORMAT = `稿件格式（扩展 Markdown）
 
@@ -50,11 +51,11 @@ source: asd-ste100.org # 其他任意键会显示在页头元信息行
 A -> B
 \`\`\`
 
-\`\`\`html             ← html / svg 围栏块原样嵌入（逃生口）
-<div>任意内容</div>
-\`\`\`
+html / svg 围栏块会原样嵌入，可用于自定义布局、图形和交互。页面 CSP 会继续阻止外部网络与外部资源加载。
 
 - "## " 开启一个面板；字母 ID 可省略（自动分配 A、B、C…）。span 让面板跨列。
+- 源码跳转写作 [显示文字](source:workspace/relative/file.ts:line:column)，渲染时转换为 VS Code vscode://file 链接。
+- source: 只接受当前工作区内的相对路径；line / column 省略时默认为 1。
 - 组件列表见 am list；单个组件语法见 am help <组件名>。`;
 
 export async function main(argv, io = {}) {
@@ -142,13 +143,18 @@ function cmdRender(src, opts, { print, fail, env, cwd }) {
   const { theme, mode, style } = config.values;
   let result;
   try {
-    result = renderDoc(src, { theme: opts.theme, template: opts.template, style: opts.style, mode: opts.mode }, { theme, mode, style });
+    result = renderDoc(
+      src,
+      { theme: opts.theme, template: opts.template, style: opts.style, mode: opts.mode },
+      { theme, mode, style },
+      { cwd: cwd ?? process.cwd() },
+    );
   } catch (e) {
     return reportError(e, fail);
   }
   const file = opts.out
     ? resolve(cwd ?? process.cwd(), opts.out)
-    : join(amHome(env), 'pages', `${slug(result.meta.title)}-${stamp()}.html`);
+    : join(cwd ?? process.cwd(), '.answer-me-with-html', 'pages', `${slug(result.meta.title)}-${stamp()}.html`);
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, result.html);
 
@@ -251,7 +257,7 @@ function cmdList(print) {
   for (const [name, t] of Object.entries(THEMES)) print(`  ${name.padEnd(10)}${t.label}`);
   print('\n组件（围栏块语言名）:');
   for (const c of COMPONENTS.values()) print(`  ${c.name.padEnd(10)}${c.summary}`);
-  print('  html/svg  原样嵌入（逃生口）');
+  print('  html/svg  原样嵌入（交互可用；外部通信由 CSP 限制）');
   print('\n语法：am help <组件名>；稿件格式：am help format');
 }
 

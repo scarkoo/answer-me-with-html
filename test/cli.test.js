@@ -21,7 +21,7 @@ async function run(args, { stdin = '', env = {} } = {}) {
   const err = sink();
   const code = await main(args, {
     stdout: out.stream, stderr: err.stream, stdin: Readable.from([stdin]),
-    env: { AM_NO_OPEN: '1', AM_HOME: dir, ...env }, cwd: dir,
+    env: { AM_NO_OPEN: '1', AM_HOME: join(dir, 'config-home'), ...env }, cwd: dir,
   });
   return { code, out: out.text, err: err.text };
 }
@@ -33,11 +33,12 @@ test('cli: --version 与 --help', async () => {
   assert.match((await run([])).out, /用法/);
 });
 
-test('cli render: 从 stdin 读取，写入 AM_HOME/pages，打印路径与统计', async () => {
-  const r = await run(['render', '-'], { stdin: GOOD });
+test('cli render: 默认输出到 cwd/.answer-me-with-html/pages，且不受 AM_HOME 影响', async () => {
+  const r = await run(['render', '-'], { stdin: GOOD, env: { AM_HOME: join(dir, 'other-config-home') } });
   assert.equal(r.code, 0, r.err);
   const file = r.out.match(/✓ (.+\.html)/)[1];
-  assert.ok(file.startsWith(join(dir, 'pages', 'CLI-测试-')));
+  assert.ok(file.startsWith(join(dir, '.answer-me-with-html', 'pages', 'CLI-测试-')));
+  assert.ok(!file.startsWith(join(dir, 'other-config-home')), 'AM_HOME은 설정 위치만 바꾼다');
   assert.match(readFileSync(file, 'utf8'), /<h1>CLI 测试<\/h1>/);
   assert.match(r.out, /sheet · blueprint · 1 面板 · flow×1/);
   assert.match(r.out, /STE ✓ 0 条警告/);
@@ -48,6 +49,17 @@ test('cli render: 文件参数 + -o + 主题覆盖', async () => {
   const r = await run(['render', 'in.md', '-o', 'out/x.html', '--theme', 'shadcn']);
   assert.equal(r.code, 0, r.err);
   assert.match(readFileSync(join(dir, 'out/x.html'), 'utf8'), /data-theme="shadcn"/);
+});
+
+test('cli render: chart src는 현재 작업 디렉터리의 CSV를 읽는다', async () => {
+  writeFileSync(join(dir, 'results.csv'), 'method,time_s\nDirect,46\nSkill,13');
+  const draft = '## Benchmark\n\`\`\`chart bar src="results.csv"\nx: method\ny: time_s\nunit: s\n\`\`\`';
+  const r = await run(['render', '-'], { stdin: draft });
+  assert.equal(r.code, 0, r.err);
+  const file = r.out.match(/✓ (.+\.html)/)[1];
+  const html = readFileSync(file, 'utf8');
+  assert.match(html, /am-chart--bar/);
+  assert.equal((html.match(/class="am-chart-bar /g) || []).length, 2);
 });
 
 test('cli render: 组件语法错误 → 绝对行号 + 组件名 + 正确示例，退出码 1', async () => {
@@ -68,13 +80,13 @@ test('cli render: style 80 打印警告但仍生成；strict 拒绝生成', asyn
   const bad = '## A\nUtilize the tool.';
   const soft = await run(['render', '-'], { stdin: bad });
   assert.equal(soft.code, 0);
-  assert.match(soft.out, /STE 1 条警告[\s\S]*L2 \[word\] 不推荐 "Utilize" → use/);
+  assert.match(soft.out, /STE 1 条警告[\s\S]*L2 \[word\] 권장하지 않는 영어 표현 "Utilize" → use/);
 
-  const before = readdirSync(join(dir, 'pages')).length;
+  const before = readdirSync(join(dir, '.answer-me-with-html', 'pages')).length;
   const strict = await run(['render', '-', '--style', 'strict'], { stdin: bad });
   assert.equal(strict.code, 1);
   assert.match(strict.err, /STE 检查未通过/);
-  assert.equal(readdirSync(join(dir, 'pages')).length, before, 'strict 失败时不写文件');
+  assert.equal(readdirSync(join(dir, '.answer-me-with-html', 'pages')).length, before, 'strict 失败时不写文件');
 });
 
 test('cli lint: 仅检查；strict 下有警告返回 1；off 跳过', async () => {

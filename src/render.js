@@ -10,6 +10,7 @@ import { esc, isCJK } from './svg/text.js';
 import { VERSION, RUNTIME_JS } from './assets.js';
 
 
+
 export class RenderError extends Error {
   constructor(message, { line, component, example } = {}) {
     super(message);
@@ -29,6 +30,11 @@ export class LintError extends Error {
 }
 
 const UI = {
+  ko: {
+    theme: { blueprint: '테마: 도면', shadcn: '테마: 카드' },
+    mode: { auto: '명암: 시스템 설정', light: '명암: 라이트', dark: '명암: 다크' },
+    copy: '원고 복사', done: '복사됨 ✓',
+  },
   zh: {
     theme: { blueprint: '主题：图纸', shadcn: '主题：卡片' },
     mode: { auto: '明暗：跟随系统', light: '明暗：亮', dark: '明暗：暗' },
@@ -42,16 +48,19 @@ const UI = {
 };
 
 export function detectLang(text) {
+  let hangul = 0;
   let cjk = 0;
   let latin = 0;
   for (const ch of String(text)) {
-    if (isCJK(ch)) cjk++;
+    if (/[가-힣ㄱ-ㅎㅏ-ㅣ]/.test(ch)) hangul++;
+    else if (isCJK(ch)) cjk++;
     else if (/[a-z]/i.test(ch)) latin++;
   }
+  if (hangul > 0 && hangul * 3 >= latin) return 'ko';
   return cjk * 3 >= latin ? 'zh' : 'en';
 }
 
-export function renderDoc(source, overrides = {}, defaults = {}) {
+export function renderDoc(source, overrides = {}, defaults = {}, runtime = {}) {
   const doc = parseDoc(source, { defaults });
   for (const [key, value] of Object.entries(overrides)) {
     if (value === undefined) continue;
@@ -65,7 +74,7 @@ export function renderDoc(source, overrides = {}, defaults = {}) {
   if (doc.meta.style === 'strict' && warnings.length) throw new LintError(warnings);
 
   const stats = { panels: doc.panels.length, components: {} };
-  const ctx = { seq: 0, stats };
+  const ctx = { seq: 0, stats, ...runtime };
   const introHtml = renderBlocks(doc.intro, ctx);
   const panels = doc.panels.map((p) => ({ ...p, html: renderBlocks(p.blocks, ctx) }));
   const lang = doc.meta.lang || detectLang(source);
@@ -75,7 +84,7 @@ export function renderDoc(source, overrides = {}, defaults = {}) {
 }
 
 function renderBlocks(blocks, ctx) {
-  return blocks.map((b) => (b.type === 'md' ? `<div class="am-md">${md(b.text)}</div>` : renderFence(b, ctx))).join('\n');
+  return blocks.map((b) => (b.type === 'md' ? `<div class="am-md">${md(b.text, { cwd: ctx.cwd })}</div>` : renderFence(b, ctx))).join('\n');
 }
 
 function renderFence(block, ctx) {
@@ -87,7 +96,7 @@ function renderFence(block, ctx) {
   }
   ctx.stats.components[lang] = (ctx.stats.components[lang] ?? 0) + 1;
   try {
-    return comp.render(text, { args, uid: () => `am${++ctx.seq}` });
+    return comp.render(text, { args, uid: () => `am${++ctx.seq}`, cwd: ctx.cwd });
   } catch (err) {
     if (!(err instanceof ComponentError)) throw err;
     throw new RenderError(err.message, {
@@ -104,12 +113,20 @@ function timestamp(d = new Date()) {
 }
 
 function shell({ meta, lang, body, source }) {
-  const ui = UI[lang] ?? UI.zh;
+  const normalizedLang = String(lang || 'en').toLowerCase();
+  const ui = normalizedLang.startsWith('ko') ? UI.ko
+    : normalizedLang.startsWith('zh') ? UI.zh
+      : UI.en;
+  const htmlLang = normalizedLang.startsWith('ko') ? 'ko'
+    : normalizedLang.startsWith('zh') ? 'zh-CN'
+      : (normalizedLang || 'en');
   return `<!doctype html>
-<html lang="${lang === 'zh' ? 'zh-CN' : 'en'}" data-theme="${esc(meta.theme)}" data-mode="${esc(meta.mode)}">
+<html lang="${esc(htmlLang)}" data-theme="${esc(meta.theme)}" data-mode="${esc(meta.mode)}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; font-src https: data:; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="generator" content="Answer me with HTML ${VERSION}">
 <title>${esc(meta.title || 'Answer me with HTML')}</title>
 <style>
