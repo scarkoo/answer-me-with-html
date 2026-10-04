@@ -84,7 +84,7 @@ export function renderDoc(source, overrides = {}, defaults = {}, runtime = {}) {
 }
 
 function renderBlocks(blocks, ctx) {
-  return blocks.map((b) => (b.type === 'md' ? `<div class="am-md">${md(b.text)}</div>` : renderFence(b, ctx))).join('\n');
+  return blocks.map((b) => (b.type === 'md' ? `<div class="am-md">${md(b.text, { cwd: ctx.cwd })}</div>` : renderFence(b, ctx))).join('\n');
 }
 
 function renderFence(block, ctx) {
