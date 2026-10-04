@@ -225,6 +225,8 @@ The agent picks a component by the shape of the information:
 | `timeline` | History, releases, phases |
 | `limits` | A value against its limit |
 | `chart` | CSV-backed bar, line and scatter charts for benchmarks, trends and numeric relationships |
+
+`chart` legends are interactive by default for multi-series charts: click or use Enter/Space to hide or show a series, and hover or focus to highlight it. Long axis labels are wrapped or shortened automatically while the full text remains available as SVG metadata.
 | `annot` | Word-by-word notes on a sentence |
 | `kv` | Metadata, a drawing's title block |
 | `callout` | A conclusion, a tip, a warning |
