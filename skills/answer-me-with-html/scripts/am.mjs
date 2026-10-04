@@ -7,7 +7,7 @@ import { readFileSync as readFileSync3, writeFileSync as writeFileSync2, mkdirSy
 
 // src/assets.js
 var VERSION = "0.2.2";
-var BASE_CSS = '/* Answer me with HTML base \u2014 \u53EA\u5F15\u7528\u4E3B\u9898\u53D8\u91CF\uFF0C\u7981\u6B62\u5199\u6B7B\u989C\u8272\uFF08\u4E3B\u9898 token \u89C1 themes/index.js\uFF09 */\n*, *::before, *::after { box-sizing: border-box; }\nhtml, body { margin: 0; padding: 0; }\nbody {\n  background: var(--bg); color: var(--ink);\n  font-family: var(--font-sans); font-size: 14px; line-height: 1.55;\n  -webkit-font-smoothing: antialiased;\n}\ncode, pre, kbd { font-family: var(--font-mono); }\n\n/* \u2500\u2500 \u5DE5\u5177\u680F \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-toolbar {\n  position: fixed; top: 12px; right: 12px; z-index: 10; display: flex; gap: 6px;\n}\n.am-btn {\n  font: 12px/1 var(--font-sans); color: var(--ink); background: var(--paper);\n  border: 1px solid var(--line-2); border-radius: var(--radius); padding: 7px 10px; cursor: pointer;\n}\n.am-btn:hover { border-color: var(--ink-3); }\n.am-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }\n\n/* \u2500\u2500 \u9875\u5934 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-head { margin: 0 0 20px; padding-right: 260px; }\n.am-head h1 { margin: 0; font-size: 24px; line-height: 1.25; letter-spacing: -0.01em; }\n.am-sub { margin: 4px 0 0; color: var(--ink-2); }\n.am-head-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 12px; color: var(--ink-2); }\n.am-head-meta b { font-family: var(--font-mono); font-weight: 400; color: var(--ink-3); margin-right: 6px; }\n.am-intro { margin-top: 12px; max-width: 80ch; }\n\n/* \u2500\u2500 sheet \u56FE\u7EB8\u677F \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-sheet { max-width: 1680px; margin: 0 auto; padding: 32px 28px 40px; }\n.am-frame { position: relative; }\n.am-grid {\n  display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));\n  gap: 20px; align-items: start;\n}\n.am-ruler { display: none; }\nhtml[data-theme="blueprint"] .am-frame { border: 1px solid var(--line); padding: 30px; }\nhtml[data-theme="blueprint"] .am-frame::before {\n  content: ""; position: absolute; inset: 18px; border: 1px solid var(--line); pointer-events: none;\n}\nhtml[data-theme="blueprint"] .am-ruler {\n  display: flex; position: absolute; font: 10px/1 var(--font-mono); color: var(--ink-3);\n}\n.am-ruler span { flex: 1; display: flex; align-items: center; justify-content: center; }\n.am-ruler--top, .am-ruler--bottom { left: 18px; right: 18px; height: 18px; }\n.am-ruler--top { top: 0; }\n.am-ruler--bottom { bottom: 0; }\n.am-ruler--left, .am-ruler--right { top: 18px; bottom: 18px; width: 18px; flex-direction: column; }\n.am-ruler--left { left: 0; }\n.am-ruler--right { right: 0; }\n.am-ruler--top span + span, .am-ruler--bottom span + span { border-left: 1px solid var(--line); }\n.am-ruler--left span + span, .am-ruler--right span + span { border-top: 1px solid var(--line); }\n\n/* \u2500\u2500 \u9762\u677F \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-panel {\n  background: var(--paper); border: var(--bw) solid var(--line); border-radius: var(--radius);\n  box-shadow: var(--shadow); min-width: 0; overflow: hidden;\n}\n.am-panel-head {\n  display: flex; align-items: stretch; gap: 0; border-bottom: var(--bw) solid var(--line); min-height: 34px;\n}\n.am-panel-id {\n  display: flex; align-items: center; justify-content: center; min-width: 34px; padding: 0 8px;\n  background: var(--head-bg); color: var(--head-fg); font-weight: 600; font-size: 14px;\n}\nhtml[data-theme="shadcn"] .am-panel-id { border-radius: 6px; min-width: 24px; height: 24px; margin: 9px 0 9px 14px; font-size: 12px; }\nhtml[data-theme="shadcn"] .am-panel-head { border-bottom-width: 1px; }\n.am-panel-head h2 { margin: 0; padding: 7px 12px; font-size: 15px; font-weight: 600; flex: 1; display: flex; align-items: center; }\n.am-panel-meta { align-self: center; padding: 0 12px; font: 11px/1.3 var(--font-mono); color: var(--ink-2); text-align: right; }\n.am-panel-body { padding: 14px 16px 16px; }\n.am-panel-body > * + * { margin-top: 12px; }\n\n/* \u2500\u2500 Markdown \u6B63\u6587 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-md > :first-child { margin-top: 0; }\n.am-md > :last-child { margin-bottom: 0; }\n.am-md p { margin: 0 0 8px; }\n.am-md ul, .am-md ol { margin: 0 0 8px; padding-left: 20px; }\n.am-md li + li { margin-top: 3px; }\n.am-md h3, .am-md h4 { margin: 14px 0 6px; font-size: 13px; }\n.am-md a { color: var(--accent); }\n.am-md blockquote { margin: 0 0 8px; padding: 2px 12px; border-left: 3px solid var(--line-2); color: var(--ink-2); }\n.am-md :not(pre) > code { font-size: 0.9em; background: var(--fill); padding: 1px 5px; border-radius: 4px; }\n.am-md hr { border: 0; border-top: 1px solid var(--line-2); margin: 12px 0; }\n.am-md table { width: 100%; border-collapse: collapse; font-size: 13px; }\n.am-md th {\n  text-align: left; font: 11px/1.3 var(--font-mono); color: var(--ink-2); font-weight: 400;\n  padding: 6px 10px; border-bottom: 1px solid var(--line-2);\n}\n.am-md td { padding: 7px 10px; border-bottom: 1px solid var(--line-2); vertical-align: top; }\n.am-md tbody tr:nth-child(even) td { background: var(--fill); }\n.am-table-wrap { overflow-x: auto; }\n.am-code {\n  margin: 0; padding: 12px 14px; background: var(--fill); border: 1px solid var(--line-2);\n  border-radius: var(--radius); overflow-x: auto; font-size: 12.5px; line-height: 1.5;\n}\n\n/* \u2500\u2500 \u72B6\u6001\u5FBD\u7AE0 ok / no / warn \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-status { white-space: nowrap; font-weight: 500; }\n.am-status--ok { color: var(--ok); }\n.am-status--no { color: var(--err); }\n.am-status--warn { color: var(--warn); }\n.am-status-icon { display: inline-block; width: 1.1em; font-weight: 700; }\n\n/* \u2500\u2500 callout \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-callout {\n  border: 1px solid var(--line-2); border-left: 3px solid var(--accent); background: var(--accent-bg);\n  padding: 10px 14px; border-radius: var(--radius);\n}\n.am-callout--ok { border-left-color: var(--ok); background: var(--ok-bg); }\n.am-callout--warn { border-left-color: var(--warn); background: var(--warn-bg); }\n.am-callout--err { border-left-color: var(--err); background: var(--err-bg); }\n.am-callout-title { font-weight: 600; margin-bottom: 4px; }\n\n/* \u2500\u2500 kv \u6807\u9898\u680F\u683C \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-kv {\n  display: grid; grid-template-columns: repeat(var(--kv-cols, 2), minmax(0, 1fr)); margin: 0;\n  border-top: var(--bw) solid var(--line); border-left: var(--bw) solid var(--line);\n}\n.am-kv-cell { border-right: var(--bw) solid var(--line); border-bottom: var(--bw) solid var(--line); padding: 6px 10px 8px; min-width: 0; }\n.am-kv-cell--wide { grid-column: 1 / -1; }\n.am-kv dt { font: 11px/1.4 var(--font-mono); color: var(--ink-2); }\n.am-kv dd { margin: 2px 0 0; font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }\n.am-kv-cell--wide dd { font-size: 17px; font-weight: 600; }\nhtml[data-theme="shadcn"] .am-kv { border-color: var(--line); border-radius: var(--radius); overflow: hidden; }\n\n/* \u2500\u2500 timeline \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-timeline { list-style: none; margin: 0; padding: 0; }\n.am-timeline--h { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); padding-top: 4px; }\n.am-timeline--h li { position: relative; text-align: center; padding: 0 6px; }\n.am-timeline--h li::before {\n  content: ""; position: absolute; top: 31px; left: 0; right: 0; border-top: var(--bw) solid var(--line);\n}\n.am-timeline--h li:first-child::before { left: 50%; }\n.am-timeline--h li:last-child::before { right: 50%; }\n.am-tl-when { display: block; font-size: 15px; font-weight: 500; height: 24px; }\n.am-tl-dot {\n  position: relative; display: block; width: 11px; height: 11px; margin: 2px auto 8px;\n  border: var(--bw) solid var(--line); border-radius: 50%; background: var(--paper);\n}\n.am-tl-item--hi .am-tl-dot { background: var(--accent); border-color: var(--accent); }\n.am-tl-title { display: block; font-size: 12.5px; font-weight: 500; }\n.am-tl-text { display: block; font-size: 12px; color: var(--ink-2); line-height: 1.45; }\n.am-timeline--v li { position: relative; padding: 0 0 14px 22px; }\n.am-timeline--v li::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: -6px; border-left: var(--bw) solid var(--line-2); }\n.am-timeline--v li:last-child::before { display: none; }\n.am-timeline--v .am-tl-dot { position: absolute; left: 0; top: 4px; margin: 0; }\n.am-timeline--v .am-tl-when { display: inline; height: auto; font: 12px var(--font-mono); color: var(--ink-2); margin-right: 8px; }\n.am-timeline--v .am-tl-title { display: inline; font-size: 14px; }\n.am-timeline--v .am-tl-text { margin-top: 2px; }\n\n/* \u2500\u2500 annot \u53E5\u5B50\u6807\u6CE8 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-annot + .am-annot { border-top: 1px solid var(--line-2); padding-top: 12px; }\n.am-annot-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: 600; margin-bottom: 8px; }\n.am-annot-meta { font: 11px var(--font-mono); font-weight: 400; color: var(--ink-2); }\n.am-annot-scroll { overflow-x: auto; }\n.am-annot-line {\n  position: relative; display: inline-block; white-space: pre; font: 14px/1.6 var(--font-mono);\n  padding-bottom: calc(var(--rows, 0) * 17px + 14px);\n}\n.am-annot-line--wrap { display: block; white-space: normal; padding-bottom: 10px; }\n.am-annot-line--wrap .am-seg { white-space: nowrap; }\n.am-seg { position: relative; }\n.am-seg::after {\n  content: ""; position: absolute; left: 1px; right: 1px; top: calc(100% + 1px); height: 5px;\n  border: 1px solid var(--accent); border-top: 0;\n}\n.am-seg-n {\n  position: absolute; left: 0; top: calc(100% + 8px + var(--row, 0) * 17px);\n  font: 11px/16px var(--font-sans); color: var(--accent); white-space: nowrap;\n}\n.am-seg--err { color: var(--err); }\n.am-seg--err::after { border-color: var(--err); }\n.am-seg--err .am-seg-n { color: var(--err); }\n.am-annot-caption { font-size: 12px; color: var(--ink-2); }\n\n/* \u2500\u2500 limits \u9650\u503C\u6761 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-lim + .am-lim { margin-top: 14px; }\n.am-lim-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; margin-bottom: 4px; }\n.am-lim-val { font: 12px var(--font-mono); color: var(--accent); white-space: nowrap; }\n.am-lim-track { position: relative; height: 12px; border: 1px solid var(--line-2); background: var(--fill); border-radius: calc(var(--radius) / 2); }\n.am-lim-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent-bg); border-right: 1px solid var(--accent); }\n.am-lim-mark { position: absolute; top: -4px; bottom: -4px; border-left: 2px solid var(--accent); }\n.am-lim.is-over .am-lim-fill { background: var(--err-bg); border-right-color: var(--err); }\n.am-lim.is-over .am-lim-val { color: var(--err); }\n.am-lim-ticks { position: relative; height: 16px; font: 10px/16px var(--font-mono); color: var(--ink-3); }\n.am-lim-ticks span { position: absolute; transform: translateX(-50%); }\n.am-lim-ticks span:first-child { transform: none; }\n.am-lim-note { font-size: 11px; color: var(--ink-2); margin-left: 6px; }\n\n/* \u2500\u2500 tree \u7ED3\u6784\u6811 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-tree { font-size: 13px; }\n.am-tree-root { display: flex; justify-content: center; position: relative; padding-bottom: 18px; }\n.am-tree-root::after { content: ""; position: absolute; bottom: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }\n.am-tree-root--solo { padding-bottom: 12px; }\n.am-tree-root--solo::after { display: none; }\n.am-tree-box {\n  border: var(--bw) solid var(--line); background: var(--paper); padding: 6px 14px; text-align: center;\n  border-radius: var(--radius); font-weight: 600;\n}\n.am-tree-box small { display: block; font-weight: 400; color: var(--ink-2); font-size: 12px; }\n.am-tree-box--root { background: var(--accent-bg); font-size: 15px; padding: 8px 28px; }\n.am-tree-cols { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); }\n.am-tree-col { position: relative; padding: 18px 8px 0; min-width: 0; }\n.am-tree-col::before { content: ""; position: absolute; top: 0; left: 0; right: 0; border-top: var(--bw) solid var(--line); }\n.am-tree-col:first-child::before { left: 50%; }\n.am-tree-col:last-child::before { right: 50%; }\n.am-tree-col::after { content: ""; position: absolute; top: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }\n.am-tree-list, .am-tree-list ul { list-style: none; margin: 0; padding: 0; }\n.am-tree-col > .am-tree-list { margin: 8px 0 0 14px; }\n.am-tree-list ul { margin-left: 16px; }\n.am-tree-list li { position: relative; padding: 3px 0 3px 18px; }\n.am-tree-list li::before { content: ""; position: absolute; left: 0; top: 0.95em; width: 12px; border-top: 1px solid var(--ink-3); }\n.am-tree-list li::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 1px solid var(--ink-3); }\n.am-tree-list li:last-child::after { bottom: auto; height: 0.95em; }\n.am-tree-tag { font: 11px var(--font-mono); color: var(--ink-3); margin-right: 4px; }\n.am-tree code { font: 12px var(--font-mono); }\n.am-tree-sub { display: block; font-size: 11.5px; color: var(--ink-2); }\n.am-tree-hi > .am-tree-label { color: var(--accent); font-weight: 600; }\n\n/* \u2500\u2500 \u56FE\uFF08flow / sequence\uFF09\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-diagram { margin: 0; overflow-x: auto; text-align: center; }\n.am-diagram svg { max-width: 100%; height: auto; font-family: var(--font-sans); }\n.am-diagram text { fill: var(--ink); font-size: 13px; }\n.am-node-shape { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }\n.am-node--hi .am-node-shape { fill: var(--accent-bg); stroke: var(--accent); }\n.am-node--hi text { fill: var(--accent); font-weight: 600; }\n.am-edge { fill: none; stroke: var(--ink-2); stroke-width: 1.3; }\n.am-edge--dashed { stroke-dasharray: 5 4; }\n.am-arrow { fill: var(--ink-2); }\n.am-edge-label rect { fill: var(--paper); }\n.am-diagram .am-edge-label text { fill: var(--accent); font-size: 11.5px; }\n.am-cluster { fill: var(--fill); stroke: var(--line-2); stroke-width: 1; stroke-dasharray: 4 3; }\n.am-diagram .am-cluster-label { fill: var(--ink-2); font: 11px var(--font-mono); }\n.am-lifeline { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 4 4; }\n.am-actor { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }\n.am-note { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1; }\n.am-diagram .am-step { fill: var(--ink-3); font: 10px var(--font-mono); }\n\n/* \u2500\u2500 chart CSV \u6570\u503C\u56FE \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-chart svg { min-width: 620px; }\n.am-chart-title { fill: var(--ink); font-size: 14px !important; font-weight: 600; }\n.am-chart-axis { stroke: var(--ink-2); stroke-width: 1.1; }\n.am-chart-grid { stroke: var(--line-2); stroke-width: 1; }\n.am-chart-grid--v { stroke-dasharray: 3 4; opacity: 0.55; }\n.am-diagram .am-chart-axis-label { fill: var(--ink-3); font: 10.5px var(--font-mono); }\n.am-chart-bar { fill: currentColor; opacity: 0.78; }\n.am-chart-line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }\n.am-chart-point { fill: var(--paper); stroke: currentColor; stroke-width: 2; }\n.am-chart-bar:hover, .am-chart-point:hover { opacity: 1; }\n.am-chart-legend rect { fill: currentColor; }\n.am-diagram .am-chart-legend text { fill: var(--ink-2); font-size: 11px; }\n.am-diagram .am-chart-empty { fill: var(--ink-3); font-size: 12px; }\n.am-chart-series-0 { color: var(--chart-1); }\n.am-chart-series-1 { color: var(--chart-2); }\n.am-chart-series-2 { color: var(--chart-3); }\n.am-chart-series-3 { color: var(--chart-4); }\n.am-chart-series-4 { color: var(--chart-5); }\n\n/* \u2500\u2500 doc \u7EBF\u6027\u8BB2\u89E3 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-doc { max-width: 1120px; margin: 0 auto; padding: 40px 28px 64px; }\n.am-doc-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: start; }\n.am-doc-layout--notoc { grid-template-columns: minmax(0, 1fr); max-width: 860px; }\n.am-toc { position: sticky; top: 24px; font-size: 13px; }\n.am-toc a { display: block; color: var(--ink-2); text-decoration: none; padding: 4px 0 4px 10px; border-left: 2px solid var(--line-2); }\n.am-toc a:hover { color: var(--ink); border-left-color: var(--accent); }\n.am-doc-body > .am-panel + .am-panel { margin-top: 20px; }\n\n/* \u2500\u2500 \u54CD\u5E94\u5F0F\u4E0E\u6253\u5370 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n@media (max-width: 1100px) {\n  .am-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }\n  .am-grid > .am-panel { grid-column: auto !important; }\n  .am-grid > .am-panel.am-span-wide { grid-column: 1 / -1 !important; }\n}\n@media (max-width: 760px) {\n  .am-sheet, .am-doc { padding: 56px 12px 24px; }\n  .am-head { padding-right: 0; }\n  .am-grid { grid-template-columns: minmax(0, 1fr); }\n  .am-grid > .am-panel.am-span-wide { grid-column: auto !important; }\n  html[data-theme="blueprint"] .am-frame { padding: 0; border: 0; }\n  html[data-theme="blueprint"] .am-frame::before, html[data-theme="blueprint"] .am-ruler { display: none; }\n  .am-doc-layout { grid-template-columns: minmax(0, 1fr); }\n  .am-toc { position: static; }\n  .am-timeline--h { grid-template-columns: minmax(0, 1fr); }\n  .am-tree-cols { grid-template-columns: minmax(0, 1fr); }\n}\n.am-colophon { text-align: center; padding: 0 0 28px; font: 11px var(--font-mono); color: var(--ink-3); }\n\n@media print {\n  .am-toolbar { display: none; }\n  body { background: var(--paper); }\n  .am-panel { break-inside: avoid; box-shadow: none; }\n}\n.am-panel--bare { border: 0; background: transparent; box-shadow: none; }\n.am-panel--bare > .am-panel-body { padding: 0; }\n.am-panel--bare .am-kv { background: var(--paper); }\n';
+var BASE_CSS = '/* Answer me with HTML base \u2014 \u53EA\u5F15\u7528\u4E3B\u9898\u53D8\u91CF\uFF0C\u7981\u6B62\u5199\u6B7B\u989C\u8272\uFF08\u4E3B\u9898 token \u89C1 themes/index.js\uFF09 */\n*, *::before, *::after { box-sizing: border-box; }\nhtml, body { margin: 0; padding: 0; }\nbody {\n  background: var(--bg); color: var(--ink);\n  font-family: var(--font-sans); font-size: 14px; line-height: 1.55;\n  -webkit-font-smoothing: antialiased;\n}\ncode, pre, kbd { font-family: var(--font-mono); }\n\n/* \u2500\u2500 \u5DE5\u5177\u680F \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-toolbar {\n  position: fixed; top: 12px; right: 12px; z-index: 10; display: flex; gap: 6px;\n}\n.am-btn {\n  font: 12px/1 var(--font-sans); color: var(--ink); background: var(--paper);\n  border: 1px solid var(--line-2); border-radius: var(--radius); padding: 7px 10px; cursor: pointer;\n}\n.am-btn:hover { border-color: var(--ink-3); }\n.am-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }\n\n/* \u2500\u2500 \u9875\u5934 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-head { margin: 0 0 20px; padding-right: 260px; }\n.am-head h1 { margin: 0; font-size: 24px; line-height: 1.25; letter-spacing: -0.01em; }\n.am-sub { margin: 4px 0 0; color: var(--ink-2); }\n.am-head-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 12px; color: var(--ink-2); }\n.am-head-meta b { font-family: var(--font-mono); font-weight: 400; color: var(--ink-3); margin-right: 6px; }\n.am-intro { margin-top: 12px; max-width: 80ch; }\n\n/* \u2500\u2500 sheet \u56FE\u7EB8\u677F \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-sheet { max-width: 1680px; margin: 0 auto; padding: 32px 28px 40px; }\n.am-frame { position: relative; }\n.am-grid {\n  display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));\n  gap: 20px; align-items: start;\n}\n.am-ruler { display: none; }\nhtml[data-theme="blueprint"] .am-frame { border: 1px solid var(--line); padding: 30px; }\nhtml[data-theme="blueprint"] .am-frame::before {\n  content: ""; position: absolute; inset: 18px; border: 1px solid var(--line); pointer-events: none;\n}\nhtml[data-theme="blueprint"] .am-ruler {\n  display: flex; position: absolute; font: 10px/1 var(--font-mono); color: var(--ink-3);\n}\n.am-ruler span { flex: 1; display: flex; align-items: center; justify-content: center; }\n.am-ruler--top, .am-ruler--bottom { left: 18px; right: 18px; height: 18px; }\n.am-ruler--top { top: 0; }\n.am-ruler--bottom { bottom: 0; }\n.am-ruler--left, .am-ruler--right { top: 18px; bottom: 18px; width: 18px; flex-direction: column; }\n.am-ruler--left { left: 0; }\n.am-ruler--right { right: 0; }\n.am-ruler--top span + span, .am-ruler--bottom span + span { border-left: 1px solid var(--line); }\n.am-ruler--left span + span, .am-ruler--right span + span { border-top: 1px solid var(--line); }\n\n/* \u2500\u2500 \u9762\u677F \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-panel {\n  background: var(--paper); border: var(--bw) solid var(--line); border-radius: var(--radius);\n  box-shadow: var(--shadow); min-width: 0; overflow: hidden;\n}\n.am-panel-head {\n  display: flex; align-items: stretch; gap: 0; border-bottom: var(--bw) solid var(--line); min-height: 34px;\n}\n.am-panel-id {\n  display: flex; align-items: center; justify-content: center; min-width: 34px; padding: 0 8px;\n  background: var(--head-bg); color: var(--head-fg); font-weight: 600; font-size: 14px;\n}\nhtml[data-theme="shadcn"] .am-panel-id { border-radius: 6px; min-width: 24px; height: 24px; margin: 9px 0 9px 14px; font-size: 12px; }\nhtml[data-theme="shadcn"] .am-panel-head { border-bottom-width: 1px; }\n.am-panel-head h2 { margin: 0; padding: 7px 12px; font-size: 15px; font-weight: 600; flex: 1; display: flex; align-items: center; }\n.am-panel-meta { align-self: center; padding: 0 12px; font: 11px/1.3 var(--font-mono); color: var(--ink-2); text-align: right; }\n.am-panel-body { padding: 14px 16px 16px; }\n.am-panel-body > * + * { margin-top: 12px; }\n\n/* \u2500\u2500 Markdown \u6B63\u6587 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-md > :first-child { margin-top: 0; }\n.am-md > :last-child { margin-bottom: 0; }\n.am-md p { margin: 0 0 8px; }\n.am-md ul, .am-md ol { margin: 0 0 8px; padding-left: 20px; }\n.am-md li + li { margin-top: 3px; }\n.am-md h3, .am-md h4 { margin: 14px 0 6px; font-size: 13px; }\n.am-md a { color: var(--accent); }\n.am-md blockquote { margin: 0 0 8px; padding: 2px 12px; border-left: 3px solid var(--line-2); color: var(--ink-2); }\n.am-md :not(pre) > code { font-size: 0.9em; background: var(--fill); padding: 1px 5px; border-radius: 4px; }\n.am-md hr { border: 0; border-top: 1px solid var(--line-2); margin: 12px 0; }\n.am-md table { width: 100%; border-collapse: collapse; font-size: 13px; }\n.am-md th {\n  text-align: left; font: 11px/1.3 var(--font-mono); color: var(--ink-2); font-weight: 400;\n  padding: 6px 10px; border-bottom: 1px solid var(--line-2);\n}\n.am-md td { padding: 7px 10px; border-bottom: 1px solid var(--line-2); vertical-align: top; }\n.am-md tbody tr:nth-child(even) td { background: var(--fill); }\n.am-table-wrap { overflow-x: auto; }\n.am-code {\n  margin: 0; padding: 12px 14px; background: var(--fill); border: 1px solid var(--line-2);\n  border-radius: var(--radius); overflow-x: auto; font-size: 12.5px; line-height: 1.5;\n}\n\n/* \u2500\u2500 \u72B6\u6001\u5FBD\u7AE0 ok / no / warn \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-status { white-space: nowrap; font-weight: 500; }\n.am-status--ok { color: var(--ok); }\n.am-status--no { color: var(--err); }\n.am-status--warn { color: var(--warn); }\n.am-status-icon { display: inline-block; width: 1.1em; font-weight: 700; }\n\n/* \u2500\u2500 callout \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-callout {\n  border: 1px solid var(--line-2); border-left: 3px solid var(--accent); background: var(--accent-bg);\n  padding: 10px 14px; border-radius: var(--radius);\n}\n.am-callout--ok { border-left-color: var(--ok); background: var(--ok-bg); }\n.am-callout--warn { border-left-color: var(--warn); background: var(--warn-bg); }\n.am-callout--err { border-left-color: var(--err); background: var(--err-bg); }\n.am-callout-title { font-weight: 600; margin-bottom: 4px; }\n\n/* \u2500\u2500 kv \u6807\u9898\u680F\u683C \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-kv {\n  display: grid; grid-template-columns: repeat(var(--kv-cols, 2), minmax(0, 1fr)); margin: 0;\n  border-top: var(--bw) solid var(--line); border-left: var(--bw) solid var(--line);\n}\n.am-kv-cell { border-right: var(--bw) solid var(--line); border-bottom: var(--bw) solid var(--line); padding: 6px 10px 8px; min-width: 0; }\n.am-kv-cell--wide { grid-column: 1 / -1; }\n.am-kv dt { font: 11px/1.4 var(--font-mono); color: var(--ink-2); }\n.am-kv dd { margin: 2px 0 0; font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }\n.am-kv-cell--wide dd { font-size: 17px; font-weight: 600; }\nhtml[data-theme="shadcn"] .am-kv { border-color: var(--line); border-radius: var(--radius); overflow: hidden; }\n\n/* \u2500\u2500 timeline \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-timeline { list-style: none; margin: 0; padding: 0; }\n.am-timeline--h { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); padding-top: 4px; }\n.am-timeline--h li { position: relative; text-align: center; padding: 0 6px; }\n.am-timeline--h li::before {\n  content: ""; position: absolute; top: 31px; left: 0; right: 0; border-top: var(--bw) solid var(--line);\n}\n.am-timeline--h li:first-child::before { left: 50%; }\n.am-timeline--h li:last-child::before { right: 50%; }\n.am-tl-when { display: block; font-size: 15px; font-weight: 500; height: 24px; }\n.am-tl-dot {\n  position: relative; display: block; width: 11px; height: 11px; margin: 2px auto 8px;\n  border: var(--bw) solid var(--line); border-radius: 50%; background: var(--paper);\n}\n.am-tl-item--hi .am-tl-dot { background: var(--accent); border-color: var(--accent); }\n.am-tl-title { display: block; font-size: 12.5px; font-weight: 500; }\n.am-tl-text { display: block; font-size: 12px; color: var(--ink-2); line-height: 1.45; }\n.am-timeline--v li { position: relative; padding: 0 0 14px 22px; }\n.am-timeline--v li::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: -6px; border-left: var(--bw) solid var(--line-2); }\n.am-timeline--v li:last-child::before { display: none; }\n.am-timeline--v .am-tl-dot { position: absolute; left: 0; top: 4px; margin: 0; }\n.am-timeline--v .am-tl-when { display: inline; height: auto; font: 12px var(--font-mono); color: var(--ink-2); margin-right: 8px; }\n.am-timeline--v .am-tl-title { display: inline; font-size: 14px; }\n.am-timeline--v .am-tl-text { margin-top: 2px; }\n\n/* \u2500\u2500 annot \u53E5\u5B50\u6807\u6CE8 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-annot + .am-annot { border-top: 1px solid var(--line-2); padding-top: 12px; }\n.am-annot-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: 600; margin-bottom: 8px; }\n.am-annot-meta { font: 11px var(--font-mono); font-weight: 400; color: var(--ink-2); }\n.am-annot-scroll { overflow-x: auto; }\n.am-annot-line {\n  position: relative; display: inline-block; white-space: pre; font: 14px/1.6 var(--font-mono);\n  padding-bottom: calc(var(--rows, 0) * 17px + 14px);\n}\n.am-annot-line--wrap { display: block; white-space: normal; padding-bottom: 10px; }\n.am-annot-line--wrap .am-seg { white-space: nowrap; }\n.am-seg { position: relative; }\n.am-seg::after {\n  content: ""; position: absolute; left: 1px; right: 1px; top: calc(100% + 1px); height: 5px;\n  border: 1px solid var(--accent); border-top: 0;\n}\n.am-seg-n {\n  position: absolute; left: 0; top: calc(100% + 8px + var(--row, 0) * 17px);\n  font: 11px/16px var(--font-sans); color: var(--accent); white-space: nowrap;\n}\n.am-seg--err { color: var(--err); }\n.am-seg--err::after { border-color: var(--err); }\n.am-seg--err .am-seg-n { color: var(--err); }\n.am-annot-caption { font-size: 12px; color: var(--ink-2); }\n\n/* \u2500\u2500 limits \u9650\u503C\u6761 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-lim + .am-lim { margin-top: 14px; }\n.am-lim-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; margin-bottom: 4px; }\n.am-lim-val { font: 12px var(--font-mono); color: var(--accent); white-space: nowrap; }\n.am-lim-track { position: relative; height: 12px; border: 1px solid var(--line-2); background: var(--fill); border-radius: calc(var(--radius) / 2); }\n.am-lim-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent-bg); border-right: 1px solid var(--accent); }\n.am-lim-mark { position: absolute; top: -4px; bottom: -4px; border-left: 2px solid var(--accent); }\n.am-lim.is-over .am-lim-fill { background: var(--err-bg); border-right-color: var(--err); }\n.am-lim.is-over .am-lim-val { color: var(--err); }\n.am-lim-ticks { position: relative; height: 16px; font: 10px/16px var(--font-mono); color: var(--ink-3); }\n.am-lim-ticks span { position: absolute; transform: translateX(-50%); }\n.am-lim-ticks span:first-child { transform: none; }\n.am-lim-note { font-size: 11px; color: var(--ink-2); margin-left: 6px; }\n\n/* \u2500\u2500 tree \u7ED3\u6784\u6811 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-tree { font-size: 13px; }\n.am-tree-root { display: flex; justify-content: center; position: relative; padding-bottom: 18px; }\n.am-tree-root::after { content: ""; position: absolute; bottom: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }\n.am-tree-root--solo { padding-bottom: 12px; }\n.am-tree-root--solo::after { display: none; }\n.am-tree-box {\n  border: var(--bw) solid var(--line); background: var(--paper); padding: 6px 14px; text-align: center;\n  border-radius: var(--radius); font-weight: 600;\n}\n.am-tree-box small { display: block; font-weight: 400; color: var(--ink-2); font-size: 12px; }\n.am-tree-box--root { background: var(--accent-bg); font-size: 15px; padding: 8px 28px; }\n.am-tree-cols { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); }\n.am-tree-col { position: relative; padding: 18px 8px 0; min-width: 0; }\n.am-tree-col::before { content: ""; position: absolute; top: 0; left: 0; right: 0; border-top: var(--bw) solid var(--line); }\n.am-tree-col:first-child::before { left: 50%; }\n.am-tree-col:last-child::before { right: 50%; }\n.am-tree-col::after { content: ""; position: absolute; top: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }\n.am-tree-list, .am-tree-list ul { list-style: none; margin: 0; padding: 0; }\n.am-tree-col > .am-tree-list { margin: 8px 0 0 14px; }\n.am-tree-list ul { margin-left: 16px; }\n.am-tree-list li { position: relative; padding: 3px 0 3px 18px; }\n.am-tree-list li::before { content: ""; position: absolute; left: 0; top: 0.95em; width: 12px; border-top: 1px solid var(--ink-3); }\n.am-tree-list li::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 1px solid var(--ink-3); }\n.am-tree-list li:last-child::after { bottom: auto; height: 0.95em; }\n.am-tree-tag { font: 11px var(--font-mono); color: var(--ink-3); margin-right: 4px; }\n.am-tree code { font: 12px var(--font-mono); }\n.am-tree-sub { display: block; font-size: 11.5px; color: var(--ink-2); }\n.am-tree-hi > .am-tree-label { color: var(--accent); font-weight: 600; }\n\n/* \u2500\u2500 \u56FE\uFF08flow / sequence\uFF09\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-diagram { margin: 0; overflow-x: auto; text-align: center; }\n.am-diagram svg { max-width: 100%; height: auto; font-family: var(--font-sans); }\n.am-diagram text { fill: var(--ink); font-size: 13px; }\n.am-node-shape { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }\n.am-node--hi .am-node-shape { fill: var(--accent-bg); stroke: var(--accent); }\n.am-node--hi text { fill: var(--accent); font-weight: 600; }\n.am-edge { fill: none; stroke: var(--ink-2); stroke-width: 1.3; }\n.am-edge--dashed { stroke-dasharray: 5 4; }\n.am-arrow { fill: var(--ink-2); }\n.am-edge-label rect { fill: var(--paper); }\n.am-diagram .am-edge-label text { fill: var(--accent); font-size: 11.5px; }\n.am-cluster { fill: var(--fill); stroke: var(--line-2); stroke-width: 1; stroke-dasharray: 4 3; }\n.am-diagram .am-cluster-label { fill: var(--ink-2); font: 11px var(--font-mono); }\n.am-lifeline { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 4 4; }\n.am-actor { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }\n.am-note { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1; }\n.am-diagram .am-step { fill: var(--ink-3); font: 10px var(--font-mono); }\n\n/* \u2500\u2500 chart CSV \u6570\u503C\u56FE \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-chart svg { min-width: 620px; }\n.am-chart-title { fill: var(--ink); font-size: 14px !important; font-weight: 600; }\n.am-chart-axis { stroke: var(--ink-2); stroke-width: 1.1; }\n.am-chart-grid { stroke: var(--line-2); stroke-width: 1; }\n.am-chart-grid--v { stroke-dasharray: 3 4; opacity: 0.55; }\n.am-diagram .am-chart-axis-label { fill: var(--ink-3); font: 10.5px var(--font-mono); }\n.am-chart-bar { fill: currentColor; opacity: 0.78; }\n.am-chart-line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }\n.am-chart-point { fill: var(--paper); stroke: currentColor; stroke-width: 2; }\n.am-chart-bar:hover, .am-chart-point:hover { opacity: 1; }\n.am-chart-legend { cursor: pointer; transition: opacity 120ms ease; }\n.am-chart-legend:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }\n.am-chart-legend.is-off { opacity: 0.32; }\n.am-chart [data-chart-mark] { transition: opacity 120ms ease; }\n.am-chart [data-chart-mark].is-hidden { display: none; }\n.am-chart [data-chart-mark].is-dimmed { opacity: 0.16; }\n.am-chart [data-chart-mark].is-highlighted { opacity: 1; }\n.am-chart-legend.is-dimmed { opacity: 0.25; }\n.am-chart-legend.is-highlighted { opacity: 1; }\n.am-chart-axis-title text { fill: var(--ink-2); font: 11px var(--font-sans); }\n.am-chart-x-tick { pointer-events: none; }\n.am-chart-legend rect { fill: currentColor; }\n.am-diagram .am-chart-legend text { fill: var(--ink-2); font-size: 11px; }\n.am-diagram .am-chart-empty { fill: var(--ink-3); font-size: 12px; }\n.am-chart-series-0 { color: var(--chart-1); }\n.am-chart-series-1 { color: var(--chart-2); }\n.am-chart-series-2 { color: var(--chart-3); }\n.am-chart-series-3 { color: var(--chart-4); }\n.am-chart-series-4 { color: var(--chart-5); }\n\n/* \u2500\u2500 doc \u7EBF\u6027\u8BB2\u89E3 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-doc { max-width: 1120px; margin: 0 auto; padding: 40px 28px 64px; }\n.am-doc-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: start; }\n.am-doc-layout--notoc { grid-template-columns: minmax(0, 1fr); max-width: 860px; }\n.am-toc { position: sticky; top: 24px; font-size: 13px; }\n.am-toc a { display: block; color: var(--ink-2); text-decoration: none; padding: 4px 0 4px 10px; border-left: 2px solid var(--line-2); }\n.am-toc a:hover { color: var(--ink); border-left-color: var(--accent); }\n.am-doc-body > .am-panel + .am-panel { margin-top: 20px; }\n\n/* \u2500\u2500 \u54CD\u5E94\u5F0F\u4E0E\u6253\u5370 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n@media (max-width: 1100px) {\n  .am-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }\n  .am-grid > .am-panel { grid-column: auto !important; }\n  .am-grid > .am-panel.am-span-wide { grid-column: 1 / -1 !important; }\n}\n@media (max-width: 760px) {\n  .am-sheet, .am-doc { padding: 56px 12px 24px; }\n  .am-head { padding-right: 0; }\n  .am-grid { grid-template-columns: minmax(0, 1fr); }\n  .am-grid > .am-panel.am-span-wide { grid-column: auto !important; }\n  html[data-theme="blueprint"] .am-frame { padding: 0; border: 0; }\n  html[data-theme="blueprint"] .am-frame::before, html[data-theme="blueprint"] .am-ruler { display: none; }\n  .am-doc-layout { grid-template-columns: minmax(0, 1fr); }\n  .am-toc { position: static; }\n  .am-timeline--h { grid-template-columns: minmax(0, 1fr); }\n  .am-tree-cols { grid-template-columns: minmax(0, 1fr); }\n}\n.am-colophon { text-align: center; padding: 0 0 28px; font: 11px var(--font-mono); color: var(--ink-3); }\n\n@media print {\n  .am-toolbar { display: none; }\n  body { background: var(--paper); }\n  .am-panel { break-inside: avoid; box-shadow: none; }\n}\n.am-panel--bare { border: 0; background: transparent; box-shadow: none; }\n.am-panel--bare > .am-panel-body { padding: 0; }\n.am-panel--bare .am-kv { background: var(--paper); }\n';
 var RUNTIME_JS = `(() => {
   const root = document.documentElement;
   const cycle = (list, cur) => list[(list.indexOf(cur) + 1) % list.length];
@@ -27,6 +27,57 @@ var RUNTIME_JS = `(() => {
   };
   bind('theme', 'data-theme', ['blueprint', 'shadcn']);
   bind('mode', 'data-mode', ['auto', 'light', 'dark']);
+
+
+  document.querySelectorAll('.am-chart').forEach((chart) => {
+    const legends = [...chart.querySelectorAll('[data-chart-legend]')];
+    const marks = [...chart.querySelectorAll('[data-chart-mark]')];
+    if (!legends.length) return;
+
+    const setHighlight = (series) => {
+      const active = series !== null;
+      for (const mark of marks) {
+        const same = mark.dataset.chartSeries === series;
+        mark.classList.toggle('is-dimmed', active && !same && !mark.classList.contains('is-hidden'));
+        mark.classList.toggle('is-highlighted', active && same);
+      }
+      for (const legend of legends) {
+        const same = legend.dataset.chartSeries === series;
+        legend.classList.toggle('is-dimmed', active && !same);
+        legend.classList.toggle('is-highlighted', active && same);
+      }
+    };
+
+    const toggleSeries = (legend) => {
+      const series = legend.dataset.chartSeries;
+      const visible = legend.getAttribute('aria-pressed') === 'true';
+      const nextVisible = !visible;
+      legend.setAttribute('aria-pressed', String(nextVisible));
+      legend.classList.toggle('is-off', !nextVisible);
+      for (const mark of marks) {
+        if (mark.dataset.chartSeries === series) mark.classList.toggle('is-hidden', !nextVisible);
+      }
+      setHighlight(null);
+    };
+
+    for (const legend of legends) {
+      legend.addEventListener('click', () => toggleSeries(legend));
+      legend.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        toggleSeries(legend);
+      });
+      legend.addEventListener('pointerenter', () => setHighlight(legend.dataset.chartSeries));
+      legend.addEventListener('pointerleave', () => setHighlight(null));
+      legend.addEventListener('focus', () => setHighlight(legend.dataset.chartSeries));
+      legend.addEventListener('blur', () => setHighlight(null));
+    }
+
+    for (const mark of marks) {
+      mark.addEventListener('pointerenter', () => setHighlight(mark.dataset.chartSeries));
+      mark.addEventListener('pointerleave', () => setHighlight(null));
+    }
+  });
 
   const copyBtn = document.querySelector('[data-am="copy"]');
   copyBtn?.addEventListener('click', async () => {
@@ -4158,7 +4209,8 @@ function diamondPoint(node, toward) {
 import { readFileSync, realpathSync, statSync } from "node:fs";
 import { isAbsolute, relative, resolve } from "node:path";
 var TYPES = /* @__PURE__ */ new Set(["bar", "line", "scatter"]);
-var OPTIONS = /* @__PURE__ */ new Set(["x", "y", "series", "unit", "title", "min", "max", "src"]);
+var OPTIONS = /* @__PURE__ */ new Set(["x", "y", "series", "unit", "title", "min", "max", "src", "legend", "x-label", "y-label"]);
+var LEGENDS = /* @__PURE__ */ new Set(["auto", "top", "bottom", "off"]);
 var MAX_ROWS = 2e3;
 var MAX_FILE_BYTES = 2 * 1024 * 1024;
 var COLORS = 5;
@@ -4171,6 +4223,9 @@ y: y\uCD95 \uCEEC\uB7FC
 series: \uADF8\uB8F9 \uCEEC\uB7FC \uB610\uB294 wide CSV\uC758 \uAC12 \uCEEC\uB7FC\uB4E4(\uC27C\uD45C \uAD6C\uBD84, \uC120\uD0DD)
 unit: \uB2E8\uC704(\uC120\uD0DD)
 title: \uCC28\uD2B8 \uC81C\uBAA9(\uC120\uD0DD)
+legend: auto | top | bottom | off (\uC120\uD0DD, \uAE30\uBCF8 auto)
+x-label: x\uCD95 \uC81C\uBAA9(\uC120\uD0DD)
+y-label: y\uCD95 \uC81C\uBAA9(\uC120\uD0DD)
 min: y\uCD95 \uCD5C\uC18C\uAC12(\uC120\uD0DD)
 max: y\uCD95 \uCD5C\uB300\uAC12(\uC120\uD0DD)
 ---
@@ -4224,6 +4279,8 @@ function parseChart(text, args = "") {
   const min = parseBound(options.min, "min");
   const max = parseBound(options.max, "max");
   if (min !== void 0 && max !== void 0 && min >= max) throw new ComponentError("chart min\uC740 max\uBCF4\uB2E4 \uC791\uC544\uC57C \uD55C\uB2E4", 1);
+  const legend = options.legend || "auto";
+  if (!LEGENDS.has(legend)) throw new ComponentError("chart legend\uB294 auto | top | bottom | off \uC911 \uD558\uB098\uC5EC\uC57C \uD55C\uB2E4", 1);
   return {
     type,
     x: options.x,
@@ -4231,6 +4288,9 @@ function parseChart(text, args = "") {
     series: options.series || "",
     unit: options.unit || "",
     title: options.title || "",
+    legend,
+    xLabel: options["x-label"] || "",
+    yLabel: options["y-label"] || "",
     src: options.src || "",
     min,
     max,
@@ -4392,29 +4452,52 @@ function renderCategorical(spec, rows, seriesDef) {
   if (yMax === yMin) return renderEmptyRange(spec, categories.length);
   const ticks = niceTicks(yMin, yMax, 5);
   const width = Math.max(680, categories.length * Math.max(78, series.length * 34));
+  const right = 24;
+  const yTickTexts = ticks.values.map((v) => formatValue(v, spec.unit));
+  const yTickWidth = Math.max(...yTickTexts.map((v) => measure(v, 10.5)), 24);
+  const left = Math.max(58, Math.min(width * 0.36, yTickWidth + 20 + (spec.yLabel ? 22 : 0)));
+  const plotW = width - left - right;
+  const xStep = plotW / Math.max(categories.length, 1);
+  const xLabelWidth = Math.max(52, Math.min(180, xStep - 8));
+  const xLabelData = categories.map((label) => fitWrappedLabel(label, xLabelWidth, 3, 11));
+  const maxXLines = Math.max(...xLabelData.map((item) => item.lines.length), 1);
+  const showLegend = shouldShowLegend(spec, series.length);
+  const legendPos = spec.legend === "bottom" ? "bottom" : "top";
+  const legendMeasure = showLegend ? renderLegend(series, 0, 0, plotW) : { html: "", height: 0 };
   const titleH = spec.title ? 28 : 4;
-  const legendH = series.length > 1 ? 28 : 4;
-  const margin = { left: 62, right: 20, top: 18 + titleH + legendH, bottom: 62 };
-  const plotW = width - margin.left - margin.right;
+  const topLegendH = showLegend && legendPos === "top" ? legendMeasure.height + 6 : 0;
+  const bottomLegendH = showLegend && legendPos === "bottom" ? legendMeasure.height + 8 : 0;
+  const margin = {
+    left,
+    right,
+    top: 18 + titleH + topLegendH,
+    bottom: 18 + maxXLines * 13 + (spec.xLabel ? 24 : 0) + bottomLegendH
+  };
   const plotH = 280;
   const height = margin.top + plotH + margin.bottom;
-  const xStep = plotW / Math.max(categories.length, 1);
+  const plotBottom = margin.top + plotH;
   const y2 = (v) => margin.top + plotH - (v - ticks.min) / (ticks.max - ticks.min) * plotH;
   const zeroY = y2(Math.max(ticks.min, Math.min(ticks.max, 0)));
-  const grid = ticks.values.map((v) => {
+  const grid = ticks.values.map((v, i) => {
     const py = y2(v);
-    return `<line class="am-chart-grid" x1="${f(margin.left)}" y1="${f(py)}" x2="${f(width - margin.right)}" y2="${f(py)}"/><text class="am-chart-axis-label" x="${f(margin.left - 9)}" y="${f(py)}" text-anchor="end" dominant-baseline="central">${esc(formatValue(v, spec.unit))}</text>`;
+    const full = yTickTexts[i];
+    const shown = truncateToWidth(full, Math.max(36, left - 18 - (spec.yLabel ? 22 : 0)), 10.5);
+    return `<line class="am-chart-grid" x1="${f(margin.left)}" y1="${f(py)}" x2="${f(width - margin.right)}" y2="${f(py)}"/><g class="am-chart-axis-label"><title>${esc(full)}</title><text x="${f(margin.left - 9)}" y="${f(py)}" text-anchor="end" dominant-baseline="central">${esc(shown)}</text></g>`;
   }).join("");
   const xLabels = categories.map((label, i) => {
     const cx = margin.left + xStep * (i + 0.5);
-    const lines = wrap(label, Math.max(52, xStep - 8), 11).slice(0, 2);
-    return textLines(lines, cx, margin.top + plotH + 24, 13, ' class="am-chart-axis-label"');
+    const item = xLabelData[i];
+    const cy = plotBottom + 18 + (item.lines.length - 1) * 13 / 2;
+    return `<g class="am-chart-x-tick"><title>${esc(label)}</title>${textLines(item.lines, cx, cy, 13, ' class="am-chart-axis-label"')}</g>`;
   }).join("");
   const marks = spec.type === "bar" ? renderBars(spec, categories, series, margin, plotH, xStep, y2, zeroY) : renderLines(spec, categories, series, margin, xStep, y2);
   const title = spec.title ? `<text class="am-chart-title" x="${f(margin.left)}" y="18">${esc(spec.title)}</text>` : "";
-  const legend = series.length > 1 ? renderLegend(series, margin.left, 18 + titleH) : "";
+  const legendY = legendPos === "top" ? 18 + titleH + 10 : plotBottom + 18 + maxXLines * 13 + (spec.xLabel ? 24 : 0) + 8;
+  const legend = showLegend ? renderLegend(series, margin.left, legendY, plotW).html : "";
   const axis = `<line class="am-chart-axis" x1="${f(margin.left)}" y1="${f(zeroY)}" x2="${f(width - margin.right)}" y2="${f(zeroY)}"/>`;
-  return `${svgOpen(width, height, spec.title || `${spec.type} chart`)}${title}${legend}${grid}${axis}${marks}${xLabels}</svg>`;
+  const xAxisTitle = spec.xLabel ? renderAxisTitle(spec.xLabel, margin.left + plotW / 2, plotBottom + 18 + maxXLines * 13 + 14, plotW - 20) : "";
+  const yAxisTitle = spec.yLabel ? renderAxisTitle(spec.yLabel, 14, margin.top + plotH / 2, plotH - 20, true) : "";
+  return `${svgOpen(width, height, spec.title || `${spec.type} chart`)}${title}${legend}${grid}${axis}${marks}${xLabels}${xAxisTitle}${yAxisTitle}</svg>`;
 }
 function renderBars(spec, categories, series, margin, plotH, xStep, y2, zeroY) {
   const groupW = Math.min(xStep * 0.72, 80);
@@ -4429,17 +4512,17 @@ function renderBars(spec, categories, series, margin, plotH, xStep, y2, zeroY) {
       const h2 = Math.max(1, Math.abs(zeroY - py));
       const x2 = center - groupW / 2 + si * (barW + 3);
       const tip = `${category} \xB7 ${s.label}: ${formatValue(value, spec.unit)}`;
-      return `<rect class="am-chart-bar am-chart-series-${si % COLORS}" x="${f(x2)}" y="${f(top)}" width="${f(barW)}" height="${f(h2)}" rx="2" data-label="${esc(tip)}"><title>${esc(tip)}</title></rect>`;
+      return `<rect class="am-chart-bar am-chart-series-${si % COLORS}" x="${f(x2)}" y="${f(top)}" width="${f(barW)}" height="${f(h2)}" rx="2" data-chart-mark data-chart-series="${si}" data-label="${esc(tip)}"><title>${esc(tip)}</title></rect>`;
     }).join("");
   }).join("");
 }
 function renderLines(spec, categories, series, margin, xStep, y2) {
   return series.map((s, si) => {
     const pts = categories.map((category, i) => s.values.has(category) ? { category, value: s.values.get(category), x: margin.left + xStep * (i + 0.5) } : null).filter(Boolean);
-    const path = pts.length > 1 ? `<polyline class="am-chart-line am-chart-series-${si % COLORS}" points="${pts.map((p) => `${f(p.x)},${f(y2(p.value))}`).join(" ")}"/>` : "";
+    const path = pts.length > 1 ? `<polyline class="am-chart-line am-chart-series-${si % COLORS}" data-chart-mark data-chart-series="${si}" points="${pts.map((p) => `${f(p.x)},${f(y2(p.value))}`).join(" ")}"/>` : "";
     const dots = pts.map((p) => {
       const tip = `${p.category} \xB7 ${s.label}: ${formatValue(p.value, spec.unit)}`;
-      return `<circle class="am-chart-point am-chart-series-${si % COLORS}" cx="${f(p.x)}" cy="${f(y2(p.value))}" r="4" data-label="${esc(tip)}"><title>${esc(tip)}</title></circle>`;
+      return `<circle class="am-chart-point am-chart-series-${si % COLORS}" cx="${f(p.x)}" cy="${f(y2(p.value))}" r="4" data-chart-mark data-chart-series="${si}" data-label="${esc(tip)}"><title>${esc(tip)}</title></circle>`;
     }).join("");
     return path + dots;
   }).join("");
@@ -4474,33 +4557,94 @@ function renderScatter(spec, rows, seriesDef) {
   const xTicks = niceTicks(Math.min(...xs), Math.max(...xs), 5);
   const yTicks = niceTicks(spec.min ?? Math.min(...ys), spec.max ?? Math.max(...ys), 5);
   const width = 720;
+  const yTickTexts = yTicks.values.map((v) => formatValue(v, spec.unit));
+  const yTickWidth = Math.max(...yTickTexts.map((v) => measure(v, 10.5)), 24);
+  const xTickTexts = xTicks.values.map((v) => formatNumber(v));
+  const left = Math.max(60, Math.min(width * 0.36, yTickWidth + 20 + (spec.yLabel ? 22 : 0)));
+  const right = Math.max(24, measure(xTickTexts.at(-1) || "", 10.5) / 2 + 10);
+  const plotW = width - left - right;
+  const showLegend = shouldShowLegend(spec, groups.length);
+  const legendPos = spec.legend === "bottom" ? "bottom" : "top";
+  const legendMeasure = showLegend ? renderLegend(groups, 0, 0, plotW) : { html: "", height: 0 };
   const titleH = spec.title ? 28 : 4;
-  const legendH = groups.length > 1 ? 28 : 4;
-  const margin = { left: 64, right: 24, top: 18 + titleH + legendH, bottom: 54 };
-  const plotW = width - margin.left - margin.right;
+  const topLegendH = showLegend && legendPos === "top" ? legendMeasure.height + 6 : 0;
+  const bottomLegendH = showLegend && legendPos === "bottom" ? legendMeasure.height + 8 : 0;
+  const margin = {
+    left,
+    right,
+    top: 18 + titleH + topLegendH,
+    bottom: 48 + (spec.xLabel ? 24 : 0) + bottomLegendH
+  };
   const plotH = 290;
   const height = margin.top + plotH + margin.bottom;
+  const plotBottom = margin.top + plotH;
   const sx = (v) => margin.left + (v - xTicks.min) / (xTicks.max - xTicks.min || 1) * plotW;
   const sy = (v) => margin.top + plotH - (v - yTicks.min) / (yTicks.max - yTicks.min || 1) * plotH;
-  const gridY = yTicks.values.map((v) => `<line class="am-chart-grid" x1="${margin.left}" y1="${f(sy(v))}" x2="${width - margin.right}" y2="${f(sy(v))}"/><text class="am-chart-axis-label" x="${margin.left - 9}" y="${f(sy(v))}" text-anchor="end" dominant-baseline="central">${esc(formatValue(v, spec.unit))}</text>`).join("");
-  const ticksX = xTicks.values.map((v) => `<line class="am-chart-grid am-chart-grid--v" x1="${f(sx(v))}" y1="${margin.top}" x2="${f(sx(v))}" y2="${margin.top + plotH}"/><text class="am-chart-axis-label" x="${f(sx(v))}" y="${margin.top + plotH + 22}" text-anchor="middle">${esc(formatNumber(v))}</text>`).join("");
+  const gridY = yTicks.values.map((v, i) => {
+    const full = yTickTexts[i];
+    const shown = truncateToWidth(full, Math.max(36, left - 18 - (spec.yLabel ? 22 : 0)), 10.5);
+    return `<line class="am-chart-grid" x1="${margin.left}" y1="${f(sy(v))}" x2="${width - margin.right}" y2="${f(sy(v))}"/><g class="am-chart-axis-label"><title>${esc(full)}</title><text x="${margin.left - 9}" y="${f(sy(v))}" text-anchor="end" dominant-baseline="central">${esc(shown)}</text></g>`;
+  }).join("");
+  const ticksX = xTicks.values.map((v) => `<line class="am-chart-grid am-chart-grid--v" x1="${f(sx(v))}" y1="${margin.top}" x2="${f(sx(v))}" y2="${plotBottom}"/><text class="am-chart-axis-label" x="${f(sx(v))}" y="${plotBottom + 22}" text-anchor="middle">${esc(formatNumber(v))}</text>`).join("");
   const dots = points.map((p) => {
     const tip = `${p.group}: ${spec.x}=${formatNumber(p.x)}, ${spec.y}=${formatValue(p.y, spec.unit)}`;
-    return `<circle class="am-chart-point am-chart-series-${p.gi % COLORS}" cx="${f(sx(p.x))}" cy="${f(sy(p.y))}" r="4.5" data-label="${esc(tip)}"><title>${esc(tip)}</title></circle>`;
+    return `<circle class="am-chart-point am-chart-series-${p.gi % COLORS}" cx="${f(sx(p.x))}" cy="${f(sy(p.y))}" r="4.5" data-chart-mark data-chart-series="${p.gi}" data-label="${esc(tip)}"><title>${esc(tip)}</title></circle>`;
   }).join("");
   const title = spec.title ? `<text class="am-chart-title" x="${margin.left}" y="18">${esc(spec.title)}</text>` : "";
-  const legend = groups.length > 1 ? renderLegend(groups, margin.left, 18 + titleH) : "";
-  return `${svgOpen(width, height, spec.title || "scatter chart")}${title}${legend}${gridY}${ticksX}<line class="am-chart-axis" x1="${margin.left}" y1="${margin.top + plotH}" x2="${width - margin.right}" y2="${margin.top + plotH}"/>${dots}</svg>`;
+  const legendY = legendPos === "top" ? 18 + titleH + 10 : plotBottom + 48 + (spec.xLabel ? 24 : 0);
+  const legend = showLegend ? renderLegend(groups, margin.left, legendY, plotW).html : "";
+  const xAxisTitle = spec.xLabel ? renderAxisTitle(spec.xLabel, margin.left + plotW / 2, plotBottom + 42, plotW - 20) : "";
+  const yAxisTitle = spec.yLabel ? renderAxisTitle(spec.yLabel, 14, margin.top + plotH / 2, plotH - 20, true) : "";
+  return `${svgOpen(width, height, spec.title || "scatter chart")}${title}${legend}${gridY}${ticksX}<line class="am-chart-axis" x1="${margin.left}" y1="${plotBottom}" x2="${width - margin.right}" y2="${plotBottom}"/>${dots}${xAxisTitle}${yAxisTitle}</svg>`;
 }
-function renderLegend(series, x2, y2) {
-  let cursor = x2;
-  return series.map((s, i) => {
-    const label = s.label ?? s.key ?? "";
-    const w = measure(label, 11) + 32;
-    const out = `<g class="am-chart-legend am-chart-series-${i % COLORS}" transform="translate(${f(cursor)} ${f(y2)})"><rect x="0" y="-8" width="12" height="12" rx="2"/><text x="18" y="-2" dominant-baseline="central">${esc(label)}</text></g>`;
-    cursor += w;
-    return out;
+function shouldShowLegend(spec, count) {
+  if (spec.legend === "off") return false;
+  if (spec.legend === "top" || spec.legend === "bottom") return count > 0;
+  return count > 1;
+}
+function renderLegend(series, x2, y2, maxWidth) {
+  const rowH = 22;
+  const maxLabelWidth = Math.max(72, Math.min(180, maxWidth - 34));
+  let cursor = 0;
+  let row = 0;
+  const html = series.map((s, i) => {
+    const label = String(s.label ?? s.key ?? "");
+    const shown = truncateToWidth(label, maxLabelWidth, 11);
+    const itemW = Math.min(maxWidth, measure(shown, 11) + 36);
+    if (cursor > 0 && cursor + itemW > maxWidth) {
+      row++;
+      cursor = 0;
+    }
+    const tx = x2 + cursor;
+    const ty = y2 + row * rowH;
+    cursor += itemW;
+    return `<g class="am-chart-legend am-chart-series-${i % COLORS}" transform="translate(${f(tx)} ${f(ty)})" data-chart-legend data-chart-series="${i}" role="button" tabindex="0" aria-pressed="true"><title>${esc(label)}</title><rect x="0" y="-8" width="12" height="12" rx="2"/><text x="18" y="-2" dominant-baseline="central">${esc(shown)}</text></g>`;
   }).join("");
+  return { html, height: (row + 1) * rowH };
+}
+function fitWrappedLabel(value, maxWidth, maxLines = 3, size = 11) {
+  const source = String(value ?? "");
+  const raw = wrap(source, maxWidth, size);
+  const lines = raw.slice(0, maxLines).map((line) => truncateToWidth(line, maxWidth, size));
+  if (!lines.length) lines.push("");
+  if (raw.length > maxLines) lines[lines.length - 1] = truncateToWidth(`${lines.at(-1)}\u2026`, maxWidth, size);
+  return { lines, truncated: raw.length > maxLines || lines.some((line, i) => line !== raw[i]) };
+}
+function truncateToWidth(value, maxWidth, size = 11) {
+  const source = String(value ?? "");
+  if (measure(source, size) <= maxWidth) return source;
+  const ellipsis = "\u2026";
+  let out = "";
+  for (const ch of source) {
+    if (measure(out + ch + ellipsis, size) > maxWidth) break;
+    out += ch;
+  }
+  return out ? `${out}${ellipsis}` : ellipsis;
+}
+function renderAxisTitle(label, x2, y2, maxWidth, rotate = false) {
+  const shown = truncateToWidth(label, maxWidth, 11);
+  const transform = rotate ? ` transform="rotate(-90 ${f(x2)} ${f(y2)})"` : "";
+  return `<g class="am-chart-axis-title"><title>${esc(label)}</title><text x="${f(x2)}" y="${f(y2)}" text-anchor="middle"${transform}>${esc(shown)}</text></g>`;
 }
 function niceTicks(min, max, count) {
   if (!Number.isFinite(min) || !Number.isFinite(max)) return { min: 0, max: 1, values: [0, 1] };
