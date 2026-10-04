@@ -164,6 +164,11 @@ Redis,Skill,12
 - 이미 workspace에 CSV가 있으면 `chart bar src="bench/results.csv"`처럼 읽는다. 절대경로와 workspace 밖 경로는 사용하지 않는다.
 - 서로 단위가 다른 값(예: tokens, seconds, dollars)을 같은 y축에 섞지 않는다. 패널이나 chart를 나눈다.
 - CSV는 최대 2MB / 2,000행이다. 결과 HTML에는 SVG만 포함되므로 브라우저가 CSV를 다시 읽지 않는다.
+- multi-series 차트의 범례 기본값은 `legend: auto`다. series가 2개 이상이면 상단에 표시하고 클릭 또는 Enter/Space로 series를 숨기거나 다시 표시한다.
+- 범례에 마우스를 올리거나 키보드 focus를 주면 해당 series를 강조한다. `legend: top | bottom | off`로 위치 또는 표시 여부를 바꿀 수 있다.
+- 축 제목은 `x-label:`, `y-label:`로 지정한다.
+- 긴 x축 category 라벨은 최대 3줄로 자동 줄바꿈하고, 그래도 길면 말줄임한다. 전체 문자열은 SVG title metadata에 보존한다.
+- y축 tick은 실제 문자열 폭을 측정해 왼쪽 여백을 자동 확장한다. 그래도 지나치게 길면 말줄임하고 전체 값은 SVG title metadata에 보존한다.
 
 선택 원칙:
 
