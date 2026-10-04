@@ -74,6 +74,16 @@ test('render: Markdown raw HTML과 javascript 링크를 유지해 인터랙션�
   assert.match(html, /href="javascript:void\(0\)"/);
 });
 
+test('render: chart 범례 runtime은 click/keyboard toggle과 series highlight를 제공', () => {
+  const src = '## A\n\`\`\`chart bar\nx: topic\ny: value\nseries: method\n---\ntopic,method,value\nA,Direct,10\nA,Skill,8\n\`\`\`';
+  const { html } = renderDoc(src);
+  assert.match(html, /data-chart-legend/);
+  assert.match(html, /aria-pressed="true"/);
+  assert.match(html, /toggleSeries/);
+  assert.match(html, /pointerenter/);
+  assert.match(html, /event\.key !== 'Enter'/);
+});
+
 test('render: CSP는 inline interaction을 허용하고 외부 통신은 제한하며 HTTPS font를 허용', () => {
   const { html } = renderDoc('## A\nx');
   assert.match(html, /default-src 'none'/);
