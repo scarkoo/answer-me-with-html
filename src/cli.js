@@ -54,6 +54,8 @@ A -> B
 html / svg 围栏块会原样嵌入，可用于自定义布局、图形和交互。页面 CSP 会继续阻止外部网络与外部资源加载。
 
 - "## " 开启一个面板；字母 ID 可省略（自动分配 A、B、C…）。span 让面板跨列。
+- 源码跳转写作 [显示文字](source:workspace/relative/file.ts:line:column)，渲染时转换为 VS Code vscode://file 链接。
+- source: 只接受当前工作区内的相对路径；line / column 省略时默认为 1。
 - 组件列表见 am list；单个组件语法见 am help <组件名>。`;
 
 export async function main(argv, io = {}) {
