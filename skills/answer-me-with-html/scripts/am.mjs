@@ -7,7 +7,7 @@ import { readFileSync as readFileSync3, writeFileSync as writeFileSync2, mkdirSy
 
 // src/assets.js
 var VERSION = "0.2.2";
-var BASE_CSS = '/* Answer me with HTML base \u2014 \u53EA\u5F15\u7528\u4E3B\u9898\u53D8\u91CF\uFF0C\u7981\u6B62\u5199\u6B7B\u989C\u8272\uFF08\u4E3B\u9898 token \u89C1 themes/index.js\uFF09 */\n*, *::before, *::after { box-sizing: border-box; }\nhtml, body { margin: 0; padding: 0; }\nbody {\n  background: var(--bg); color: var(--ink);\n  font-family: var(--font-sans); font-size: 14px; line-height: 1.55;\n  -webkit-font-smoothing: antialiased;\n}\ncode, pre, kbd { font-family: var(--font-mono); }\n\n/* \u2500\u2500 \u5DE5\u5177\u680F \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-toolbar {\n  position: fixed; top: 12px; right: 12px; z-index: 10; display: flex; gap: 6px;\n}\n.am-btn {\n  font: 12px/1 var(--font-sans); color: var(--ink); background: var(--paper);\n  border: 1px solid var(--line-2); border-radius: var(--radius); padding: 7px 10px; cursor: pointer;\n}\n.am-btn:hover { border-color: var(--ink-3); }\n.am-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }\n\n/* \u2500\u2500 \u9875\u5934 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-head { margin: 0 0 20px; padding-right: 260px; }\n.am-head h1 { margin: 0; font-size: 24px; line-height: 1.25; letter-spacing: -0.01em; }\n.am-sub { margin: 4px 0 0; color: var(--ink-2); }\n.am-head-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 12px; color: var(--ink-2); }\n.am-head-meta b { font-family: var(--font-mono); font-weight: 400; color: var(--ink-3); margin-right: 6px; }\n.am-intro { margin-top: 12px; max-width: 80ch; }\n\n/* \u2500\u2500 sheet \u56FE\u7EB8\u677F \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-sheet { max-width: 1680px; margin: 0 auto; padding: 32px 28px 40px; }\n.am-frame { position: relative; }\n.am-grid {\n  display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));\n  gap: 20px; align-items: start;\n}\n.am-ruler { display: none; }\nhtml[data-theme="blueprint"] .am-frame { border: 1px solid var(--line); padding: 30px; }\nhtml[data-theme="blueprint"] .am-frame::before {\n  content: ""; position: absolute; inset: 18px; border: 1px solid var(--line); pointer-events: none;\n}\nhtml[data-theme="blueprint"] .am-ruler {\n  display: flex; position: absolute; font: 10px/1 var(--font-mono); color: var(--ink-3);\n}\n.am-ruler span { flex: 1; display: flex; align-items: center; justify-content: center; }\n.am-ruler--top, .am-ruler--bottom { left: 18px; right: 18px; height: 18px; }\n.am-ruler--top { top: 0; }\n.am-ruler--bottom { bottom: 0; }\n.am-ruler--left, .am-ruler--right { top: 18px; bottom: 18px; width: 18px; flex-direction: column; }\n.am-ruler--left { left: 0; }\n.am-ruler--right { right: 0; }\n.am-ruler--top span + span, .am-ruler--bottom span + span { border-left: 1px solid var(--line); }\n.am-ruler--left span + span, .am-ruler--right span + span { border-top: 1px solid var(--line); }\n\n/* \u2500\u2500 \u9762\u677F \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-panel {\n  background: var(--paper); border: var(--bw) solid var(--line); border-radius: var(--radius);\n  box-shadow: var(--shadow); min-width: 0; overflow: hidden;\n}\n.am-panel-head {\n  display: flex; align-items: stretch; gap: 0; border-bottom: var(--bw) solid var(--line); min-height: 34px;\n}\n.am-panel-id {\n  display: flex; align-items: center; justify-content: center; min-width: 34px; padding: 0 8px;\n  background: var(--head-bg); color: var(--head-fg); font-weight: 600; font-size: 14px;\n}\nhtml[data-theme="shadcn"] .am-panel-id { border-radius: 6px; min-width: 24px; height: 24px; margin: 9px 0 9px 14px; font-size: 12px; }\nhtml[data-theme="shadcn"] .am-panel-head { border-bottom-width: 1px; }\n.am-panel-head h2 { margin: 0; padding: 7px 12px; font-size: 15px; font-weight: 600; flex: 1; display: flex; align-items: center; }\n.am-panel-meta { align-self: center; padding: 0 12px; font: 11px/1.3 var(--font-mono); color: var(--ink-2); text-align: right; }\n.am-panel-body { padding: 14px 16px 16px; }\n.am-panel-body > * + * { margin-top: 12px; }\n\n/* \u2500\u2500 Markdown \u6B63\u6587 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-md > :first-child { margin-top: 0; }\n.am-md > :last-child { margin-bottom: 0; }\n.am-md p { margin: 0 0 8px; }\n.am-md ul, .am-md ol { margin: 0 0 8px; padding-left: 20px; }\n.am-md li + li { margin-top: 3px; }\n.am-md h3, .am-md h4 { margin: 14px 0 6px; font-size: 13px; }\n.am-md a { color: var(--accent); }\n.am-md blockquote { margin: 0 0 8px; padding: 2px 12px; border-left: 3px solid var(--line-2); color: var(--ink-2); }\n.am-md :not(pre) > code { font-size: 0.9em; background: var(--fill); padding: 1px 5px; border-radius: 4px; }\n.am-md hr { border: 0; border-top: 1px solid var(--line-2); margin: 12px 0; }\n.am-md table { width: 100%; border-collapse: collapse; font-size: 13px; }\n.am-md th {\n  text-align: left; font: 11px/1.3 var(--font-mono); color: var(--ink-2); font-weight: 400;\n  padding: 6px 10px; border-bottom: 1px solid var(--line-2);\n}\n.am-md td { padding: 7px 10px; border-bottom: 1px solid var(--line-2); vertical-align: top; }\n.am-md tbody tr:nth-child(even) td { background: var(--fill); }\n.am-table-wrap { overflow-x: auto; }\n.am-code {\n  margin: 0; padding: 12px 14px; background: var(--fill); border: 1px solid var(--line-2);\n  border-radius: var(--radius); overflow-x: auto; font-size: 12.5px; line-height: 1.5;\n}\n\n/* \u2500\u2500 \u72B6\u6001\u5FBD\u7AE0 ok / no / warn \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-status { white-space: nowrap; font-weight: 500; }\n.am-status--ok { color: var(--ok); }\n.am-status--no { color: var(--err); }\n.am-status--warn { color: var(--warn); }\n.am-status-icon { display: inline-block; width: 1.1em; font-weight: 700; }\n\n/* \u2500\u2500 callout \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-callout {\n  border: 1px solid var(--line-2); border-left: 3px solid var(--accent); background: var(--accent-bg);\n  padding: 10px 14px; border-radius: var(--radius);\n}\n.am-callout--ok { border-left-color: var(--ok); background: var(--ok-bg); }\n.am-callout--warn { border-left-color: var(--warn); background: var(--warn-bg); }\n.am-callout--err { border-left-color: var(--err); background: var(--err-bg); }\n.am-callout-title { font-weight: 600; margin-bottom: 4px; }\n\n/* \u2500\u2500 kv \u6807\u9898\u680F\u683C \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-kv {\n  display: grid; grid-template-columns: repeat(var(--kv-cols, 2), minmax(0, 1fr)); margin: 0;\n  border-top: var(--bw) solid var(--line); border-left: var(--bw) solid var(--line);\n}\n.am-kv-cell { border-right: var(--bw) solid var(--line); border-bottom: var(--bw) solid var(--line); padding: 6px 10px 8px; min-width: 0; }\n.am-kv-cell--wide { grid-column: 1 / -1; }\n.am-kv dt { font: 11px/1.4 var(--font-mono); color: var(--ink-2); }\n.am-kv dd { margin: 2px 0 0; font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }\n.am-kv-cell--wide dd { font-size: 17px; font-weight: 600; }\nhtml[data-theme="shadcn"] .am-kv { border-color: var(--line); border-radius: var(--radius); overflow: hidden; }\n\n/* \u2500\u2500 timeline \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-timeline { list-style: none; margin: 0; padding: 0; }\n.am-timeline--h { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); padding-top: 4px; }\n.am-timeline--h li { position: relative; text-align: center; padding: 0 6px; }\n.am-timeline--h li::before {\n  content: ""; position: absolute; top: 31px; left: 0; right: 0; border-top: var(--bw) solid var(--line);\n}\n.am-timeline--h li:first-child::before { left: 50%; }\n.am-timeline--h li:last-child::before { right: 50%; }\n.am-tl-when { display: block; font-size: 15px; font-weight: 500; height: 24px; }\n.am-tl-dot {\n  position: relative; display: block; width: 11px; height: 11px; margin: 2px auto 8px;\n  border: var(--bw) solid var(--line); border-radius: 50%; background: var(--paper);\n}\n.am-tl-item--hi .am-tl-dot { background: var(--accent); border-color: var(--accent); }\n.am-tl-title { display: block; font-size: 12.5px; font-weight: 500; }\n.am-tl-text { display: block; font-size: 12px; color: var(--ink-2); line-height: 1.45; }\n.am-timeline--v li { position: relative; padding: 0 0 14px 22px; }\n.am-timeline--v li::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: -6px; border-left: var(--bw) solid var(--line-2); }\n.am-timeline--v li:last-child::before { display: none; }\n.am-timeline--v .am-tl-dot { position: absolute; left: 0; top: 4px; margin: 0; }\n.am-timeline--v .am-tl-when { display: inline; height: auto; font: 12px var(--font-mono); color: var(--ink-2); margin-right: 8px; }\n.am-timeline--v .am-tl-title { display: inline; font-size: 14px; }\n.am-timeline--v .am-tl-text { margin-top: 2px; }\n\n/* \u2500\u2500 annot \u53E5\u5B50\u6807\u6CE8 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-annot + .am-annot { border-top: 1px solid var(--line-2); padding-top: 12px; }\n.am-annot-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: 600; margin-bottom: 8px; }\n.am-annot-meta { font: 11px var(--font-mono); font-weight: 400; color: var(--ink-2); }\n.am-annot-scroll { overflow-x: auto; }\n.am-annot-line {\n  position: relative; display: inline-block; white-space: pre; font: 14px/1.6 var(--font-mono);\n  padding-bottom: calc(var(--rows, 0) * 17px + 14px);\n}\n.am-annot-line--wrap { display: block; white-space: normal; padding-bottom: 10px; }\n.am-annot-line--wrap .am-seg { white-space: nowrap; }\n.am-seg { position: relative; }\n.am-seg::after {\n  content: ""; position: absolute; left: 1px; right: 1px; top: calc(100% + 1px); height: 5px;\n  border: 1px solid var(--accent); border-top: 0;\n}\n.am-seg-n {\n  position: absolute; left: 0; top: calc(100% + 8px + var(--row, 0) * 17px);\n  font: 11px/16px var(--font-sans); color: var(--accent); white-space: nowrap;\n}\n.am-seg--err { color: var(--err); }\n.am-seg--err::after { border-color: var(--err); }\n.am-seg--err .am-seg-n { color: var(--err); }\n.am-annot-caption { font-size: 12px; color: var(--ink-2); }\n\n/* \u2500\u2500 limits \u9650\u503C\u6761 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-lim + .am-lim { margin-top: 14px; }\n.am-lim-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; margin-bottom: 4px; }\n.am-lim-val { font: 12px var(--font-mono); color: var(--accent); white-space: nowrap; }\n.am-lim-track { position: relative; height: 12px; border: 1px solid var(--line-2); background: var(--fill); border-radius: calc(var(--radius) / 2); }\n.am-lim-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent-bg); border-right: 1px solid var(--accent); }\n.am-lim-mark { position: absolute; top: -4px; bottom: -4px; border-left: 2px solid var(--accent); }\n.am-lim.is-over .am-lim-fill { background: var(--err-bg); border-right-color: var(--err); }\n.am-lim.is-over .am-lim-val { color: var(--err); }\n.am-lim-ticks { position: relative; height: 16px; font: 10px/16px var(--font-mono); color: var(--ink-3); }\n.am-lim-ticks span { position: absolute; transform: translateX(-50%); }\n.am-lim-ticks span:first-child { transform: none; }\n.am-lim-note { font-size: 11px; color: var(--ink-2); margin-left: 6px; }\n\n/* \u2500\u2500 tree \u7ED3\u6784\u6811 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-tree { font-size: 13px; }\n.am-tree-root { display: flex; justify-content: center; position: relative; padding-bottom: 18px; }\n.am-tree-root::after { content: ""; position: absolute; bottom: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }\n.am-tree-root--solo { padding-bottom: 12px; }\n.am-tree-root--solo::after { display: none; }\n.am-tree-box {\n  border: var(--bw) solid var(--line); background: var(--paper); padding: 6px 14px; text-align: center;\n  border-radius: var(--radius); font-weight: 600;\n}\n.am-tree-box small { display: block; font-weight: 400; color: var(--ink-2); font-size: 12px; }\n.am-tree-box--root { background: var(--accent-bg); font-size: 15px; padding: 8px 28px; }\n.am-tree-cols { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); }\n.am-tree-col { position: relative; padding: 18px 8px 0; min-width: 0; }\n.am-tree-col::before { content: ""; position: absolute; top: 0; left: 0; right: 0; border-top: var(--bw) solid var(--line); }\n.am-tree-col:first-child::before { left: 50%; }\n.am-tree-col:last-child::before { right: 50%; }\n.am-tree-col::after { content: ""; position: absolute; top: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }\n.am-tree-list, .am-tree-list ul { list-style: none; margin: 0; padding: 0; }\n.am-tree-col > .am-tree-list { margin: 8px 0 0 14px; }\n.am-tree-list ul { margin-left: 16px; }\n.am-tree-list li { position: relative; padding: 3px 0 3px 18px; }\n.am-tree-list li::before { content: ""; position: absolute; left: 0; top: 0.95em; width: 12px; border-top: 1px solid var(--ink-3); }\n.am-tree-list li::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 1px solid var(--ink-3); }\n.am-tree-list li:last-child::after { bottom: auto; height: 0.95em; }\n.am-tree-tag { font: 11px var(--font-mono); color: var(--ink-3); margin-right: 4px; }\n.am-tree code { font: 12px var(--font-mono); }\n.am-tree-sub { display: block; font-size: 11.5px; color: var(--ink-2); }\n.am-tree-hi > .am-tree-label { color: var(--accent); font-weight: 600; }\n\n/* \u2500\u2500 \u56FE\uFF08flow / sequence\uFF09\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-diagram { margin: 0; overflow-x: auto; text-align: center; }\n.am-diagram svg { max-width: 100%; height: auto; font-family: var(--font-sans); }\n.am-diagram text { fill: var(--ink); font-size: 13px; }\n.am-node-shape { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }\n.am-node--hi .am-node-shape { fill: var(--accent-bg); stroke: var(--accent); }\n.am-node--hi text { fill: var(--accent); font-weight: 600; }\n.am-edge { fill: none; stroke: var(--ink-2); stroke-width: 1.3; }\n.am-edge--dashed { stroke-dasharray: 5 4; }\n.am-arrow { fill: var(--ink-2); }\n.am-edge-label rect { fill: var(--paper); }\n.am-diagram .am-edge-label text { fill: var(--accent); font-size: 11.5px; }\n.am-cluster { fill: var(--fill); stroke: var(--line-2); stroke-width: 1; stroke-dasharray: 4 3; }\n.am-diagram .am-cluster-label { fill: var(--ink-2); font: 11px var(--font-mono); }\n.am-lifeline { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 4 4; }\n.am-actor { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }\n.am-note { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1; }\n.am-diagram .am-step { fill: var(--ink-3); font: 10px var(--font-mono); }\n\n/* \u2500\u2500 chart CSV \u6570\u503C\u56FE \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-chart svg { min-width: 620px; }\n.am-chart-title { fill: var(--ink); font-size: 14px !important; font-weight: 600; }\n.am-chart-axis { stroke: var(--ink-2); stroke-width: 1.1; }\n.am-chart-grid { stroke: var(--line-2); stroke-width: 1; }\n.am-chart-grid--v { stroke-dasharray: 3 4; opacity: 0.55; }\n.am-diagram .am-chart-axis-label { fill: var(--ink-3); font: 10.5px var(--font-mono); }\n.am-chart-bar { fill: currentColor; opacity: 0.78; }\n.am-chart-line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }\n.am-chart-point { fill: var(--paper); stroke: currentColor; stroke-width: 2; }\n.am-chart-bar:hover, .am-chart-point:hover { opacity: 1; }\n.am-chart-legend { cursor: pointer; transition: opacity 120ms ease; }\n.am-chart-legend:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }\n.am-chart-legend.is-off { opacity: 0.32; }\n.am-chart [data-chart-mark] { transition: opacity 120ms ease; }\n.am-chart [data-chart-mark].is-hidden { display: none; }\n.am-chart [data-chart-mark].is-dimmed { opacity: 0.16; }\n.am-chart [data-chart-mark].is-highlighted { opacity: 1; }\n.am-chart-legend.is-dimmed { opacity: 0.25; }\n.am-chart-legend.is-highlighted { opacity: 1; }\n.am-chart-axis-title text { fill: var(--ink-2); font: 11px var(--font-sans); }\n.am-chart-x-tick { pointer-events: none; }\n.am-chart-legend rect { fill: currentColor; }\n.am-diagram .am-chart-legend text { fill: var(--ink-2); font-size: 11px; }\n.am-diagram .am-chart-empty { fill: var(--ink-3); font-size: 12px; }\n.am-chart-series-0 { color: var(--chart-1); }\n.am-chart-series-1 { color: var(--chart-2); }\n.am-chart-series-2 { color: var(--chart-3); }\n.am-chart-series-3 { color: var(--chart-4); }\n.am-chart-series-4 { color: var(--chart-5); }\n\n/* \u2500\u2500 doc \u7EBF\u6027\u8BB2\u89E3 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-doc { max-width: 1120px; margin: 0 auto; padding: 40px 28px 64px; }\n.am-doc-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: start; }\n.am-doc-layout--notoc { grid-template-columns: minmax(0, 1fr); max-width: 860px; }\n.am-toc { position: sticky; top: 24px; font-size: 13px; }\n.am-toc a { display: block; color: var(--ink-2); text-decoration: none; padding: 4px 0 4px 10px; border-left: 2px solid var(--line-2); }\n.am-toc a:hover { color: var(--ink); border-left-color: var(--accent); }\n.am-doc-body > .am-panel + .am-panel { margin-top: 20px; }\n\n/* \u2500\u2500 \u54CD\u5E94\u5F0F\u4E0E\u6253\u5370 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n@media (max-width: 1100px) {\n  .am-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }\n  .am-grid > .am-panel { grid-column: auto !important; }\n  .am-grid > .am-panel.am-span-wide { grid-column: 1 / -1 !important; }\n}\n@media (max-width: 760px) {\n  .am-sheet, .am-doc { padding: 56px 12px 24px; }\n  .am-head { padding-right: 0; }\n  .am-grid { grid-template-columns: minmax(0, 1fr); }\n  .am-grid > .am-panel.am-span-wide { grid-column: auto !important; }\n  html[data-theme="blueprint"] .am-frame { padding: 0; border: 0; }\n  html[data-theme="blueprint"] .am-frame::before, html[data-theme="blueprint"] .am-ruler { display: none; }\n  .am-doc-layout { grid-template-columns: minmax(0, 1fr); }\n  .am-toc { position: static; }\n  .am-timeline--h { grid-template-columns: minmax(0, 1fr); }\n  .am-tree-cols { grid-template-columns: minmax(0, 1fr); }\n}\n.am-colophon { text-align: center; padding: 0 0 28px; font: 11px var(--font-mono); color: var(--ink-3); }\n\n@media print {\n  .am-toolbar { display: none; }\n  body { background: var(--paper); }\n  .am-panel { break-inside: avoid; box-shadow: none; }\n}\n.am-panel--bare { border: 0; background: transparent; box-shadow: none; }\n.am-panel--bare > .am-panel-body { padding: 0; }\n.am-panel--bare .am-kv { background: var(--paper); }\n';
+var BASE_CSS = '/* Answer me with HTML base \u2014 \u53EA\u5F15\u7528\u4E3B\u9898\u53D8\u91CF\uFF0C\u7981\u6B62\u5199\u6B7B\u989C\u8272\uFF08\u4E3B\u9898 token \u89C1 themes/index.js\uFF09 */\n*, *::before, *::after { box-sizing: border-box; }\nhtml, body { margin: 0; padding: 0; }\nbody {\n  background: var(--bg); color: var(--ink);\n  font-family: var(--font-sans); font-size: 14px; line-height: 1.55;\n  -webkit-font-smoothing: antialiased;\n}\ncode, pre, kbd { font-family: var(--font-mono); }\n\n/* \u2500\u2500 \u5DE5\u5177\u680F \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-toolbar {\n  position: fixed; top: 12px; right: 12px; z-index: 10; display: flex; gap: 6px;\n}\n.am-btn {\n  font: 12px/1 var(--font-sans); color: var(--ink); background: var(--paper);\n  border: 1px solid var(--line-2); border-radius: var(--radius); padding: 7px 10px; cursor: pointer;\n}\n.am-btn:hover { border-color: var(--ink-3); }\n.am-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }\n\n/* \u2500\u2500 \u9875\u5934 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-head { margin: 0 0 20px; padding-right: 260px; }\n.am-head h1 { margin: 0; font-size: 24px; line-height: 1.25; letter-spacing: -0.01em; }\n.am-sub { margin: 4px 0 0; color: var(--ink-2); }\n.am-head-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 12px; color: var(--ink-2); }\n.am-head-meta b { font-family: var(--font-mono); font-weight: 400; color: var(--ink-3); margin-right: 6px; }\n.am-intro { margin-top: 12px; max-width: 80ch; }\n\n/* \u2500\u2500 sheet \u56FE\u7EB8\u677F \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-sheet { max-width: 1680px; margin: 0 auto; padding: 32px 28px 40px; }\n.am-frame { position: relative; }\n.am-grid {\n  display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));\n  gap: 20px; align-items: start;\n}\n.am-ruler { display: none; }\nhtml[data-theme="blueprint"] .am-frame { border: 1px solid var(--line); padding: 30px; }\nhtml[data-theme="blueprint"] .am-frame::before {\n  content: ""; position: absolute; inset: 18px; border: 1px solid var(--line); pointer-events: none;\n}\nhtml[data-theme="blueprint"] .am-ruler {\n  display: flex; position: absolute; font: 10px/1 var(--font-mono); color: var(--ink-3);\n}\n.am-ruler span { flex: 1; display: flex; align-items: center; justify-content: center; }\n.am-ruler--top, .am-ruler--bottom { left: 18px; right: 18px; height: 18px; }\n.am-ruler--top { top: 0; }\n.am-ruler--bottom { bottom: 0; }\n.am-ruler--left, .am-ruler--right { top: 18px; bottom: 18px; width: 18px; flex-direction: column; }\n.am-ruler--left { left: 0; }\n.am-ruler--right { right: 0; }\n.am-ruler--top span + span, .am-ruler--bottom span + span { border-left: 1px solid var(--line); }\n.am-ruler--left span + span, .am-ruler--right span + span { border-top: 1px solid var(--line); }\n\n/* \u2500\u2500 \u9762\u677F \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-panel {\n  background: var(--paper); border: var(--bw) solid var(--line); border-radius: var(--radius);\n  box-shadow: var(--shadow); min-width: 0; overflow: hidden;\n}\n.am-panel-head {\n  display: flex; align-items: stretch; gap: 0; border-bottom: var(--bw) solid var(--line); min-height: 34px;\n}\n.am-panel-id {\n  display: flex; align-items: center; justify-content: center; min-width: 34px; padding: 0 8px;\n  background: var(--head-bg); color: var(--head-fg); font-weight: 600; font-size: 14px;\n}\nhtml[data-theme="shadcn"] .am-panel-id { border-radius: 6px; min-width: 24px; height: 24px; margin: 9px 0 9px 14px; font-size: 12px; }\nhtml[data-theme="shadcn"] .am-panel-head { border-bottom-width: 1px; }\n.am-panel-head h2 { margin: 0; padding: 7px 12px; font-size: 15px; font-weight: 600; flex: 1; display: flex; align-items: center; }\n.am-panel-meta { align-self: center; padding: 0 12px; font: 11px/1.3 var(--font-mono); color: var(--ink-2); text-align: right; }\n.am-panel-body { padding: 14px 16px 16px; }\n.am-panel-body > * + * { margin-top: 12px; }\n\n/* \u2500\u2500 Markdown \u6B63\u6587 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-md > :first-child { margin-top: 0; }\n.am-md > :last-child { margin-bottom: 0; }\n.am-md p { margin: 0 0 8px; }\n.am-md ul, .am-md ol { margin: 0 0 8px; padding-left: 20px; }\n.am-md li + li { margin-top: 3px; }\n.am-md h3, .am-md h4 { margin: 14px 0 6px; font-size: 13px; }\n.am-md a { color: var(--accent); }\n.am-source-link {\n  color: var(--accent); font-family: var(--font-mono); font-size: 0.92em;\n  text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 2px;\n}\n.am-source-link::after { content: " \u2197"; font-size: 0.82em; color: var(--ink-3); }\n.am-source-link--invalid {\n  color: var(--ink-3); text-decoration-style: dashed; cursor: help;\n}\n.am-source-link--invalid::after { content: ""; }\n.am-md blockquote { margin: 0 0 8px; padding: 2px 12px; border-left: 3px solid var(--line-2); color: var(--ink-2); }\n.am-md :not(pre) > code { font-size: 0.9em; background: var(--fill); padding: 1px 5px; border-radius: 4px; }\n.am-md hr { border: 0; border-top: 1px solid var(--line-2); margin: 12px 0; }\n.am-md table { width: 100%; border-collapse: collapse; font-size: 13px; }\n.am-md th {\n  text-align: left; font: 11px/1.3 var(--font-mono); color: var(--ink-2); font-weight: 400;\n  padding: 6px 10px; border-bottom: 1px solid var(--line-2);\n}\n.am-md td { padding: 7px 10px; border-bottom: 1px solid var(--line-2); vertical-align: top; }\n.am-md tbody tr:nth-child(even) td { background: var(--fill); }\n.am-table-wrap { overflow-x: auto; }\n.am-code {\n  margin: 0; padding: 12px 14px; background: var(--fill); border: 1px solid var(--line-2);\n  border-radius: var(--radius); overflow-x: auto; font-size: 12.5px; line-height: 1.5;\n}\n\n/* \u2500\u2500 \u72B6\u6001\u5FBD\u7AE0 ok / no / warn \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-status { white-space: nowrap; font-weight: 500; }\n.am-status--ok { color: var(--ok); }\n.am-status--no { color: var(--err); }\n.am-status--warn { color: var(--warn); }\n.am-status-icon { display: inline-block; width: 1.1em; font-weight: 700; }\n\n/* \u2500\u2500 callout \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-callout {\n  border: 1px solid var(--line-2); border-left: 3px solid var(--accent); background: var(--accent-bg);\n  padding: 10px 14px; border-radius: var(--radius);\n}\n.am-callout--ok { border-left-color: var(--ok); background: var(--ok-bg); }\n.am-callout--warn { border-left-color: var(--warn); background: var(--warn-bg); }\n.am-callout--err { border-left-color: var(--err); background: var(--err-bg); }\n.am-callout-title { font-weight: 600; margin-bottom: 4px; }\n\n/* \u2500\u2500 kv \u6807\u9898\u680F\u683C \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-kv {\n  display: grid; grid-template-columns: repeat(var(--kv-cols, 2), minmax(0, 1fr)); margin: 0;\n  border-top: var(--bw) solid var(--line); border-left: var(--bw) solid var(--line);\n}\n.am-kv-cell { border-right: var(--bw) solid var(--line); border-bottom: var(--bw) solid var(--line); padding: 6px 10px 8px; min-width: 0; }\n.am-kv-cell--wide { grid-column: 1 / -1; }\n.am-kv dt { font: 11px/1.4 var(--font-mono); color: var(--ink-2); }\n.am-kv dd { margin: 2px 0 0; font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }\n.am-kv-cell--wide dd { font-size: 17px; font-weight: 600; }\nhtml[data-theme="shadcn"] .am-kv { border-color: var(--line); border-radius: var(--radius); overflow: hidden; }\n\n/* \u2500\u2500 timeline \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-timeline { list-style: none; margin: 0; padding: 0; }\n.am-timeline--h { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); padding-top: 4px; }\n.am-timeline--h li { position: relative; text-align: center; padding: 0 6px; }\n.am-timeline--h li::before {\n  content: ""; position: absolute; top: 31px; left: 0; right: 0; border-top: var(--bw) solid var(--line);\n}\n.am-timeline--h li:first-child::before { left: 50%; }\n.am-timeline--h li:last-child::before { right: 50%; }\n.am-tl-when { display: block; font-size: 15px; font-weight: 500; height: 24px; }\n.am-tl-dot {\n  position: relative; display: block; width: 11px; height: 11px; margin: 2px auto 8px;\n  border: var(--bw) solid var(--line); border-radius: 50%; background: var(--paper);\n}\n.am-tl-item--hi .am-tl-dot { background: var(--accent); border-color: var(--accent); }\n.am-tl-title { display: block; font-size: 12.5px; font-weight: 500; }\n.am-tl-text { display: block; font-size: 12px; color: var(--ink-2); line-height: 1.45; }\n.am-timeline--v li { position: relative; padding: 0 0 14px 22px; }\n.am-timeline--v li::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: -6px; border-left: var(--bw) solid var(--line-2); }\n.am-timeline--v li:last-child::before { display: none; }\n.am-timeline--v .am-tl-dot { position: absolute; left: 0; top: 4px; margin: 0; }\n.am-timeline--v .am-tl-when { display: inline; height: auto; font: 12px var(--font-mono); color: var(--ink-2); margin-right: 8px; }\n.am-timeline--v .am-tl-title { display: inline; font-size: 14px; }\n.am-timeline--v .am-tl-text { margin-top: 2px; }\n\n/* \u2500\u2500 annot \u53E5\u5B50\u6807\u6CE8 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-annot + .am-annot { border-top: 1px solid var(--line-2); padding-top: 12px; }\n.am-annot-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: 600; margin-bottom: 8px; }\n.am-annot-meta { font: 11px var(--font-mono); font-weight: 400; color: var(--ink-2); }\n.am-annot-scroll { overflow-x: auto; }\n.am-annot-line {\n  position: relative; display: inline-block; white-space: pre; font: 14px/1.6 var(--font-mono);\n  padding-bottom: calc(var(--rows, 0) * 17px + 14px);\n}\n.am-annot-line--wrap { display: block; white-space: normal; padding-bottom: 10px; }\n.am-annot-line--wrap .am-seg { white-space: nowrap; }\n.am-seg { position: relative; }\n.am-seg::after {\n  content: ""; position: absolute; left: 1px; right: 1px; top: calc(100% + 1px); height: 5px;\n  border: 1px solid var(--accent); border-top: 0;\n}\n.am-seg-n {\n  position: absolute; left: 0; top: calc(100% + 8px + var(--row, 0) * 17px);\n  font: 11px/16px var(--font-sans); color: var(--accent); white-space: nowrap;\n}\n.am-seg--err { color: var(--err); }\n.am-seg--err::after { border-color: var(--err); }\n.am-seg--err .am-seg-n { color: var(--err); }\n.am-annot-caption { font-size: 12px; color: var(--ink-2); }\n\n/* \u2500\u2500 limits \u9650\u503C\u6761 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-lim + .am-lim { margin-top: 14px; }\n.am-lim-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; margin-bottom: 4px; }\n.am-lim-val { font: 12px var(--font-mono); color: var(--accent); white-space: nowrap; }\n.am-lim-track { position: relative; height: 12px; border: 1px solid var(--line-2); background: var(--fill); border-radius: calc(var(--radius) / 2); }\n.am-lim-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent-bg); border-right: 1px solid var(--accent); }\n.am-lim-mark { position: absolute; top: -4px; bottom: -4px; border-left: 2px solid var(--accent); }\n.am-lim.is-over .am-lim-fill { background: var(--err-bg); border-right-color: var(--err); }\n.am-lim.is-over .am-lim-val { color: var(--err); }\n.am-lim-ticks { position: relative; height: 16px; font: 10px/16px var(--font-mono); color: var(--ink-3); }\n.am-lim-ticks span { position: absolute; transform: translateX(-50%); }\n.am-lim-ticks span:first-child { transform: none; }\n.am-lim-note { font-size: 11px; color: var(--ink-2); margin-left: 6px; }\n\n/* \u2500\u2500 tree \u7ED3\u6784\u6811 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-tree { font-size: 13px; }\n.am-tree-root { display: flex; justify-content: center; position: relative; padding-bottom: 18px; }\n.am-tree-root::after { content: ""; position: absolute; bottom: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }\n.am-tree-root--solo { padding-bottom: 12px; }\n.am-tree-root--solo::after { display: none; }\n.am-tree-box {\n  border: var(--bw) solid var(--line); background: var(--paper); padding: 6px 14px; text-align: center;\n  border-radius: var(--radius); font-weight: 600;\n}\n.am-tree-box small { display: block; font-weight: 400; color: var(--ink-2); font-size: 12px; }\n.am-tree-box--root { background: var(--accent-bg); font-size: 15px; padding: 8px 28px; }\n.am-tree-cols { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); }\n.am-tree-col { position: relative; padding: 18px 8px 0; min-width: 0; }\n.am-tree-col::before { content: ""; position: absolute; top: 0; left: 0; right: 0; border-top: var(--bw) solid var(--line); }\n.am-tree-col:first-child::before { left: 50%; }\n.am-tree-col:last-child::before { right: 50%; }\n.am-tree-col::after { content: ""; position: absolute; top: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }\n.am-tree-list, .am-tree-list ul { list-style: none; margin: 0; padding: 0; }\n.am-tree-col > .am-tree-list { margin: 8px 0 0 14px; }\n.am-tree-list ul { margin-left: 16px; }\n.am-tree-list li { position: relative; padding: 3px 0 3px 18px; }\n.am-tree-list li::before { content: ""; position: absolute; left: 0; top: 0.95em; width: 12px; border-top: 1px solid var(--ink-3); }\n.am-tree-list li::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 1px solid var(--ink-3); }\n.am-tree-list li:last-child::after { bottom: auto; height: 0.95em; }\n.am-tree-tag { font: 11px var(--font-mono); color: var(--ink-3); margin-right: 4px; }\n.am-tree code { font: 12px var(--font-mono); }\n.am-tree-sub { display: block; font-size: 11.5px; color: var(--ink-2); }\n.am-tree-hi > .am-tree-label { color: var(--accent); font-weight: 600; }\n\n/* \u2500\u2500 \u56FE\uFF08flow / sequence\uFF09\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-diagram { margin: 0; overflow-x: auto; text-align: center; }\n.am-diagram svg { max-width: 100%; height: auto; font-family: var(--font-sans); }\n.am-diagram text { fill: var(--ink); font-size: 13px; }\n.am-node-shape { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }\n.am-node--hi .am-node-shape { fill: var(--accent-bg); stroke: var(--accent); }\n.am-node--hi text { fill: var(--accent); font-weight: 600; }\n.am-edge { fill: none; stroke: var(--ink-2); stroke-width: 1.3; }\n.am-edge--dashed { stroke-dasharray: 5 4; }\n.am-arrow { fill: var(--ink-2); }\n.am-edge-label rect { fill: var(--paper); }\n.am-diagram .am-edge-label text { fill: var(--accent); font-size: 11.5px; }\n.am-cluster { fill: var(--fill); stroke: var(--line-2); stroke-width: 1; stroke-dasharray: 4 3; }\n.am-diagram .am-cluster-label { fill: var(--ink-2); font: 11px var(--font-mono); }\n.am-lifeline { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 4 4; }\n.am-actor { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }\n.am-note { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1; }\n.am-diagram .am-step { fill: var(--ink-3); font: 10px var(--font-mono); }\n\n/* \u2500\u2500 chart CSV \u6570\u503C\u56FE \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-chart svg { min-width: 620px; }\n.am-chart-title { fill: var(--ink); font-size: 14px !important; font-weight: 600; }\n.am-chart-axis { stroke: var(--ink-2); stroke-width: 1.1; }\n.am-chart-grid { stroke: var(--line-2); stroke-width: 1; }\n.am-chart-grid--v { stroke-dasharray: 3 4; opacity: 0.55; }\n.am-diagram .am-chart-axis-label { fill: var(--ink-3); font: 10.5px var(--font-mono); }\n.am-chart-bar { fill: currentColor; opacity: 0.78; }\n.am-chart-line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }\n.am-chart-point { fill: var(--paper); stroke: currentColor; stroke-width: 2; }\n.am-chart-bar:hover, .am-chart-point:hover { opacity: 1; }\n.am-chart-legend { cursor: pointer; transition: opacity 120ms ease; }\n.am-chart-legend:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }\n.am-chart-legend.is-off { opacity: 0.32; }\n.am-chart [data-chart-mark] { transition: opacity 120ms ease; }\n.am-chart [data-chart-mark].is-hidden { display: none; }\n.am-chart [data-chart-mark].is-dimmed { opacity: 0.16; }\n.am-chart [data-chart-mark].is-highlighted { opacity: 1; }\n.am-chart-legend.is-dimmed { opacity: 0.25; }\n.am-chart-legend.is-highlighted { opacity: 1; }\n.am-chart-axis-title text { fill: var(--ink-2); font: 11px var(--font-sans); }\n.am-chart-x-tick { pointer-events: none; }\n.am-chart-legend rect { fill: currentColor; }\n.am-diagram .am-chart-legend text { fill: var(--ink-2); font-size: 11px; }\n.am-diagram .am-chart-empty { fill: var(--ink-3); font-size: 12px; }\n.am-chart-series-0 { color: var(--chart-1); }\n.am-chart-series-1 { color: var(--chart-2); }\n.am-chart-series-2 { color: var(--chart-3); }\n.am-chart-series-3 { color: var(--chart-4); }\n.am-chart-series-4 { color: var(--chart-5); }\n\n/* \u2500\u2500 doc \u7EBF\u6027\u8BB2\u89E3 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n.am-doc { max-width: 1120px; margin: 0 auto; padding: 40px 28px 64px; }\n.am-doc-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: start; }\n.am-doc-layout--notoc { grid-template-columns: minmax(0, 1fr); max-width: 860px; }\n.am-toc { position: sticky; top: 24px; font-size: 13px; }\n.am-toc a { display: block; color: var(--ink-2); text-decoration: none; padding: 4px 0 4px 10px; border-left: 2px solid var(--line-2); }\n.am-toc a:hover { color: var(--ink); border-left-color: var(--accent); }\n.am-doc-body > .am-panel + .am-panel { margin-top: 20px; }\n\n/* \u2500\u2500 \u54CD\u5E94\u5F0F\u4E0E\u6253\u5370 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */\n@media (max-width: 1100px) {\n  .am-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }\n  .am-grid > .am-panel { grid-column: auto !important; }\n  .am-grid > .am-panel.am-span-wide { grid-column: 1 / -1 !important; }\n}\n@media (max-width: 760px) {\n  .am-sheet, .am-doc { padding: 56px 12px 24px; }\n  .am-head { padding-right: 0; }\n  .am-grid { grid-template-columns: minmax(0, 1fr); }\n  .am-grid > .am-panel.am-span-wide { grid-column: auto !important; }\n  html[data-theme="blueprint"] .am-frame { padding: 0; border: 0; }\n  html[data-theme="blueprint"] .am-frame::before, html[data-theme="blueprint"] .am-ruler { display: none; }\n  .am-doc-layout { grid-template-columns: minmax(0, 1fr); }\n  .am-toc { position: static; }\n  .am-timeline--h { grid-template-columns: minmax(0, 1fr); }\n  .am-tree-cols { grid-template-columns: minmax(0, 1fr); }\n}\n.am-colophon { text-align: center; padding: 0 0 28px; font: 11px var(--font-mono); color: var(--ink-3); }\n\n@media print {\n  .am-toolbar { display: none; }\n  body { background: var(--paper); }\n  .am-panel { break-inside: avoid; box-shadow: none; }\n}\n.am-panel--bare { border: 0; background: transparent; box-shadow: none; }\n.am-panel--bare > .am-panel-body { padding: 0; }\n.am-panel--bare .am-kv { background: var(--paper); }\n';
 var RUNTIME_JS = `(() => {
   const root = document.documentElement;
   const cycle = (list, cur) => list[(list.indexOf(cur) + 1) % list.length];
@@ -99,7 +99,7 @@ var RUNTIME_JS = `(() => {
 `;
 
 // src/cli.js
-import { join as join2, resolve as resolve2, dirname as dirname2 } from "node:path";
+import { join as join2, resolve as resolve3, dirname as dirname2 } from "node:path";
 import { spawn } from "node:child_process";
 
 // src/parse.js
@@ -1582,29 +1582,7 @@ var Rn = T.parse;
 var Tn = R.lex;
 
 // src/markdown.js
-var marked = new F({ gfm: true });
-var STATUS = {
-  ok: { cls: "ok", icon: "\u2713" },
-  no: { cls: "no", icon: "\u2717" },
-  warn: { cls: "warn", icon: "!" }
-};
-var STATUS_ALIAS = { "\u2713": "ok", "\u2714": "ok", "\u2717": "no", "\u2718": "no", "\u26A0": "warn" };
-function statusHtml(word, label = "") {
-  const kind = STATUS[STATUS_ALIAS[word] ?? word];
-  if (!kind) return null;
-  const text = label.trim();
-  return `<span class="am-status am-status--${kind.cls}"><span class="am-status-icon" aria-hidden="true">${kind.icon}</span>${text}</span>`;
-}
-var CELL_STATUS = /<td([^>]*)>\s*(ok|no|warn|✓|✔|✗|✘|⚠)(?:\s+([^<]*?))?\s*<\/td>/g;
-function decorate(html) {
-  return html.replace(/<table>/g, '<div class="am-table-wrap"><table>').replace(/<\/table>/g, "</table></div>").replace(CELL_STATUS, (_2, attrs, word, label = "") => `<td${attrs}>${statusHtml(word, label)}</td>`);
-}
-function md(text) {
-  return decorate(marked.parse(String(text ?? "")));
-}
-function mdInline(text) {
-  return marked.parseInline(String(text ?? ""));
-}
+import { isAbsolute, relative, resolve, sep } from "node:path";
 
 // src/svg/text.js
 var CJK_RE = /[⺀-鿿가-힯豈-﫿︰-﹏＀-￯　-〿]/;
@@ -1654,6 +1632,96 @@ function esc(str) {
   return String(str ?? "").replace(/[&<>"']/g, (c) => ESC[c]);
 }
 
+// src/markdown.js
+var marked = new F({ gfm: true });
+var STATUS = {
+  ok: { cls: "ok", icon: "\u2713" },
+  no: { cls: "no", icon: "\u2717" },
+  warn: { cls: "warn", icon: "!" }
+};
+var STATUS_ALIAS = { "\u2713": "ok", "\u2714": "ok", "\u2717": "no", "\u2718": "no", "\u26A0": "warn" };
+function statusHtml(word, label = "") {
+  const kind = STATUS[STATUS_ALIAS[word] ?? word];
+  if (!kind) return null;
+  const text = label.trim();
+  return `<span class="am-status am-status--${kind.cls}"><span class="am-status-icon" aria-hidden="true">${kind.icon}</span>${text}</span>`;
+}
+var CELL_STATUS = /<td([^>]*)>\s*(ok|no|warn|✓|✔|✗|✘|⚠)(?:\s+([^<]*?))?\s*<\/td>/g;
+var SOURCE_ANCHOR = /<a href="source:([^"]+)"([^>]*)>([\s\S]*?)<\/a>/g;
+function decodeRef(raw) {
+  const htmlDecoded = String(raw).replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+  try {
+    return decodeURIComponent(htmlDecoded);
+  } catch {
+    return htmlDecoded;
+  }
+}
+function parseSourceRef(raw) {
+  let ref = decodeRef(raw).trim();
+  if (!ref || ref.includes("\0")) return null;
+  let line = 1;
+  let column = 1;
+  const hash = ref.match(/^(.*)#L(\d+)(?:C(\d+))?$/i);
+  if (hash) {
+    ref = hash[1];
+    line = Number(hash[2]);
+    column = Number(hash[3] || 1);
+  } else {
+    const lineColumn = ref.match(/^(.*):(\d+):(\d+)$/);
+    if (lineColumn) {
+      ref = lineColumn[1];
+      line = Number(lineColumn[2]);
+      column = Number(lineColumn[3]);
+    } else {
+      const lineOnly = ref.match(/^(.*):(\d+)$/);
+      if (lineOnly) {
+        ref = lineOnly[1];
+        line = Number(lineOnly[2]);
+      }
+    }
+  }
+  const file = ref.trim();
+  if (!file || !Number.isInteger(line) || line < 1 || !Number.isInteger(column) || column < 1) return null;
+  return { file, line, column };
+}
+function encodeVsCodePath(path) {
+  const normalized = path.replace(/\\/g, "/");
+  const encoded = normalized.split("/").map((part) => /^[A-Za-z]:$/.test(part) ? part : encodeURIComponent(part)).join("/");
+  return encoded.startsWith("/") ? encoded : `/${encoded}`;
+}
+function vscodeSourceHref(raw, cwd) {
+  const parsed = parseSourceRef(raw);
+  if (!parsed || !cwd) return null;
+  if (isAbsolute(parsed.file) || /^[A-Za-z]:[\\/]/.test(parsed.file) || /^[a-z][a-z0-9+.-]*:/i.test(parsed.file)) return null;
+  const root = resolve(cwd);
+  const absolute = resolve(root, parsed.file);
+  const rel = relative(root, absolute);
+  if (!rel || rel === ".." || rel.startsWith(`..${sep}`) || isAbsolute(rel)) return null;
+  return `vscode://file${encodeVsCodePath(absolute)}:${parsed.line}:${parsed.column}`;
+}
+function decorateSourceLinks(html, cwd) {
+  return html.replace(SOURCE_ANCHOR, (_whole, rawRef, attrs = "", body) => {
+    const ref = decodeRef(rawRef);
+    const href = vscodeSourceHref(ref, cwd);
+    if (!href) {
+      return `<span class="am-source-link am-source-link--invalid" data-source-ref="${esc(ref)}" title="Source link is outside the current workspace or the workspace path is unavailable">${body}</span>`;
+    }
+    return `<a class="am-source-link" href="${esc(href)}" data-source-ref="${esc(ref)}"${attrs}>${body}</a>`;
+  });
+}
+function decorate(html, { cwd } = {}) {
+  return decorateSourceLinks(
+    html.replace(/<table>/g, '<div class="am-table-wrap"><table>').replace(/<\/table>/g, "</table></div>").replace(CELL_STATUS, (_2, attrs, word, label = "") => `<td${attrs}>${statusHtml(word, label)}</td>`),
+    cwd
+  );
+}
+function md(text, options = {}) {
+  return decorate(marked.parse(String(text ?? "")), options);
+}
+function mdInline(text, options = {}) {
+  return decorateSourceLinks(marked.parseInline(String(text ?? "")), options.cwd);
+}
+
 // src/components/error.js
 var ComponentError = class extends Error {
   constructor(message, line = 0) {
@@ -1679,13 +1747,13 @@ var callout_default = {
 \`\`\`
 - \u9996\u4E2A\u53C2\u6570\u4E0D\u662F\u7C7B\u578B\u65F6\uFF0C\u6574\u4E2A\u53C2\u6570\u4E32\u4F5C\u4E3A\u6807\u9898\uFF0C\u7C7B\u578B\u4E3A info\u3002`,
   example: "```callout warn \u6CE8\u610F\n\u5148\u5173\u95ED\u9600\u95E8\uFF0C\u518D\u62C6\u5378\u6CF5\u3002\n```",
-  render(text, { args }) {
+  render(text, { args, cwd }) {
     const [first = "", ...rest] = args.split(/\s+/).filter(Boolean);
     const kind = KINDS.has(first) ? first : "info";
     const title = (KINDS.has(first) ? rest.join(" ") : args).trim();
     if (!title && !text.trim()) throw new ComponentError("callout \u9700\u8981\u6807\u9898\u6216\u6B63\u6587", 1);
     const head = title ? `<div class="am-callout-title">${esc(title)}</div>` : "";
-    const body = text.trim() ? `<div class="am-callout-body am-md">${md(text)}</div>` : "";
+    const body = text.trim() ? `<div class="am-callout-body am-md">${md(text, { cwd })}</div>` : "";
     return `<div class="am-callout am-callout--${kind}" role="note">${head}${body}</div>`;
   }
 };
@@ -1724,7 +1792,7 @@ var timeline_default = {
 \`\`\`
 - \u9ED8\u8BA4 \u22646 \u9879\u6A2A\u5411\u3001>6 \u9879\u7EB5\u5411\uFF1B\u53C2\u6570 h / v \u5F3A\u5236\u65B9\u5411\u3002`,
   example: "```timeline\n1979 | AECMA \u542F\u52A8\u7814\u7A76\n1986 | \u9996\u7248\u6307\u5357\u53D1\u5E03\n*Now | \u514D\u8D39\u4E0B\u8F7D | \u7531 ASD STEMG \u7EF4\u62A4\n```",
-  render(text, { args }) {
+  render(text, { args, cwd }) {
     const items = contentLines(text).map(({ text: t, line }) => {
       const parts = fields(t);
       if (parts.length < 2 || !parts[1]) throw new ComponentError(`timeline \u884C\u683C\u5F0F\u5E94\u4E3A \u65F6\u95F4 | \u6807\u9898 | \u8BF4\u660E\uFF1A"${t}"`, line);
@@ -1733,7 +1801,7 @@ var timeline_default = {
     });
     if (!items.length) throw new ComponentError("timeline \u81F3\u5C11\u9700\u8981\u4E00\u9879", 1);
     const vertical = /\bv(ertical)?\b/.test(args) || !/\bh(orizontal)?\b/.test(args) && items.length > 6;
-    const lis = items.map((it3) => `<li class="am-tl-item${it3.hi ? " am-tl-item--hi" : ""}"><span class="am-tl-when">${esc(it3.when)}</span><span class="am-tl-dot"></span><span class="am-tl-title">${mdInline(it3.title)}</span>${it3.detail ? `<span class="am-tl-text">${mdInline(it3.detail)}</span>` : ""}</li>`);
+    const lis = items.map((it3) => `<li class="am-tl-item${it3.hi ? " am-tl-item--hi" : ""}"><span class="am-tl-when">${esc(it3.when)}</span><span class="am-tl-dot"></span><span class="am-tl-title">${mdInline(it3.title, { cwd })}</span>${it3.detail ? `<span class="am-tl-text">${mdInline(it3.detail, { cwd })}</span>` : ""}</li>`);
     return vertical ? `<ol class="am-timeline am-timeline--v">${lis.join("")}</ol>` : `<ol class="am-timeline am-timeline--h" style="--n: ${items.length}">${lis.join("")}</ol>`;
   }
 };
@@ -1830,20 +1898,20 @@ var tree_default = {
 - \u5355\u6839\u4E14 2~4 \u4E2A\u5B50\u8282\u70B9 \u2192 \u7EC4\u7EC7\u56FE\uFF1B\u5B50\u8282\u70B9\u66F4\u591A\u6216\u53C2\u6570 list \u2192 \u7F29\u8FDB\u5217\u8868\uFF1B\u591A\u4E2A\u6839 \u2192 \u5E76\u6392\u3002
 - \u6807\u7B7E\u652F\u6301\u884C\u5185 Markdown\uFF0C\u5982 \`Section 1\` Words\u3002`,
   example: "```tree\nASD-STE100 | Simplified Technical English\n  Part 1: Writing rules\n    `Section 1` Words\n  Part 2: Dictionary\n    Approved words | \u4E00\u8BCD\u4E00\u4E49\n```",
-  render(text, { args }) {
+  render(text, { args, cwd }) {
     const roots = buildTree(text);
     if (!roots.length) throw new ComponentError("tree \u81F3\u5C11\u9700\u8981\u4E00\u4E2A\u8282\u70B9", 1);
     const listMode = /\blist\b/.test(args);
     if (roots.length === 1) {
       const [root] = roots;
       const n = root.children.length;
-      if (!listMode && n >= 2 && n <= 4) return orgHtml(root);
-      return `<div class="am-tree">${rootBox(root, true)}${listHtml(root.children)}</div>`;
+      if (!listMode && n >= 2 && n <= 4) return orgHtml(root, cwd);
+      return `<div class="am-tree">${rootBox(root, true, cwd)}${listHtml(root.children, cwd)}</div>`;
     }
     if (!listMode && roots.length <= 4) {
-      return `<div class="am-tree"><div class="am-tree-cols am-tree-cols--free" style="--n: ${roots.length}">${roots.map(colHtml).join("")}</div></div>`;
+      return `<div class="am-tree"><div class="am-tree-cols am-tree-cols--free" style="--n: ${roots.length}">${roots.map((node) => colHtml(node, cwd)).join("")}</div></div>`;
     }
-    return `<div class="am-tree">${listHtml(roots)}</div>`;
+    return `<div class="am-tree">${listHtml(roots, cwd)}</div>`;
   }
 };
 function buildTree(text) {
@@ -1864,25 +1932,25 @@ function parseLabel(t) {
   const [label, sub = ""] = fields(hi ? t.slice(1) : t);
   return { label, sub, hi };
 }
-var labelHtml = (label) => mdInline(label).replace(/^<code>([^<]*)<\/code>(?=\s*\S)/, '<span class="am-tree-tag">$1</span>');
-var boxInner = (n) => `${labelHtml(n.label)}${n.sub ? `<small>${mdInline(n.sub)}</small>` : ""}`;
-function rootBox(root, solo = false) {
-  return `<div class="am-tree-root${solo ? " am-tree-root--solo" : ""}"><div class="am-tree-box am-tree-box--root">${boxInner(root)}</div></div>`;
+var labelHtml = (label, cwd) => mdInline(label, { cwd }).replace(/^<code>([^<]*)<\/code>(?=\s*\S)/, '<span class="am-tree-tag">$1</span>');
+var boxInner = (n, cwd) => `${labelHtml(n.label, cwd)}${n.sub ? `<small>${mdInline(n.sub, { cwd })}</small>` : ""}`;
+function rootBox(root, solo = false, cwd) {
+  return `<div class="am-tree-root${solo ? " am-tree-root--solo" : ""}"><div class="am-tree-box am-tree-box--root">${boxInner(root, cwd)}</div></div>`;
 }
-function colHtml(node) {
-  const children = node.children.length ? listHtml(node.children) : "";
-  return `<div class="am-tree-col"><div class="am-tree-box${node.hi ? " am-tree-box--hi" : ""}">${boxInner(node)}</div>${children}</div>`;
+function colHtml(node, cwd) {
+  const children = node.children.length ? listHtml(node.children, cwd) : "";
+  return `<div class="am-tree-col"><div class="am-tree-box${node.hi ? " am-tree-box--hi" : ""}">${boxInner(node, cwd)}</div>${children}</div>`;
 }
-function orgHtml(root) {
-  return `<div class="am-tree">${rootBox(root)}<div class="am-tree-cols" style="--n: ${root.children.length}">${root.children.map(colHtml).join("")}</div></div>`;
+function orgHtml(root, cwd) {
+  return `<div class="am-tree">${rootBox(root, false, cwd)}<div class="am-tree-cols" style="--n: ${root.children.length}">${root.children.map((node) => colHtml(node, cwd)).join("")}</div></div>`;
 }
-function listHtml(nodes) {
-  return `<ul class="am-tree-list">${nodes.map(liHtml).join("")}</ul>`;
+function listHtml(nodes, cwd) {
+  return `<ul class="am-tree-list">${nodes.map((node) => liHtml(node, cwd)).join("")}</ul>`;
 }
-function liHtml(n) {
-  const sub = n.sub ? `<span class="am-tree-sub">${mdInline(n.sub)}</span>` : "";
-  const kids = n.children.length ? `<ul>${n.children.map(liHtml).join("")}</ul>` : "";
-  return `<li${n.hi ? ' class="am-tree-hi"' : ""}><span class="am-tree-label">${labelHtml(n.label)}</span>${sub}${kids}</li>`;
+function liHtml(n, cwd) {
+  const sub = n.sub ? `<span class="am-tree-sub">${mdInline(n.sub, { cwd })}</span>` : "";
+  const kids = n.children.length ? `<ul>${n.children.map((node) => liHtml(node, cwd)).join("")}</ul>` : "";
+  return `<li${n.hi ? ' class="am-tree-hi"' : ""}><span class="am-tree-label">${labelHtml(n.label, cwd)}</span>${sub}${kids}</li>`;
 }
 
 // src/components/limits.js
@@ -4207,7 +4275,7 @@ function diamondPoint(node, toward) {
 
 // src/components/chart.js
 import { readFileSync, realpathSync, statSync } from "node:fs";
-import { isAbsolute, relative, resolve } from "node:path";
+import { isAbsolute as isAbsolute2, relative as relative2, resolve as resolve2 } from "node:path";
 var TYPES = /* @__PURE__ */ new Set(["bar", "line", "scatter"]);
 var OPTIONS = /* @__PURE__ */ new Set(["x", "y", "series", "unit", "title", "min", "max", "src", "legend", "x-label", "y-label"]);
 var LEGENDS = /* @__PURE__ */ new Set(["auto", "top", "bottom", "off"]);
@@ -4255,16 +4323,16 @@ function parseChart(text, args = "") {
     argOptions[m[1]] = unquote2(m[2]);
   }
   const lines = String(text).replace(/\r\n?/g, "\n").split("\n");
-  const sep = lines.findIndex((line) => line.trim() === "---");
-  const optionLines = sep >= 0 ? lines.slice(0, sep) : lines;
-  const csv = sep >= 0 ? lines.slice(sep + 1).join("\n").trim() : "";
+  const sep2 = lines.findIndex((line) => line.trim() === "---");
+  const optionLines = sep2 >= 0 ? lines.slice(0, sep2) : lines;
+  const csv = sep2 >= 0 ? lines.slice(sep2 + 1).join("\n").trim() : "";
   const options = { ...argOptions };
   for (let i = 0; i < optionLines.length; i++) {
     const raw = optionLines[i].trim();
     if (!raw || raw.startsWith("//")) continue;
     const m = raw.match(/^([\w-]+)\s*:\s*(.*)$/);
     if (!m) {
-      if (sep < 0) throw new ComponentError("inline CSV \uC55E\uC5D0\uB294 --- \uAD6C\uBD84\uC120\uC774 \uD544\uC694\uD558\uB2E4", i + 1);
+      if (sep2 < 0) throw new ComponentError("inline CSV \uC55E\uC5D0\uB294 --- \uAD6C\uBD84\uC120\uC774 \uD544\uC694\uD558\uB2E4", i + 1);
       throw new ComponentError(`chart \uC635\uC158\uC740 key: value \uD615\uC2DD\uC774\uC5B4\uC57C \uD55C\uB2E4: "${raw}"`, i + 1);
     }
     options[m[1]] = unquote2(m[2].trim());
@@ -4362,18 +4430,18 @@ function parseCsv(text) {
 }
 function readWorkspaceCsv(src, cwd) {
   if (!cwd) throw new ComponentError("src CSV\uB97C \uC77D\uC73C\uB824\uBA74 workspace \uACBD\uB85C\uAC00 \uD544\uC694\uD558\uB2E4", 1);
-  if (isAbsolute(src) || /^[a-z]+:/i.test(src)) throw new ComponentError("chart src\uB294 workspace \uAE30\uC900 \uC0C1\uB300\uACBD\uB85C\uB9CC \uD5C8\uC6A9\uD55C\uB2E4", 1);
+  if (isAbsolute2(src) || /^[a-z]+:/i.test(src)) throw new ComponentError("chart src\uB294 workspace \uAE30\uC900 \uC0C1\uB300\uACBD\uB85C\uB9CC \uD5C8\uC6A9\uD55C\uB2E4", 1);
   if (!/\.csv$/i.test(src)) throw new ComponentError("chart src\uB294 .csv \uD30C\uC77C\uC774\uC5B4\uC57C \uD55C\uB2E4", 1);
   let root;
   let file;
   try {
-    root = realpathSync(resolve(cwd));
-    file = realpathSync(resolve(root, src));
+    root = realpathSync(resolve2(cwd));
+    file = realpathSync(resolve2(root, src));
   } catch {
     throw new ComponentError(`chart CSV \uD30C\uC77C\uC744 \uCC3E\uC744 \uC218 \uC5C6\uB2E4: ${src}`, 1);
   }
-  const rel = relative(root, file);
-  if (rel === ".." || rel.startsWith("../") || isAbsolute(rel)) {
+  const rel = relative2(root, file);
+  if (rel === ".." || rel.startsWith("../") || isAbsolute2(rel)) {
     throw new ComponentError("chart src\uB294 workspace \uBC16\uC758 \uD30C\uC77C\uC744 \uC77D\uC744 \uC218 \uC5C6\uB2E4", 1);
   }
   if (statSync(file).size > MAX_FILE_BYTES) throw new ComponentError("chart CSV \uD30C\uC77C\uC740 2MB \uC774\uD558\uC5EC\uC57C \uD55C\uB2E4", 1);
@@ -5190,7 +5258,7 @@ function renderDoc(source, overrides = {}, defaults2 = {}, runtime = {}) {
   return { html, warnings, stats, meta: doc2.meta };
 }
 function renderBlocks(blocks, ctx) {
-  return blocks.map((b) => b.type === "md" ? `<div class="am-md">${md(b.text)}</div>` : renderFence(b, ctx)).join("\n");
+  return blocks.map((b) => b.type === "md" ? `<div class="am-md">${md(b.text, { cwd: ctx.cwd })}</div>` : renderFence(b, ctx)).join("\n");
 }
 function renderFence(block2, ctx) {
   const { lang, args, text, line } = block2;
@@ -5374,6 +5442,8 @@ A -> B
 html / svg \u56F4\u680F\u5757\u4F1A\u539F\u6837\u5D4C\u5165\uFF0C\u53EF\u7528\u4E8E\u81EA\u5B9A\u4E49\u5E03\u5C40\u3001\u56FE\u5F62\u548C\u4EA4\u4E92\u3002\u9875\u9762 CSP \u4F1A\u7EE7\u7EED\u963B\u6B62\u5916\u90E8\u7F51\u7EDC\u4E0E\u5916\u90E8\u8D44\u6E90\u52A0\u8F7D\u3002
 
 - "## " \u5F00\u542F\u4E00\u4E2A\u9762\u677F\uFF1B\u5B57\u6BCD ID \u53EF\u7701\u7565\uFF08\u81EA\u52A8\u5206\u914D A\u3001B\u3001C\u2026\uFF09\u3002span \u8BA9\u9762\u677F\u8DE8\u5217\u3002
+- \u6E90\u7801\u8DF3\u8F6C\u5199\u4F5C [\u663E\u793A\u6587\u5B57](source:workspace/relative/file.ts:line:column)\uFF0C\u6E32\u67D3\u65F6\u8F6C\u6362\u4E3A VS Code vscode://file \u94FE\u63A5\u3002
+- source: \u53EA\u63A5\u53D7\u5F53\u524D\u5DE5\u4F5C\u533A\u5185\u7684\u76F8\u5BF9\u8DEF\u5F84\uFF1Bline / column \u7701\u7565\u65F6\u9ED8\u8BA4\u4E3A 1\u3002
 - \u7EC4\u4EF6\u5217\u8868\u89C1 am list\uFF1B\u5355\u4E2A\u7EC4\u4EF6\u8BED\u6CD5\u89C1 am help <\u7EC4\u4EF6\u540D>\u3002`;
 async function main(argv, io = {}) {
   const out = io.stdout ?? process.stdout;
@@ -5434,7 +5504,7 @@ async function withSource(arg, io, fail, fn3) {
   }
   let src;
   try {
-    src = arg === "-" ? await readStream(io.stdin ?? process.stdin) : readFileSync3(resolve2(io.cwd ?? process.cwd(), arg), "utf8");
+    src = arg === "-" ? await readStream(io.stdin ?? process.stdin) : readFileSync3(resolve3(io.cwd ?? process.cwd(), arg), "utf8");
   } catch (e) {
     fail(`\u2717 \u65E0\u6CD5\u8BFB\u53D6\u7A3F\u4EF6\uFF1A${e.message}`);
     return 2;
@@ -5472,7 +5542,7 @@ function cmdRender(src, opts, { print, fail, env, cwd }) {
   } catch (e) {
     return reportError(e, fail);
   }
-  const file = opts.out ? resolve2(cwd ?? process.cwd(), opts.out) : join2(cwd ?? process.cwd(), ".answer-me-with-html", "pages", `${slug(result.meta.title)}-${stamp()}.html`);
+  const file = opts.out ? resolve3(cwd ?? process.cwd(), opts.out) : join2(cwd ?? process.cwd(), ".answer-me-with-html", "pages", `${slug(result.meta.title)}-${stamp()}.html`);
   mkdirSync2(dirname2(file), { recursive: true });
   writeFileSync2(file, result.html);
   const comps = Object.entries(result.stats.components).map(([k2, v]) => `${k2}\xD7${v}`).join(" ");
