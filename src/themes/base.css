@@ -248,6 +248,17 @@ html[data-theme="shadcn"] .am-kv { border-color: var(--line); border-radius: var
 .am-chart-line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
 .am-chart-point { fill: var(--paper); stroke: currentColor; stroke-width: 2; }
 .am-chart-bar:hover, .am-chart-point:hover { opacity: 1; }
+.am-chart-legend { cursor: pointer; transition: opacity 120ms ease; }
+.am-chart-legend:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.am-chart-legend.is-off { opacity: 0.32; }
+.am-chart [data-chart-mark] { transition: opacity 120ms ease; }
+.am-chart [data-chart-mark].is-hidden { display: none; }
+.am-chart [data-chart-mark].is-dimmed { opacity: 0.16; }
+.am-chart [data-chart-mark].is-highlighted { opacity: 1; }
+.am-chart-legend.is-dimmed { opacity: 0.25; }
+.am-chart-legend.is-highlighted { opacity: 1; }
+.am-chart-axis-title text { fill: var(--ink-2); font: 11px var(--font-sans); }
+.am-chart-x-tick { pointer-events: none; }
 .am-chart-legend rect { fill: currentColor; }
 .am-diagram .am-chart-legend text { fill: var(--ink-2); font-size: 11px; }
 .am-diagram .am-chart-empty { fill: var(--ink-3); font-size: 12px; }
