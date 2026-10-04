@@ -86,3 +86,43 @@ test('chart: src와 inline CSV를 동시에 쓰지 못한다', () => {
     /동시에/,
   );
 });
+
+
+test('chart: 범례는 interactive series toggle 메타데이터를 출력', () => {
+  const html = render('x: topic\ny: time\nseries: method\n---\ntopic,method,time\nA,Direct,46\nA,Skill,13');
+  assert.equal((html.match(/data-chart-legend/g) || []).length, 2);
+  assert.match(html, /data-chart-legend data-chart-series="0" role="button" tabindex="0" aria-pressed="true"/);
+  assert.match(html, /data-chart-mark data-chart-series="0"/);
+  assert.match(html, /data-chart-mark data-chart-series="1"/);
+});
+
+test('chart: legend 위치와 off 옵션을 지원', () => {
+  assert.equal(parseChart('x: a\ny: b\nlegend: bottom\n---\na,b\nx,1', 'bar').legend, 'bottom');
+  assert.equal(parseChart('x: a\ny: b\nlegend: off\n---\na,b\nx,1', 'bar').legend, 'off');
+  assert.throws(() => parseChart('x: a\ny: b\nlegend: left\n---\na,b\nx,1', 'bar'), /legend/);
+
+  const off = render('x: topic\ny: time\nseries: method\nlegend: off\n---\ntopic,method,time\nA,Direct,46\nA,Skill,13');
+  assert.doesNotMatch(off, /data-chart-legend/);
+});
+
+test('chart: 긴 x축 라벨은 자동 줄바꿈/말줄임하고 전체 텍스트를 title에 보존', () => {
+  const short = render('x: name\ny: value\n---\nname,value\nShort,10');
+  const longLabel = '이것은 매우 긴 벤치마크 시나리오 이름이며 여러 단어로 구성되어 세 줄을 넘는 경우에도 전체 이름을 잃지 않아야 합니다';
+  const long = render(`x: name\ny: value\nx-label: Benchmark scenario with an intentionally long axis title\n---\nname,value\n"${longLabel}",10`);
+  const hShort = Number(short.match(/viewBox="0 0 [\d.]+ ([\d.]+)"/)[1]);
+  const hLong = Number(long.match(/viewBox="0 0 [\d.]+ ([\d.]+)"/)[1]);
+  assert.ok(hLong > hShort, `short=${hShort} long=${hLong}`);
+  assert.match(long, new RegExp(`<title>${longLabel}</title>`));
+  assert.match(long, /…/);
+  assert.match(long, /class="am-chart-axis-title"/);
+});
+
+test('chart: 긴 y tick/unit과 y축 제목에 맞춰 왼쪽 여백을 자동 확장', () => {
+  const short = render('x: name\ny: value\nunit: ms\n---\nname,value\nA,100');
+  const long = render('x: name\ny: value\nunit: milliseconds-per-request-with-long-unit\ny-label: Extremely long latency measurement axis title that should stay readable\n---\nname,value\nA,100');
+  const xShort = Number(short.match(/class="am-chart-grid" x1="([\d.]+)"/)[1]);
+  const xLong = Number(long.match(/class="am-chart-grid" x1="([\d.]+)"/)[1]);
+  assert.ok(xLong > xShort, `short=${xShort} long=${xLong}`);
+  assert.match(long, /rotate\(-90/);
+  assert.match(long, /Extremely long latency measurement axis title/);
+});
