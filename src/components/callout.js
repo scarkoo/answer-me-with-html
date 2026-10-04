@@ -12,13 +12,13 @@ export default {
 \`\`\`
 - 首个参数不是类型时，整个参数串作为标题，类型为 info。`,
   example: '```callout warn 注意\n先关闭阀门，再拆卸泵。\n```',
-  render(text, { args }) {
+  render(text, { args, cwd }) {
     const [first = '', ...rest] = args.split(/\s+/).filter(Boolean);
     const kind = KINDS.has(first) ? first : 'info';
     const title = (KINDS.has(first) ? rest.join(' ') : args).trim();
     if (!title && !text.trim()) throw new ComponentError('callout 需要标题或正文', 1);
     const head = title ? `<div class="am-callout-title">${esc(title)}</div>` : '';
-    const body = text.trim() ? `<div class="am-callout-body am-md">${md(text)}</div>` : '';
+    const body = text.trim() ? `<div class="am-callout-body am-md">${md(text, { cwd })}</div>` : '';
     return `<div class="am-callout am-callout--${kind}" role="note">${head}${body}</div>`;
   },
 };
